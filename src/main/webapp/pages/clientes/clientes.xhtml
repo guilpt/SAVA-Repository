@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/pages/template.xhtml">
+        <ui:define name="content">
+
+            <p:panel id="panelCliente" style="height: 550px;" header="Cliente" toggleable="false" closable="false" 
+                     toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastro"> 
+
+                <p:messages id="mensagensClientes" showDetail="true" autoUpdate="true" closable="true" />
+
+                <p:outputPanel id="painelBotoesLista" rendered="#{clientesController.mostrarLista}">
+                    <div class="botoes" style="display: block;">
+                        <div class="divBtn">
+                            <h:commandLink action="#{clientesController.novo()}">
+                                <img class="img" src="/SAVA/faces/imagens/novo.png" border="1"/>
+                            </h:commandLink>
+                            <span class="txtBtn">Novo</span>
+                        </div>
+                    </div>
+                </p:outputPanel>
+
+                <p:outputPanel id="painelBotoesFormulario" rendered="#{clientesController.mostrarFormulario}">
+                    <div class="botoes">
+                        <div class="divBtn">
+                            <h:commandLink action="#{clientesController.salvarCliente()}" styleClass="salvar" >
+                                <img class="img" src="/SAVA/faces/imagens/salvar.png" border="1"/>
+                            </h:commandLink>
+                            <span class="txtBtn">Salvar</span>
+                        </div> 
+                        <div class="divBtn">
+                            <h:commandLink action="#{clientesController.cancelar()}" >
+                                <img class="img" src="/SAVA/faces/imagens/cancelar.png" border="1"/>
+                            </h:commandLink>
+                            <span class="txtBtn">Cancelar</span>
+                        </div>
+                    </div>       
+                </p:outputPanel>
+
+                <p:outputPanel rendered="#{clientesController.mostrarLista}">    
+                    <p:dataTable id="dataClientesLista" var="cliente" value="#{clientesController.listaClientes}" style="float : left;" paginator="true" rows="10" paginatorPosition="bottom">  
+                        <p:column headerText="Código" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">  
+                            <h:outputText value="#{cliente.idCliente}"/>  
+                        </p:column>  
+                        <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 300px;">  
+                            <h:outputText value="#{cliente.nomeCliente}" />  
+                        </p:column> 
+                        <p:column headerText="CPF" style="height: 10px; font-size: 10px; text-align: center;">  
+                            <h:outputText value="#{cliente.cpf}" />  
+                        </p:column>           
+                        <p:column headerText="Tel. Residencial" style="height: 10px; font-size: 10px; text-align: center;">  
+                            <h:outputText value="#{cliente.telefoneResidencial}" />  
+                        </p:column>                               
+                        <p:column headerText="Tel. Celular" style="height: 10px; font-size: 10px; text-align: center;">  
+                            <h:outputText value="#{cliente.telefoneCelular}" />  
+                        </p:column>                   
+                        <p:column headerText="Editar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                            <h:commandLink action="#{clientesController.selecionarCliente(cliente)}">
+                                <img class="img" src="/SAVA/faces/imagens/editar.png" border="1"/>                           
+                            </h:commandLink>
+                        </p:column>      
+                        <p:column headerText="Excluir" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                            <h:commandLink onclick="confirmation.sho" type="button">
+                                <img class="img" src="/SAVA/faces/imagens/excluir.png" border="1"/>   
+                            </h:commandLink>
+                        </p:column>        
+                    </p:dataTable>   
+
+                    <p:confirmDialog message="Deseja realmente excluir o cliente?"  header="Atenção"  widgetVar="confirmation">  
+                        <p:commandButton value="Sim"  onclick="confirmation.hide()"  action="#{clientesController.excluirCliente(cliente)}" />
+                        <!--</p:commandButton>-->  
+                        <p:commandButton value="Não" onclick="confirmation.hide()" type="button" />   
+                    </p:confirmDialog>
+                </p:outputPanel>   
+
+                <p:outputPanel id="formCliente" rendered="#{clientesController.mostrarFormulario}" style="float:left; width:70%; height: 300px;"> 
+                    <fieldset class="formulario">
+                        <h:inputHidden value="#{clientesController.idCliente}"/>
+                        <ol>
+                            <li>
+                                <label for="nomeCliente">Nome:</label>
+                                <h:inputText id="nomeCliente" style="width: 500px" value="#{clientesController.nomeCliente}" />
+                            </li>
+                            <li>
+                                <label for="cpf">CPF:</label>
+                                <p:inputMask id="cpf" value="#{clientesController.cpf}" mask="999.999.999-99" />
+                            </li>
+                            <li>
+                                <label for="sexo">Sexo:</label>
+                                <p:selectOneMenu id="sexo" value="#{clientesController.sexo}" style="width:125px" >
+                                    <f:selectItem itemLabel="Selecione.." itemValue="-1"  />
+                                    <f:selectItem itemLabel="Feminino"    itemValue="F" />
+                                    <f:selectItem itemLabel="Masculino"   itemValue="M" />
+                                </p:selectOneMenu>
+                            </li>     
+                            <li>
+                                <label for="dataNascimento">Data de Nascimento:</label>
+                                <p:inputMask id="dataNascimento" value="#{clientesController.dataNascimento}" mask="99/99/9999" />
+                            </li>                               
+                            <li>
+                                <label for="endereco">Endereço:</label>
+                                <h:inputText id="endereco" style="width: 500px" value="#{clientesController.endereco}"/>
+                            </li>   
+                            <li>
+                                <label for="telefoneResidencial">Telefone Residencial:</label>
+                                <p:inputMask id="telefoneResidencial" value="#{clientesController.telefoneResidencial}" mask="(99) 9999-9999"/>
+                            </li>   
+                            <li>
+                                <label for="telefoneCelular">Telefone Celular:</label>
+                                <p:inputMask id ="telefoneCelular" value="#{clientesController.telefoneCelular}" mask="(99) 9999-9999"/>
+                            </li> 
+                            <li>
+                                <label for="email">E-mail:</label>
+                                <h:inputText id="email" style="width: 500px" value="#{clientesController.email}"/>
+                            </li>
+                        </ol>
+                    </fieldset> 
+                </p:outputPanel>    
+
+            </p:panel>
+
+        </ui:define>
+    </ui:composition> 
+
+</html>
+
