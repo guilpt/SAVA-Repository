@@ -161,8 +161,8 @@ public class ClientesController implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            this.controlarExibicao(false, true);
             listaClientes = clientesBO.buscarClientes();
+            this.controlarExibicao(false, true);
         } catch (SavaBusinessException e) {
             e.printStackTrace();
         }
@@ -196,7 +196,7 @@ public class ClientesController implements Serializable {
 
         if (this.validaDados()) {
             Clientes clienteFormulario = new Clientes(this.idCliente, this.nomeCliente, this.cpf, this.sexo, this.dataNascimento, this.endereco, this.telefoneResidencial, this.telefoneCelular, email);
-            
+
             try {
                 if (this.idCliente == null) {
                     linhasAfetadas = clientesBO.inserirCliente(clienteFormulario);
@@ -263,20 +263,33 @@ public class ClientesController implements Serializable {
         return "";
     }
 
-    public String excluirCliente(Clientes cliente) {
+    public String selecionarClienteExclusao(Clientes cliente) {
+        if (cliente != null) {
+            this.idCliente = cliente.getIdCliente();
+            this.nomeCliente = cliente.getNomeCliente();
+        }
+
+        return "";
+    }
+
+    public String excluirCliente() {
         FacesContext context = FacesContext.getCurrentInstance();
         Integer linhasAfetadas = 0;
 
-        if (cliente != null) {
+        if (this.idCliente != null) {
             try {
-                linhasAfetadas = clientesBO.excluirCliente(cliente.getIdCliente());
+                linhasAfetadas = clientesBO.excluirCliente(this.idCliente);
 
                 if (linhasAfetadas == 1) {
                     this.init();
+                    System.out.println("passou método init após exclusão");
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Cliente excluído com sucesso!"));
                 }
             } catch (SavaBusinessException e) {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível excluir o cliente!"));
+            } finally {
+                this.idCliente = null;
+                this.nomeCliente = "";
             }
         }
 

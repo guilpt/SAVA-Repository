@@ -12,7 +12,7 @@
             <p:panel id="panelCliente" style="height: 550px;" header="Cliente" toggleable="false" closable="false" 
                      toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastro"> 
 
-                <p:messages id="mensagensClientes" showDetail="true" autoUpdate="true" closable="true" />
+                <p:messages id="mensagensClientes" showDetail="true" autoUpdate="true" closable="true"  />
 
                 <p:outputPanel id="painelBotoesLista" rendered="#{clientesController.mostrarLista}">
                     <div class="botoes" style="display: block;">
@@ -65,16 +65,15 @@
                             </h:commandLink>
                         </p:column>      
                         <p:column headerText="Excluir" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
-                            <h:commandLink onclick="confirmation.sho" type="button">
+                            <h:commandLink action="#{clientesController.selecionarClienteExclusao(cliente)}" onclick="PF('confirmDialogExclusaoCliente').show(); return false;" >
                                 <img class="img" src="/SAVA/faces/imagens/excluir.png" border="1"/>   
                             </h:commandLink>
                         </p:column>        
                     </p:dataTable>   
 
-                    <p:confirmDialog message="Deseja realmente excluir o cliente?"  header="Atenção"  widgetVar="confirmation">  
-                        <p:commandButton value="Sim"  onclick="confirmation.hide()"  action="#{clientesController.excluirCliente(cliente)}" />
-                        <!--</p:commandButton>-->  
-                        <p:commandButton value="Não" onclick="confirmation.hide()" type="button" />   
+                    <p:confirmDialog id="confirmDialogExclusaoCliente" message="Deseja realmente excluir o(a) cliente #{clientesController.nomeCliente}?"  header="Atenção" severity="alert" widgetVar="confirmDialogExclusaoCliente" >  
+                        <p:commandButton value="Sim" action="#{clientesController.excluirCliente()}" onclick="PF('confirmDialogExclusaoCliente').hide(); return false;" />
+                        <p:commandButton value="Não" onclick="PF('confirmDialogExclusaoCliente').hide(); return false;" />   
                     </p:confirmDialog>
                 </p:outputPanel>   
 
