@@ -11,8 +11,11 @@
 
             <p:panel id="panelCliente" style="height: 550px;" header="Cliente" toggleable="false" closable="false" 
                      toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastro"> 
-
-                <p:messages id="mensagensClientes" showDetail="true" autoUpdate="true" closable="true"  />
+                
+                <div id="divMessagesCliente" >
+                    <!--<p:messages id="mensagensClientes" showDetail="true" autoUpdate="true" closable="true" />-->
+                    <p:growl id="mensagensClientes" showDetail="true" />
+                </div>
 
                 <p:outputPanel id="painelBotoesLista" rendered="#{clientesController.mostrarLista}">
                     <div class="botoes" style="display: block;">
@@ -28,7 +31,7 @@
                 <p:outputPanel id="painelBotoesFormulario" rendered="#{clientesController.mostrarFormulario}">
                     <div class="botoes">
                         <div class="divBtn">
-                            <h:commandLink action="#{clientesController.salvarCliente()}" styleClass="salvar" >
+                            <h:commandLink action="#{clientesController.salvarCliente()}" styleClass="salvar">
                                 <img class="img" src="/SAVA/faces/imagens/salvar.png" border="1"/>
                             </h:commandLink>
                             <span class="txtBtn">Salvar</span>
@@ -42,7 +45,7 @@
                     </div>       
                 </p:outputPanel>
 
-                <p:outputPanel rendered="#{clientesController.mostrarLista}">    
+                <p:outputPanel rendered="#{clientesController.mostrarLista}" >    
                     <p:dataTable id="dataClientesLista" var="cliente" value="#{clientesController.listaClientes}" style="float : left;" paginator="true" rows="10" paginatorPosition="bottom">  
                         <p:column headerText="Código" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">  
                             <h:outputText value="#{cliente.idCliente}"/>  
@@ -65,14 +68,14 @@
                             </h:commandLink>
                         </p:column>      
                         <p:column headerText="Excluir" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
-                            <h:commandLink action="#{clientesController.selecionarClienteExclusao(cliente)}" onclick="PF('confirmDialogExclusaoCliente').show(); return false;" >
+                            <h:commandLink action="#{clientesController.selecionarClienteExclusao(cliente)}" onclick="PF('confirmDialogExclusaoCliente').show(); return false;" type="button">
                                 <img class="img" src="/SAVA/faces/imagens/excluir.png" border="1"/>   
                             </h:commandLink>
                         </p:column>        
                     </p:dataTable>   
 
                     <p:confirmDialog id="confirmDialogExclusaoCliente" message="Deseja realmente excluir o(a) cliente #{clientesController.nomeCliente}?"  header="Atenção" severity="alert" widgetVar="confirmDialogExclusaoCliente" >  
-                        <p:commandButton value="Sim" action="#{clientesController.excluirCliente()}" onclick="PF('confirmDialogExclusaoCliente').hide(); return false;" />
+                        <p:commandButton value="Sim" action="#{clientesController.excluirCliente()}" onclick="PF('confirmDialogExclusaoCliente').hide()" update=":formularioPadrao:panelCliente"/>
                         <p:commandButton value="Não" onclick="PF('confirmDialogExclusaoCliente').hide(); return false;" />   
                     </p:confirmDialog>
                 </p:outputPanel>   
