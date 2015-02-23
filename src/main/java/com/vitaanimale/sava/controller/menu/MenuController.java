@@ -28,12 +28,18 @@ public class MenuController implements Serializable {
         model = new DefaultMenuModel();
 
         //First submenu
-        DefaultSubMenu firstSubmenu = new DefaultSubMenu("Clientes");
-
-        DefaultMenuItem item = new DefaultMenuItem("Cadastro Clientes");
-        item.setUrl("/faces/pages/clientes/clientes.xhtml");
-        item.setIcon("ui-icon-disk");
-        firstSubmenu.addElement(item);
+        DefaultSubMenu firstSubmenu = new DefaultSubMenu("Cadastro");
+        DefaultMenuItem item;
+        
+        DefaultMenuItem item1 = new DefaultMenuItem("Cadastro de Clientes");
+        item1.setUrl("/faces/pages/cadastro/clientes.xhtml");
+        item1.setIcon("ui-icon-disk");
+        firstSubmenu.addElement(item1);
+        
+        DefaultMenuItem item2 = new DefaultMenuItem("Cadastro de Animais");
+        item2.setUrl("/faces/pages/cadastro/animais.xhtml");
+        item2.setIcon("ui-icon-disk");
+        firstSubmenu.addElement(item2);
 
         model.addElement(firstSubmenu);
 

@@ -63,4 +63,38 @@ public class ClientesBOImpl implements IClientesBO {
         }
     }
 
+    @Override
+    public List<Clientes> buscarClientesComParametro(String cpf, String nomeCliente, String telefone) throws SavaBusinessException {
+        List<Clientes> listaClientes = null;
+        String parametroCPF;
+        String parametroNomeCliente;
+        String parametroTelefone;
+        
+        if(cpf.equals("")) {
+            parametroCPF = "%";
+        } else {
+            parametroCPF = "%" + cpf + "%";
+        }
+        
+        if(nomeCliente.equals("")) {
+            parametroNomeCliente = "%";
+        } else {
+            parametroNomeCliente = "%" + nomeCliente + "%";
+        }
+
+        if(telefone.equals("")) {
+            parametroTelefone = "%";
+        } else {
+            parametroTelefone = "%" + telefone + "%";
+        }     
+        
+        try {
+            listaClientes = clientesDAO.buscarClientesComParametro(parametroCPF, parametroNomeCliente, parametroTelefone);
+        } catch (SavaDAOException e) {
+            throw new SavaBusinessException("Erro ao executar o método ClientesBOImpl.buscarClientesComParametro", e);
+        }
+
+        return listaClientes;
+    }
+
 }

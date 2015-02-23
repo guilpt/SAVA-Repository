@@ -1,6 +1,6 @@
 package com.vitaanimale.sava.controller;
 
-import com.vitaanimale.sava.business.impl.ClientesBOImpl;
+import com.vitaanimale.sava.business.IClientesBO;
 import com.vitaanimale.sava.infra.SavaBusinessException;
 import com.vitaanimale.sava.to.Clientes;
 import java.io.Serializable;
@@ -22,37 +22,27 @@ import org.springframework.stereotype.Controller;
 @Controller
 @ManagedBean
 @ViewScoped
-public class ClientesController implements Serializable {
+public class ClientesController extends SAVAController implements Serializable {
 
     private static final long serialVersionUID = 685949097784188252L;
 
     @ManagedProperty("#{clientesBO}")
     @Autowired
-    private ClientesBOImpl clientesBO;
+    private IClientesBO clientesBO;
 
     private List<Clientes> listaClientes;
 
     private Integer idCliente;
-    private String nomeCliente;
-    private String cpf;
-    private String sexo;
-    private String dataNascimento;
-    private String endereco;
-    private String telefoneResidencial;
-    private String telefoneCelular;
-    private String email;
+    private String  nomeCliente;
+    private String  cpf;
+    private String  sexo;
+    private String  dataNascimento;
+    private String  endereco;
+    private String  telefoneResidencial;
+    private String  telefoneCelular;
+    private String  email;
 
-    private String mensagemValidacao;
-    private Boolean mostrarLista = true;
-    private Boolean mostrarFormulario = false;
-
-    public ClientesBOImpl getClientesBO() {
-        return clientesBO;
-    }
-
-    public void setClientesBO(ClientesBOImpl clientesBO) {
-        this.clientesBO = clientesBO;
-    }
+    private String  mensagemValidacao;
 
     public List<Clientes> getListaClientes() {
         return listaClientes;
@@ -142,39 +132,17 @@ public class ClientesController implements Serializable {
         this.mensagemValidacao = mensagemValidacao;
     }
 
-    public Boolean getMostrarLista() {
-        return mostrarLista;
-    }
-
-    public void setMostrarLista(Boolean mostrarLista) {
-        this.mostrarLista = mostrarLista;
-    }
-
-    public Boolean getMostrarFormulario() {
-        return mostrarFormulario;
-    }
-
-    public void setMostrarFormulario(Boolean mostrarFormulario) {
-        this.mostrarFormulario = mostrarFormulario;
-    }
-
     @PostConstruct
     public void init() {
         try {
-            listaClientes = clientesBO.buscarClientes();
             this.controlarExibicao(false, true);
+            listaClientes = clientesBO.buscarClientes();
         } catch (SavaBusinessException e) {
             e.printStackTrace();
         }
     }
 
-    private void controlarExibicao(Boolean bForm, Boolean bLista) {
-        this.mostrarFormulario = bForm;
-        this.mostrarLista = bLista;
-    }
-
     public String novo() {
-        //this.clienteFormulario = new Clientes();
         this.idCliente = null;
         this.nomeCliente = "";
         this.cpf = "";
@@ -187,7 +155,7 @@ public class ClientesController implements Serializable {
 
         this.controlarExibicao(true, false);
 
-        return "";
+        return ACTION_INPUT;
     }
 
     public String salvarCliente() {
@@ -215,7 +183,7 @@ public class ClientesController implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", this.mensagemValidacao));
         }
 
-        return "";
+        return ACTION_INPUT;
     }
 
     private Boolean validaDados() {
@@ -241,12 +209,11 @@ public class ClientesController implements Serializable {
     public String cancelar() {
         this.controlarExibicao(false, true);
 
-        return "";
+        return ACTION_INPUT;
     }
 
     public String selecionarCliente(Clientes cliente) {
         if (cliente != null) {
-            //this.clienteFormulario = cliente;
             this.idCliente = cliente.getIdCliente();
             this.nomeCliente = cliente.getNomeCliente();
             this.cpf = cliente.getCpf();
@@ -260,7 +227,7 @@ public class ClientesController implements Serializable {
             this.controlarExibicao(true, false);
         }
 
-        return "";
+        return ACTION_INPUT;
     }
 
     public String selecionarClienteExclusao(Clientes cliente) {
@@ -269,7 +236,7 @@ public class ClientesController implements Serializable {
             this.nomeCliente = cliente.getNomeCliente();
         }
 
-        return "";
+        return ACTION_INPUT;
     }
 
     public String excluirCliente() {
@@ -282,7 +249,6 @@ public class ClientesController implements Serializable {
 
                 if (linhasAfetadas == 1) {
                     this.init();
-                    System.out.println("passou método init após exclusão");
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Cliente excluído com sucesso!"));
                 }
             } catch (SavaBusinessException e) {
@@ -293,7 +259,7 @@ public class ClientesController implements Serializable {
             }
         }
 
-        return "";
+        return ACTION_INPUT;
     }
 
 }

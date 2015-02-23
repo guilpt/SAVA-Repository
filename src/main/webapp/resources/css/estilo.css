@@ -285,7 +285,6 @@ span li{
 
 label{
     float : left;
-    width: 13em;
     margin-right: 1em;
     text-align: left;
     font: bold 8pt Arial,Garamond, Times, serif;
@@ -450,8 +449,17 @@ button.buscar{
     height: 30px;
     width : 30px;
     cursor: pointer;
-    margin :0 0 0 0;
-    border:0px;
+    margin: 0 0 0 0;
+    border: 0px;
+}
+
+button.buscar{
+    background : url(../imagens/buscar16x16.png) no-repeat left transparent;
+    height: 16px;
+    width : 16px;
+    cursor: pointer;
+    margin: 0 0 0 0;
+    border: 0px;
 }
 
 button.cancelar{
@@ -459,8 +467,8 @@ button.cancelar{
     height: 30px;
     width : 30px;
     cursor: pointer;
-    margin :0 0 0 0;
-    border:0px;
+    margin: 0 0 0 0;
+    border: 0px;
 }
 
 button.salvar{
@@ -468,7 +476,42 @@ button.salvar{
     height: 30px;
     width : 30px;
     cursor: pointer;
-    margin :0 0 0 0;
-    border:0px;
+    margin: 0 0 0 0;
+    border: 0px;
 }
 
+button.selecionar32x32{
+    background : url(../imagens/selecionar32x32.png) no-repeat left transparent;
+    height: 30px;
+    width : 30px;
+    cursor: pointer;
+    margin: 0 0 0 0;
+    border: 0px;
+}
+
+div.divBorda {
+    border: 1px solid; 
+    border-radius: 5px; 
+    border-color: #BED6F8; 
+    padding: 5px 5px 5px 5px; 
+    margin: 10px 0px 10px 0px;
+}
+
+div.barraTitulo{
+    display : block;
+    border: 1px solid; 
+    border-radius: 5px; 
+    border-color: #5c9ccc;
+    background-color: #5c9ccc;
+    padding : 3px 3px 3px 3px;
+    margin: 5px 0px 5px 0px;
+    height : 14px;
+}
+
+h1.titulo{
+    text-align: center; 
+    color: #ffffff;
+    font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
+    display: block
+    
+}

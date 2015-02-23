@@ -154,5 +154,48 @@ public class ClientesDAOImpl extends AbstractSAVADao implements IClientesDAO {
         
         return linhasAfetadas;
     }
+
+    @Override
+    public List<Clientes> buscarClientesComParametro(String cpf, String nomeCliente, String telefone) throws SavaDAOException {
+        StringBuilder sb = new StringBuilder();
+        List<Clientes> listaClientes = null;
+        
+        sb.append(" select id_cliente,");
+        sb.append("        nome_cliente,");
+        sb.append("        cpf,");
+        sb.append("        telefone_residencial,");
+        sb.append("        telefone_celular");
+        sb.append("   from va_clientes");
+        sb.append("  where cpf like ?");
+        sb.append("    and lower(nome_cliente) like lower(?)");
+        sb.append("    and (telefone_residencial like ? or");
+        sb.append("         telefone_celular like ?)");
+        
+        try{
+            listaClientes = (List<Clientes>) this.jdbcTemplate.query(sb.toString(), new Object[] {cpf, nomeCliente, telefone, telefone}, new RowMapper() {
+
+                @Override
+                public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Clientes cliente = new Clientes();
+                    
+                    cliente.setIdCliente(rs.getInt("ID_CLIENTE"));
+                    cliente.setNomeCliente(rs.getString("NOME_CLIENTE"));
+                    cliente.setCpf(rs.getString("CPF"));
+                    cliente.setTelefoneResidencial(rs.getString("TELEFONE_RESIDENCIAL"));
+                    cliente.setTelefoneCelular(rs.getString("TELEFONE_CELULAR"));                
+                    
+                    return cliente;
+                }
+            });
+            
+            if(listaClientes.iterator().hasNext()){
+                return listaClientes;
+            }
+            return ListUtils.EMPTY_LIST;
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new SavaDAOException("Erro ao executar o método ClientesDAOImpl.buscarClientesComParametro", e);
+        }
+    }
     
 }

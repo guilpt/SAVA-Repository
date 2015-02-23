@@ -16,4 +16,6 @@ public interface IClientesDAO {
     public Integer excluirCliente(Integer idCliente) throws SavaDAOException;
     
     public Integer atualizarCliente(Clientes cliente) throws SavaDAOException;
+    
+    public List<Clientes> buscarClientesComParametro(String cpf, String nomeCliente, String telefone) throws SavaDAOException;
 }

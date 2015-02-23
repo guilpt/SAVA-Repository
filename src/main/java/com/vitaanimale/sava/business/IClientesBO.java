@@ -18,4 +18,5 @@ public interface IClientesBO {
     
     public Integer atualizarCliente(Clientes cliente) throws SavaBusinessException;
     
+    public List<Clientes> buscarClientesComParametro(String cpf, String nomeCliente, String telefone) throws SavaBusinessException;
 }
