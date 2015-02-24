@@ -164,27 +164,22 @@
                     <h:inputHidden value="#{animaisController.idCliente}"/>
                     <table style="width:100%">
                         <tr>
-                            <td><label>ID</label></td>
-                            <td><label>Nome Cliente</label></td>
-                            <td><label>CPF</label></td>
-                            <td><label>Telefone Residencial</label></td>
-                            <td><label>Telefone Celular</label></td>
+                            <td><label>Espécie</label></td>
+                            <td><label>Raça</label></td>
                         </tr>
                         <tr>
-                            <td style="width: 5%;">
-                                <h:inputText id="idCliente" size="5" value="#{animaisController.idCliente}" disabled="true"/>
+                            <td style="width: 15%;">
+                                <p:selectOneMenu id="especie" value="#{animaisController.especie}">
+                                    <f:selectItem itemLabel="Selecione..." itemValue="" />
+                                    <f:selectItems value="#{animaisController.listaEspecies}" var="especie" itemValue="#{especie}" itemLabel="#{especie.descricaoEspecie}"/>
+                                    <p:ajax listener="#{animaisController.buscarRacaPorIdEspecie(idEspecie)}" />
+                                </p:selectOneMenu>
                             </td>
-                            <td style="width: 51%;">
-                                <h:inputText id="nomeCliente" size="100" value="#{animaisController.nomeCliente}" disabled="true"/>
-                            </td>
-                            <td style="width: 9%;">
-                                <h:inputText id="cpf" size="14" value="#{animaisController.cpf}" disabled="true"/>
-                            </td>
-                            <td style="width: 12%;">
-                                <h:inputText id="telefoneResidencial" size="20" value="#{animaisController.telefoneResidencial}" disabled="true"/>
-                            </td>
-                            <td style="width: 23%;">
-                                <h:inputText id="telefoneCelular" size="20" value="#{animaisController.telefoneCelular}" disabled="true"/>
+                            <td style="width: 85%;">
+                                <p:selectOneMenu id="raca" value="#{animaisController.raca}" >
+                                    <f:selectItem itemLabel="Selecione..." itemValue="" />
+                                    <f:selectItems value="#{animaisController.listaRacas}" var="raca" itemValue="#{raca}" itemLabel="#{raca.descricaoRaca}"/>
+                                </p:selectOneMenu>
                             </td>
                         </tr>
                     </table>
