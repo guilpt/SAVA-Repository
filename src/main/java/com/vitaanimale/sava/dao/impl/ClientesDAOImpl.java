@@ -29,7 +29,7 @@ public class ClientesDAOImpl extends AbstractSAVADao implements IClientesDAO {
         sb.append(" select id_cliente,");
         sb.append("        nome_cliente,");
         sb.append("        cpf,");
-        sb.append("        sexo,");
+        sb.append("        sexo_cliente,");
         sb.append("        to_char(data_nascimento, 'dd/mm/yyyy') as data_nascimento,");
         sb.append("        endereco,");
         sb.append("        telefone_residencial,");
@@ -47,7 +47,7 @@ public class ClientesDAOImpl extends AbstractSAVADao implements IClientesDAO {
                     cliente.setIdCliente(rs.getInt("ID_CLIENTE"));
                     cliente.setNomeCliente(rs.getString("NOME_CLIENTE"));
                     cliente.setCpf(rs.getString("CPF"));
-                    cliente.setSexo(rs.getString("SEXO"));
+                    cliente.setSexoCliente(rs.getString("SEXO_CLIENTE"));
                     cliente.setDataNascimento(rs.getString("DATA_NASCIMENTO"));
                     cliente.setEndereco(rs.getString("ENDERECO"));
                     cliente.setTelefoneResidencial(rs.getString("TELEFONE_RESIDENCIAL"));
@@ -79,7 +79,7 @@ public class ClientesDAOImpl extends AbstractSAVADao implements IClientesDAO {
         sb.append(" nome_cliente,");
         sb.append(" cpf,");
         sb.append(" data_nascimento,");
-        sb.append(" sexo,");
+        sb.append(" sexo_cliente,");
         sb.append(" endereco,");
         sb.append(" telefone_residencial,");
         sb.append(" telefone_celular,");
@@ -98,7 +98,7 @@ public class ClientesDAOImpl extends AbstractSAVADao implements IClientesDAO {
         
         try{
             linhasAfetadas = jdbcTemplate.update(sb.toString(), new Object[] {cliente.getNomeCliente(), cliente.getCpf(),
-                sdf.parse(cliente.getDataNascimento()), cliente.getSexo(), cliente.getEndereco(), cliente.getTelefoneResidencial(),
+                sdf.parse(cliente.getDataNascimento()), cliente.getSexoCliente(), cliente.getEndereco(), cliente.getTelefoneResidencial(),
                 cliente.getTelefoneCelular(), cliente.getEmail()});
         } catch(Exception e){
             e.printStackTrace();
@@ -136,7 +136,7 @@ public class ClientesDAOImpl extends AbstractSAVADao implements IClientesDAO {
         sb.append("    set nome_cliente         = ?,");
         sb.append("        cpf                  = ?,");
         sb.append("        data_nascimento      = ?,");
-        sb.append("        sexo                 = ?,");
+        sb.append("        sexo_cliente         = ?,");
         sb.append("        endereco             = ?,");
         sb.append("        telefone_residencial = ?,");
         sb.append("        telefone_celular     = ?,");
@@ -145,7 +145,7 @@ public class ClientesDAOImpl extends AbstractSAVADao implements IClientesDAO {
         
         try{
            linhasAfetadas = jdbcTemplate.update(sb.toString(), new Object[] {cliente.getNomeCliente(), cliente.getCpf(),
-                sdf.parse(cliente.getDataNascimento()), cliente.getSexo(), cliente.getEndereco(), cliente.getTelefoneResidencial(),
+                sdf.parse(cliente.getDataNascimento()), cliente.getSexoCliente(), cliente.getEndereco(), cliente.getTelefoneResidencial(),
                 cliente.getTelefoneCelular(), cliente.getEmail(), cliente.getIdCliente()});
         } catch(Exception e) {
             e.printStackTrace();

@@ -9,7 +9,7 @@
     <ui:composition template="/pages/template.xhtml">
         <ui:define name="content">
 
-            <div id="dialog-buscar-cliente" title="Localizar Cliente" style="display: none;">
+<!--            <div id="dialog-buscar-cliente" title="Localizar Cliente" style="display: none;">
                 <div class="application box">
                     <div class="barraTitulo">
                         <h2>Buscar Cliente</h2>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
             <p:panel id="panelAnimais" style="height: 550px;" header="Cadastro de Animais" toggleable="false" closable="false" 
                      toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastroAnimal"> 
@@ -161,24 +161,87 @@
 
                 <p:outputPanel rendered="#{animaisController.mostrarFormulario}" >  
                     <h:inputHidden value="#{animaisController.idAnimal}"/>
-                    <h:inputHidden value="#{animaisController.idCliente}"/>
                     <table style="width:100%">
                         <tr>
                             <td><label>Espécie</label></td>
                             <td><label>Raça</label></td>
                         </tr>
                         <tr>
-                            <td style="width: 15%;">
-                                <p:selectOneMenu id="especie" value="#{animaisController.especie}">
-                                    <f:selectItem itemLabel="Selecione..." itemValue="" />
+                            <td style="width: 11%;">
+                                <p:selectOneMenu id="comboBoxEspecie" value="#{animaisController.especie}">
+                                    <f:selectItem itemLabel="Selecione..." itemValue="-1" />
                                     <f:selectItems value="#{animaisController.listaEspecies}" var="especie" itemValue="#{especie}" itemLabel="#{especie.descricaoEspecie}"/>
-                                    <p:ajax listener="#{animaisController.buscarRacaPorIdEspecie(idEspecie)}" />
+                                    <p:ajax update="comboBoxRaca" listener="#{animaisController.buscarRacaPorIdEspecie()}" />
                                 </p:selectOneMenu>
                             </td>
-                            <td style="width: 85%;">
-                                <p:selectOneMenu id="raca" value="#{animaisController.raca}" >
-                                    <f:selectItem itemLabel="Selecione..." itemValue="" />
+                            <td style="width: 89%;">
+                                <p:selectOneMenu id="comboBoxRaca" value="#{animaisController.raca}" >
+                                    <f:selectItem itemLabel="Selecione..." itemValue="-1" />
                                     <f:selectItems value="#{animaisController.listaRacas}" var="raca" itemValue="#{raca}" itemLabel="#{raca.descricaoRaca}"/>
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td><label style="padding-top: 4px;">Nome</label></td>
+                            <td><label style="padding-top: 4px;">Sexo</label></td>
+                            <td><label style="padding-top: 4px;">Cor/Pelagem</label></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 28%;">
+                                <h:inputText id="nomeAnimal" size="50" value="#{animaisController.nomeAnimal}" />
+                            </td>
+                            <td style="width: 14%;">
+                                <p:selectOneMenu id="sexoAnimal" value="#{animaisController.sexoAnimal}" style="width:125px" >
+                                    <f:selectItem itemLabel="Selecione..." itemValue="-1"  />
+                                    <f:selectItem itemLabel="Fêmea" itemValue="F" />
+                                    <f:selectItem itemLabel="Macho" itemValue="M" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width: 58%;">
+                                <h:inputText id="corPelagem" size="50" value="#{animaisController.corPelagem}" />
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td colspan="4"><label style="padding-top: 4px;">Idade</label></td>
+                            <td colspan="2"><label style="padding-top: 4px;">Peso</label></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 5%;">
+                                <p:inputMask id="idadeAno" value="#{animaisController.idadeAno}" size="2" mask="99"/>
+                            </td>
+                            <td style="width: 5%;">ano(s)</td>
+                            <td style="width: 5%;">
+                                <p:inputMask id="idadeMes" value="#{animaisController.idadeMes}" size="2" mask="99"/>
+                            </td>
+                            <td style="width: 6%;">mês(es)</td>
+                            <td style="width: 6%;">
+                                <p:inputMask id="peso" value="#{animaisController.peso}" size="5" mask="99.99"/>
+                            </td>
+                            <td style="width: 69%;">Kg(s)</td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td><label style="padding-top: 4px;">Óbito</label></td>
+                            <td><label style="padding-top: 4px;">Disponibilidade para Cruzamento</label></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 11%;">
+                                <p:selectOneMenu id="obito" value="#{animaisController.obito}" >
+                                    <f:selectItem itemLabel="Selecione..." itemValue="-1"  />
+                                    <f:selectItem itemLabel="Sim" itemValue="S"/>
+                                    <f:selectItem itemLabel="Não" itemValue="N"/>
+                                </p:selectOneMenu>
+                            </td>
+                            <td>
+                                <p:selectOneMenu id="disponibilidadeCruzamento" value="#{animaisController.disponibilidadeCruzamento}" >
+                                    <f:selectItem itemLabel="Selecione..." itemValue="-1"  />
+                                    <f:selectItem itemLabel="Sim" itemValue="S"/>
+                                    <f:selectItem itemLabel="Não" itemValue="N"/>
                                 </p:selectOneMenu>
                             </td>
                         </tr>

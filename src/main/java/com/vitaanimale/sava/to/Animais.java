@@ -8,8 +8,8 @@ public class Animais {
     
     private Integer idAnimal;
     private Integer idCliente;
-    private String  especie;
-    private String  raca;
+    private Integer idEspecie;
+    private Integer idRaca;
     private String  nomeAnimal;
     private String  sexoAnimal;
     private String  corPelagem;
@@ -35,20 +35,20 @@ public class Animais {
         this.idCliente = idCliente;
     }
 
-    public String getEspecie() {
-        return especie;
+    public Integer getIdEspecie() {
+        return idEspecie;
     }
 
-    public void setEspecie(String especie) {
-        this.especie = especie;
+    public void setIdEspecie(Integer idEspecie) {
+        this.idEspecie = idEspecie;
     }
 
-    public String getRaca() {
-        return raca;
+    public Integer getIdRaca() {
+        return idRaca;
     }
 
-    public void setRaca(String raca) {
-        this.raca = raca;
+    public void setIdRaca(Integer idRaca) {
+        this.idRaca = idRaca;
     }
 
     public String getNomeAnimal() {
@@ -118,8 +118,8 @@ public class Animais {
     public Animais() {
         this.idAnimal = null;
         this.idCliente = null;
-        this.especie = "";
-        this.raca = "";
+        this.idEspecie = null;
+        this.idRaca = null;
         this.nomeAnimal = "";
         this.sexoAnimal = "";
         this.corPelagem = "";
@@ -130,11 +130,11 @@ public class Animais {
         this.disponibilidadeCruzamento = "";
     }
 
-    public Animais(Integer idAnimal, Integer idCliente, String especie, String raca, String nomeAnimal, String sexoAnimal, String corPelagem, Integer idadeAno, Integer idadeMes, Double peso, String obito, String disponibilidadeCruzamento) {
+    public Animais(Integer idAnimal, Integer idCliente, Integer idEspecie, Integer idRaca, String nomeAnimal, String sexoAnimal, String corPelagem, Integer idadeAno, Integer idadeMes, Double peso, String obito, String disponibilidadeCruzamento) {
         this.idAnimal = idAnimal;
         this.idCliente = idCliente;
-        this.especie = especie;
-        this.raca = raca;
+        this.idEspecie = idEspecie;
+        this.idRaca = idRaca;
         this.nomeAnimal = nomeAnimal;
         this.sexoAnimal = sexoAnimal;
         this.corPelagem = corPelagem;
@@ -147,9 +147,7 @@ public class Animais {
 
     @Override
     public String toString() {
-        return "Animais{" + "idAnimal=" + idAnimal + ", idCliente=" + idCliente + ", especie=" + especie + ", raca=" + raca + ", nomeAnimal=" + nomeAnimal + ", sexoAnimal=" + sexoAnimal + ", corPelagem=" + corPelagem + ", idadeAno=" + idadeAno + ", idadeMes=" + idadeMes + ", peso=" + peso + ", obito=" + obito + ", disponibilidadeCruzamento=" + disponibilidadeCruzamento + '}';
+        return "Animais{" + "idAnimal=" + idAnimal + ", idCliente=" + idCliente + ", idEspecie=" + idEspecie + ", idRaca=" + idRaca + ", nomeAnimal=" + nomeAnimal + ", sexoAnimal=" + sexoAnimal + ", corPelagem=" + corPelagem + ", idadeAno=" + idadeAno + ", idadeMes=" + idadeMes + ", peso=" + peso + ", obito=" + obito + ", disponibilidadeCruzamento=" + disponibilidadeCruzamento + '}';
     }
-    
-    
     
 }

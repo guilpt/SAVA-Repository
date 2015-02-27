@@ -57,7 +57,7 @@ public class ClientesDAOTeste extends SavaTesteDAO{
         
         cliente.setNomeCliente("Elisa Ferreira Boleli");
         cliente.setCpf("111.111.111-11");
-        cliente.setSexo("F");
+        cliente.setSexoCliente("F");
         cliente.setDataNascimento("13/10/1989");
         cliente.setEndereco("Rua Paraná nº 1071 Apartamento 504");
         cliente.setTelefoneResidencial("(34) 3227-5404");

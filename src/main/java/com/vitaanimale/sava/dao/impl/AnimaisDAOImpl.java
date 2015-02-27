@@ -29,8 +29,8 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         
         sb.append(" select id_animal,");
         sb.append("        id_cliente,");
-        sb.append("        especie,");
-        sb.append("        raca,");
+        sb.append("        id_especie,");
+        sb.append("        id_raca,");
         sb.append("        nome_animal,");
         sb.append("        sexo_animal,");
         sb.append("        cor_pelagem,");
@@ -43,7 +43,7 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         sb.append("  where id_cliente = ?");
         
         try {
-            listaAnimais = (List<Animais>) this.jdbcTemplate.queryForObject(sb.toString(), new Object[] {idCliente}, new RowMapper() {
+            listaAnimais = (List<Animais>) this.jdbcTemplate.query(sb.toString(), new Object[] {idCliente}, new RowMapper() {
 
                 @Override
                 public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -51,8 +51,8 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
                     
                     animal.setIdAnimal(rs.getInt("ID_ANIMAL"));
                     animal.setIdCliente(rs.getInt("ID_CLIENTE"));
-                    animal.setEspecie(rs.getString("ESPECIE"));
-                    animal.setRaca(rs.getString("RACA"));
+                    animal.setIdEspecie(rs.getInt("ID_ESPECIE"));
+                    animal.setIdRaca(rs.getInt("ID_RACA"));
                     animal.setNomeAnimal(rs.getString("NOME_ANIMAL"));
                     animal.setSexoAnimal(rs.getString("SEXO_ANIMAL"));
                     animal.setCorPelagem(rs.getString("COR_PELAGEM"));
@@ -84,8 +84,8 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         sb.append(" insert into va_animais (");
         sb.append(" id_animal,");
         sb.append(" id_cliente,");
-        sb.append(" especie,");
-        sb.append(" raca,");
+        sb.append(" id_especie,");
+        sb.append(" id_raca,");
         sb.append(" nome_animal,");
         sb.append(" sexo,");
         sb.append(" cor_pelagem,");
@@ -110,8 +110,8 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         sb.append(" );");
         
         try {
-            linhasAfetadas = jdbcTemplate.update(sb.toString(), new Object[] {animal.getIdCliente(), animal.getEspecie(),
-                animal.getRaca(), animal.getNomeAnimal(), animal.getSexoAnimal(), animal.getCorPelagem(), animal.getIdadeAno(),
+            linhasAfetadas = jdbcTemplate.update(sb.toString(), new Object[] {animal.getIdCliente(), animal.getIdEspecie(),
+                animal.getIdRaca(), animal.getNomeAnimal(), animal.getSexoAnimal(), animal.getCorPelagem(), animal.getIdadeAno(),
                 animal.getIdadeMes(), animal.getPeso(), animal.getObito(), animal.getDisponibilidadeCruzamento()});
         } catch(Exception e) {
             e.printStackTrace();
@@ -145,8 +145,8 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         StringBuilder sb = new StringBuilder();
         
         sb.append(" update va_animais");
-        sb.append("    set especie                    = ?,");
-        sb.append("        raca                       = ?,");
+        sb.append("    set id_especie                 = ?,");
+        sb.append("        id_raca                    = ?,");
         sb.append("        nome_animal                = ?,");
         sb.append("        sexo                       = ?,");
         sb.append("        cor_pelagem                = ?,");
@@ -158,7 +158,7 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         sb.append("  where id_animal                  = ?");
         
         try{
-           linhasAfetadas = jdbcTemplate.update(sb.toString(), new Object[] {animal.getEspecie(), animal.getRaca(), 
+           linhasAfetadas = jdbcTemplate.update(sb.toString(), new Object[] {animal.getIdEspecie(), animal.getIdRaca(), 
                 animal.getNomeAnimal(), animal.getSexoAnimal(), animal.getCorPelagem(), animal.getIdadeAno(), animal.getIdadeMes(),
                 animal.getPeso(), animal.getObito(), animal.getDisponibilidadeCruzamento(), animal.getIdAnimal()});
         } catch(Exception e) {
@@ -180,7 +180,7 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         sb.append("  order by descricao_especie");
         
         try {
-            listaEspecies = (List<Especies>) this.jdbcTemplate.queryForObject(sb.toString(), new Object[] {}, new RowMapper() {
+            listaEspecies = (List<Especies>) this.jdbcTemplate.query(sb.toString(), new Object[] {}, new RowMapper() {
 
                 @Override
                 public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -212,10 +212,10 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         sb.append("        descricao_raca");
         sb.append("   from va_racas");
         sb.append("  where id_especie = ?");
-        sb.append("  order by descricao_especie");
+        sb.append("  order by descricao_raca");
         
         try {
-            listaRacas = (List<Racas>) this.jdbcTemplate.queryForObject(sb.toString(), new Object[] {idEspecie}, new RowMapper() {
+            listaRacas = (List<Racas>) this.jdbcTemplate.query(sb.toString(), new Object[] {idEspecie}, new RowMapper() {
 
                 @Override
                 public Object mapRow(ResultSet rs, int rowNum) throws SQLException {

@@ -22,7 +22,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @ManagedBean
 @ViewScoped
-public class ClientesController extends SAVAController implements Serializable {
+public class ClientesController extends SAVAAbstractController implements Serializable {
 
     private static final long serialVersionUID = 685949097784188252L;
 
@@ -35,14 +35,12 @@ public class ClientesController extends SAVAController implements Serializable {
     private Integer idCliente;
     private String  nomeCliente;
     private String  cpf;
-    private String  sexo;
+    private String  sexoCliente;
     private String  dataNascimento;
     private String  endereco;
     private String  telefoneResidencial;
     private String  telefoneCelular;
     private String  email;
-
-    private String  mensagemValidacao;
 
     public List<Clientes> getListaClientes() {
         return listaClientes;
@@ -76,12 +74,12 @@ public class ClientesController extends SAVAController implements Serializable {
         this.cpf = cpf;
     }
 
-    public String getSexo() {
-        return sexo;
+    public String getSexoCliente() {
+        return sexoCliente;
     }
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
+    public void setSexoCliente(String sexoCliente) {
+        this.sexoCliente = sexoCliente;
     }
 
     public String getDataNascimento() {
@@ -124,14 +122,6 @@ public class ClientesController extends SAVAController implements Serializable {
         this.email = email;
     }
 
-    public String getMensagemValidacao() {
-        return mensagemValidacao;
-    }
-
-    public void setMensagemValidacao(String mensagemValidacao) {
-        this.mensagemValidacao = mensagemValidacao;
-    }
-
     @PostConstruct
     public void init() {
         try {
@@ -146,7 +136,7 @@ public class ClientesController extends SAVAController implements Serializable {
         this.idCliente = null;
         this.nomeCliente = "";
         this.cpf = "";
-        this.sexo = "";
+        this.sexoCliente = "";
         this.dataNascimento = "";
         this.endereco = "";
         this.telefoneResidencial = "";
@@ -163,7 +153,7 @@ public class ClientesController extends SAVAController implements Serializable {
         Integer linhasAfetadas = 0;
 
         if (this.validaDados()) {
-            Clientes clienteFormulario = new Clientes(this.idCliente, this.nomeCliente, this.cpf, this.sexo, this.dataNascimento, this.endereco, this.telefoneResidencial, this.telefoneCelular, email);
+            Clientes clienteFormulario = new Clientes(this.idCliente, this.nomeCliente, this.cpf, this.sexoCliente, this.dataNascimento, this.endereco, this.telefoneResidencial, this.telefoneCelular, email);
 
             try {
                 if (this.idCliente == null) {
@@ -180,7 +170,7 @@ public class ClientesController extends SAVAController implements Serializable {
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível salvar o cliente!"));
             }
         } else {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", this.mensagemValidacao));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", this.getMensagemValidacao()));
         }
 
         return ACTION_INPUT;
@@ -190,16 +180,16 @@ public class ClientesController extends SAVAController implements Serializable {
         Boolean resultado = true;
 
         if ("".equals(this.nomeCliente) || this.nomeCliente.length() < 10) {
-            this.mensagemValidacao = "Informe um nome válido!";
+            this.setMensagemValidacao("Informe um nome válido!");
             resultado = false;
         } else if (this.cpf.length() < 14) {
-            this.mensagemValidacao = "Informe um CPF válido!";
+            this.setMensagemValidacao("Informe um CPF válido!");
             resultado = false;
-        } else if ("-1".equals(this.sexo)) {
-            this.mensagemValidacao = "Informe um sexo válido!";
+        } else if ("-1".equals(this.sexoCliente)) {
+            this.setMensagemValidacao("Informe um sexo válido!");
             resultado = false;
         } else if (this.dataNascimento.length() < 10) {
-            this.mensagemValidacao = "Informe uma data de nascimento válida!";
+            this.setMensagemValidacao("Informe uma data de nascimento válida!");
             resultado = false;
         }
 
@@ -217,7 +207,7 @@ public class ClientesController extends SAVAController implements Serializable {
             this.idCliente = cliente.getIdCliente();
             this.nomeCliente = cliente.getNomeCliente();
             this.cpf = cliente.getCpf();
-            this.sexo = cliente.getSexo();
+            this.sexoCliente = cliente.getSexoCliente();
             this.dataNascimento = cliente.getDataNascimento();
             this.endereco = cliente.getEndereco();
             this.telefoneResidencial = cliente.getTelefoneResidencial();

@@ -1,13 +1,17 @@
 package com.vitaanimale.sava.controller;
 
+import javax.faces.context.FacesContext;
+
 /**
  *
  * @author Elisa
  */
-public class SAVAController {
+public class SAVAAbstractController {
     public final String ACTION_INPUT = "";
     private Boolean mostrarLista;
     private Boolean mostrarFormulario;
+    private String  mensagemValidacao;
+    FacesContext contextController = FacesContext.getCurrentInstance();
 
     public Boolean getMostrarLista() {
         return mostrarLista;
@@ -24,6 +28,14 @@ public class SAVAController {
     public void setMostrarFormulario(Boolean mostrarFormulario) {
         this.mostrarFormulario = mostrarFormulario;
     }    
+
+    public String getMensagemValidacao() {
+        return mensagemValidacao;
+    }
+
+    public void setMensagemValidacao(String mensagemValidacao) {
+        this.mensagemValidacao = mensagemValidacao;
+    }
     
     public void controlarExibicao(Boolean bForm, Boolean bLista) {
         this.mostrarFormulario = bForm;

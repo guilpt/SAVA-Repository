@@ -1,10 +1,13 @@
 package com.vitaanimale.sava.to;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 /**
  *
  * @author Elisa
  */
-public class Racas {
+public class Racas implements Serializable{
     private Integer idRaca;
     private Integer idEspecie;
     private String  descricaoRaca;
@@ -49,5 +52,36 @@ public class Racas {
     public String toString() {
         return "Racas{" + "idRaca=" + idRaca + ", idEspecie=" + idEspecie + ", descricaoRaca=" + descricaoRaca + '}';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + Objects.hashCode(this.idRaca);
+        hash = 47 * hash + Objects.hashCode(this.idEspecie);
+        hash = 47 * hash + Objects.hashCode(this.descricaoRaca);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Racas other = (Racas) obj;
+        if (!Objects.equals(this.idRaca, other.idRaca)) {
+            return false;
+        }
+        if (!Objects.equals(this.idEspecie, other.idEspecie)) {
+            return false;
+        }
+        if (!Objects.equals(this.descricaoRaca, other.descricaoRaca)) {
+            return false;
+        }
+        return true;
+    }
    
+    
 }

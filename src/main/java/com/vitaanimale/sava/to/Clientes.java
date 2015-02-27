@@ -9,7 +9,7 @@ public class Clientes {
     private Integer idCliente;
     private String  nomeCliente;
     private String  cpf;
-    private String  sexo;
+    private String  sexoCliente;
     private String  dataNascimento;
     private String  endereco;
     private String  telefoneResidencial;
@@ -40,12 +40,12 @@ public class Clientes {
         this.cpf = cpf;
     }
 
-    public String getSexo() {
-        return sexo;
+    public String getSexoCliente() {
+        return sexoCliente;
     }
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
+    public void setSexoCliente(String sexoCliente) {
+        this.sexoCliente = sexoCliente;
     }
 
     public String getDataNascimento() {
@@ -92,7 +92,7 @@ public class Clientes {
         this.idCliente = null;
         this.nomeCliente = "";
         this.cpf = "";
-        this.sexo = "";
+        this.sexoCliente = "";
         this.dataNascimento = "";
         this.endereco = "";
         this.telefoneResidencial = "";
@@ -100,11 +100,11 @@ public class Clientes {
         this.email = "";
     }
 
-    public Clientes(Integer idCliente, String nomeCliente, String cpf, String sexo, String dataNascimento, String endereco, String telefoneResidencial, String telefoneCelular, String email) {
+    public Clientes(Integer idCliente, String nomeCliente, String cpf, String sexoCliente, String dataNascimento, String endereco, String telefoneResidencial, String telefoneCelular, String email) {
         this.idCliente = idCliente;
         this.nomeCliente = nomeCliente;
         this.cpf = cpf;
-        this.sexo = sexo;
+        this.sexoCliente = sexoCliente;
         this.dataNascimento = dataNascimento;
         this.endereco = endereco;
         this.telefoneResidencial = telefoneResidencial;
@@ -114,6 +114,6 @@ public class Clientes {
 
     @Override
     public String toString() {
-        return "Clientes{" + "idCliente=" + idCliente + ", nomeCliente=" + nomeCliente + ", cpf=" + cpf + ", sexo=" + sexo + ", dataNascimento=" + dataNascimento + ", endereco=" + endereco + ", telefoneResidencial=" + telefoneResidencial + ", telefoneCelular=" + telefoneCelular + ", email=" + email + '}';
+        return "Clientes{" + "idCliente=" + idCliente + ", nomeCliente=" + nomeCliente + ", cpf=" + cpf + ", sexoCliente=" + sexoCliente + ", dataNascimento=" + dataNascimento + ", endereco=" + endereco + ", telefoneResidencial=" + telefoneResidencial + ", telefoneCelular=" + telefoneCelular + ", email=" + email + '}';
     }
 }
