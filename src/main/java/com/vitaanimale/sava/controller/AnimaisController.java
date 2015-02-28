@@ -25,17 +25,18 @@ import org.springframework.stereotype.Controller;
 @Controller
 @ManagedBean
 @ViewScoped
-public class AnimaisController extends SAVAAbstractController implements Serializable{
+public class AnimaisController extends SAVAAbstractController implements Serializable {
+
     private static final long serialVersionUID = 1741168426757323415L;
-    
+
     @ManagedProperty("#{animaisBO}")
     @Autowired
     private IAnimaisBO animaisBO;
-    
+
     @ManagedProperty("#{clientesBO}")
     @Autowired
     private IClientesBO clientesBO;
-    
+
     private Integer idAnimal;
     private Integer idCliente;
     private Integer idEspecie;
@@ -47,21 +48,23 @@ public class AnimaisController extends SAVAAbstractController implements Seriali
     private Integer idadeMes;
     private Double  peso;
     private String  obito;
-    private String  disponibilidadeCruzamento; 
-    
-    private String  nomeCliente;
-    private String  cpf;
-    private String  telefoneResidencial;
-    private String  telefoneCelular;
-    private String  telefoneBusca;
-    
+    private String  disponibilidadeCruzamento;
+
+    private String nomeCliente;
+    private String cpf;
+    private String telefoneResidencial;
+    private String telefoneCelular;
+    private String telefoneBusca;
+
     private Boolean modalBuscarCliente;
-    
+
     private List<Clientes> listaClientes;
-    private Especies       especie;
+    private List<Animais> listaAnimaisPorCliente;
+
+    private Especies especie;
     private List<Especies> listaEspecies;
-    private Racas          raca;
-    private List<Racas>    listaRacas;
+    private Racas raca;
+    private List<Racas> listaRacas;
 
     public Integer getIdAnimal() {
         return idAnimal;
@@ -215,6 +218,14 @@ public class AnimaisController extends SAVAAbstractController implements Seriali
         this.listaClientes = listaClientes;
     }
 
+    public List<Animais> getListaAnimaisPorCliente() {
+        return listaAnimaisPorCliente;
+    }
+
+    public void setListaAnimaisPorCliente(List<Animais> listaAnimaisPorCliente) {
+        this.listaAnimaisPorCliente = listaAnimaisPorCliente;
+    }
+
     public Especies getEspecie() {
         return especie;
     }
@@ -246,33 +257,41 @@ public class AnimaisController extends SAVAAbstractController implements Seriali
     public void setListaRacas(List<Racas> listaRacas) {
         this.listaRacas = listaRacas;
     }
-    
+
     @PostConstruct
     public void init() {
-        try{
+        FacesContext initAnimalcontext = FacesContext.getCurrentInstance();
+
+        try {
             this.listaEspecies = animaisBO.buscarEspecies();
-        } catch(SavaBusinessException e){
-            contextController.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível buscar a lista de espécies!"));
+        } catch (SavaBusinessException e) {
+            initAnimalcontext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível buscar a lista de espécies!"));
         }
-        
+
         this.modalBuscarCliente = false;
         this.controlarExibicao(false, true);
-        
+
         this.idCliente = 1;
         this.nomeCliente = "Guilherme Palhares Theodoro";
         this.cpf = "731.685.481.20";
         this.telefoneCelular = "(34) 9275-8556";
-        this.telefoneResidencial = "(34) 3227-5404";   
+        this.telefoneResidencial = "(34) 3227-5404";
+
+        try {
+            listaAnimaisPorCliente = animaisBO.buscarAnimaisPorIdCliente(this.idCliente);
+        } catch (SavaBusinessException e) {
+            initAnimalcontext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível buscar a lista de animais por cliente!"));
+        }
     }
-    
+
     public String abrirModalBuscarCliente() {
         this.modalBuscarCliente = true;
-        
+
         return ACTION_INPUT;
     }
-    
+
     public String novo() {
-        this.idAnimal  = null;
+        this.idAnimal = null;
         this.especie = new Especies();
         //this.idEspecie = -1;
         //this.idRaca = null;
@@ -290,15 +309,34 @@ public class AnimaisController extends SAVAAbstractController implements Seriali
 
         return ACTION_INPUT;
     }
+
+    public String selecionarAnimal(Animais animal) {
+        if (animal != null) {
+            this.idAnimal = animal.getIdAnimal();
+            this.especie.setIdEspecie(animal.getIdEspecie());
+            this.raca.setIdRaca(animal.getIdRaca());
+            this.nomeAnimal = animal.getNomeAnimal();
+            this.sexoAnimal = animal.getSexoAnimal();
+            this.corPelagem = animal.getCorPelagem();
+            this.idadeAno = animal.getIdadeAno();
+            this.idadeMes = animal.getIdadeMes();
+            this.obito = animal.getObito();
+            this.disponibilidadeCruzamento = animal.getDisponibilidadeCruzamento();
+
+            this.controlarExibicao(true, false);
+        }
+
+        return ACTION_INPUT;
+    }
     
     public String salvarAnimal() {
         FacesContext salvarAnimalcontext = FacesContext.getCurrentInstance();
         Integer linhasAfetadas = 0;
-        System.out.println("Dentro salvarAnimal");
+
         if (this.validaDados()) {
-            Animais animalFormulario = new Animais(this.idAnimal, this.idCliente, this.idEspecie, this.idRaca, this.nomeAnimal, 
-                                                   this.sexoAnimal, this.corPelagem, this.idadeAno, this.idadeMes, this.peso, 
-                                                   this.obito, this.disponibilidadeCruzamento);
+            Animais animalFormulario = new Animais(this.idAnimal, this.idCliente, this.especie.getIdEspecie(), this.raca.getIdRaca(), this.nomeAnimal,
+                    this.sexoAnimal, this.corPelagem, this.idadeAno, this.idadeMes, this.peso,
+                    this.obito, this.disponibilidadeCruzamento);
 
             try {
                 if (this.idAnimal == null) {
@@ -317,13 +355,13 @@ public class AnimaisController extends SAVAAbstractController implements Seriali
         } else {
             salvarAnimalcontext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", this.getMensagemValidacao()));
         }
-        
+
         return ACTION_INPUT;
     }
-    
+
     private Boolean validaDados() {
         Boolean resultado = true;
-        System.out.println("Dentro validaDados");
+
         if ("-1".equals(this.especie.getIdEspecie())) {
             this.setMensagemValidacao("Informe uma espécie válida!");
             resultado = false;
@@ -346,23 +384,25 @@ public class AnimaisController extends SAVAAbstractController implements Seriali
 
         return resultado;
     }
-    
-    public String cancelar(){
+
+    public String cancelar() {
         this.controlarExibicao(false, true);
-        
+
         return ACTION_INPUT;
     }
-    
+
     public String buscarClientesComParametro() {
-        try{
+        FacesContext buscarClienteContext = FacesContext.getCurrentInstance();
+
+        try {
             listaClientes = clientesBO.buscarClientesComParametro(cpf, nomeCliente, telefoneBusca);
-        } catch(SavaBusinessException e) {
-            contextController.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível buscar o cliente!"));
+        } catch (SavaBusinessException e) {
+            buscarClienteContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível buscar o cliente!"));
         }
-        
+
         return ACTION_INPUT;
     }
-    
+
     public String selecionarCliente(Clientes cliente) {
         if (cliente != null) {
             this.idCliente = cliente.getIdCliente();
@@ -376,15 +416,17 @@ public class AnimaisController extends SAVAAbstractController implements Seriali
 
         return ACTION_INPUT;
     }
-    
+
     public String buscarRacaPorIdEspecie() {
-        try {          
+        FacesContext buscarRacaPorIdContext = FacesContext.getCurrentInstance();
+
+        try {
             listaRacas = animaisBO.buscarRacaPorIdEspecie(this.especie.getIdEspecie());
             this.setIdEspecie(this.especie.getIdEspecie());
-        } catch(SavaBusinessException e) {
-            contextController.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível buscar o cliente!"));
+        } catch (SavaBusinessException e) {
+            buscarRacaPorIdContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível buscar o cliente!"));
         }
-        
+
         return ACTION_INPUT;
     }
 }

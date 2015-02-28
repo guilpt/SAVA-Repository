@@ -27,19 +27,22 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         StringBuilder sb = new StringBuilder();
         List<Animais> listaAnimais = null;
         
-        sb.append(" select id_animal,");
-        sb.append("        id_cliente,");
-        sb.append("        id_especie,");
-        sb.append("        id_raca,");
-        sb.append("        nome_animal,");
-        sb.append("        sexo_animal,");
-        sb.append("        cor_pelagem,");
-        sb.append("        idade_ano,");
-        sb.append("        idade_mes,");
-        sb.append("        peso,");
-        sb.append("        obito,");
-        sb.append("        disponibilidade_cruzamento");
-        sb.append("   from va_animais");
+        sb.append(" select va_animais.id_animal,");
+        sb.append("        va_animais.id_cliente,");
+        sb.append("        va_animais.id_especie,");
+        sb.append("        va_especies.descricao_especie,");
+        sb.append("        va_animais.id_raca,");
+        sb.append("        va_racas.descricao_raca,");
+        sb.append("        va_animais.nome_animal,");
+        sb.append("        va_animais.sexo_animal,");
+        sb.append("        va_animais.cor_pelagem,");
+        sb.append("        va_animais.idade_ano,");
+        sb.append("        va_animais.idade_mes,");
+        sb.append("        va_animais.peso,");
+        sb.append("        va_animais.obito,");
+        sb.append("        va_animais.disponibilidade_cruzamento");
+        sb.append("   from va_animais inner join va_especies on ( va_animais.id_especie = va_especies.id_especie )");
+        sb.append("                   inner join va_racas    on ( va_animais.id_raca    = va_racas.id_raca       )");
         sb.append("  where id_cliente = ?");
         
         try {
@@ -52,7 +55,9 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
                     animal.setIdAnimal(rs.getInt("ID_ANIMAL"));
                     animal.setIdCliente(rs.getInt("ID_CLIENTE"));
                     animal.setIdEspecie(rs.getInt("ID_ESPECIE"));
+                    animal.setDescricaoEspecie(rs.getString("DESCRICAO_ESPECIE"));
                     animal.setIdRaca(rs.getInt("ID_RACA"));
+                    animal.setDescricaoRaca(rs.getString("DESCRICAO_RACA"));
                     animal.setNomeAnimal(rs.getString("NOME_ANIMAL"));
                     animal.setSexoAnimal(rs.getString("SEXO_ANIMAL"));
                     animal.setCorPelagem(rs.getString("COR_PELAGEM"));
@@ -87,7 +92,7 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         sb.append(" id_especie,");
         sb.append(" id_raca,");
         sb.append(" nome_animal,");
-        sb.append(" sexo,");
+        sb.append(" sexo_animal,");
         sb.append(" cor_pelagem,");
         sb.append(" idade_ano,");
         sb.append(" idade_mes,");
@@ -148,7 +153,7 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         sb.append("    set id_especie                 = ?,");
         sb.append("        id_raca                    = ?,");
         sb.append("        nome_animal                = ?,");
-        sb.append("        sexo                       = ?,");
+        sb.append("        sexo_animal                = ?,");
         sb.append("        cor_pelagem                = ?,");
         sb.append("        idade_ano                  = ?,");
         sb.append("        idade_mes                  = ?,");

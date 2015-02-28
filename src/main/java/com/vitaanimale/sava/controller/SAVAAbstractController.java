@@ -11,7 +11,6 @@ public class SAVAAbstractController {
     private Boolean mostrarLista;
     private Boolean mostrarFormulario;
     private String  mensagemValidacao;
-    FacesContext contextController = FacesContext.getCurrentInstance();
 
     public Boolean getMostrarLista() {
         return mostrarLista;

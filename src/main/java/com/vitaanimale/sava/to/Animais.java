@@ -9,7 +9,9 @@ public class Animais {
     private Integer idAnimal;
     private Integer idCliente;
     private Integer idEspecie;
+    private String  descricaoEspecie;
     private Integer idRaca;
+    private String  descricaoRaca;
     private String  nomeAnimal;
     private String  sexoAnimal;
     private String  corPelagem;
@@ -43,12 +45,28 @@ public class Animais {
         this.idEspecie = idEspecie;
     }
 
+    public String getDescricaoEspecie() {
+        return descricaoEspecie;
+    }
+
+    public void setDescricaoEspecie(String descricaoEspecie) {
+        this.descricaoEspecie = descricaoEspecie;
+    }
+
     public Integer getIdRaca() {
         return idRaca;
     }
 
     public void setIdRaca(Integer idRaca) {
         this.idRaca = idRaca;
+    }
+
+    public String getDescricaoRaca() {
+        return descricaoRaca;
+    }
+
+    public void setDescricaoRaca(String descricaoRaca) {
+        this.descricaoRaca = descricaoRaca;
     }
 
     public String getNomeAnimal() {

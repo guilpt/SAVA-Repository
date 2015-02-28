@@ -9,71 +9,71 @@
     <ui:composition template="/pages/template.xhtml">
         <ui:define name="content">
 
-<!--            <div id="dialog-buscar-cliente" title="Localizar Cliente" style="display: none;">
-                <div class="application box">
-                    <div class="barraTitulo">
-                        <h2>Buscar Cliente</h2>
-                    </div>
-                    <div id="erroModalCliente"></div>
-                    <div>
-                        <table style="width: 100%">
-                            <tr>
-                                <td style="text-align: left;">
-                                    <label>CPF</label>
-                                </td>
-                                <td style="text-align: left;">
-                                    <label>Nome</label>
-                                </td>
-                                <td style="text-align: left;">
-                                    <label>Telefone</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 9%;">
-                                    <h:inputText size="14" value="#{animaisController.cpf}"/>
-                                </td>
-                                <td style="width: 51%;">
-                                    <h:inputText size="100" value="#{animaisController.nomeCliente}"/>
-                                </td>                                
-                                <td style="width: 12%;">
-                                    <h:inputText size="20" value="#{animaisController.telefoneBusca}"/>
-                                </td>
-                                <td style="text-align: left;">
-                                    <button type="button" class="buscar16x16" title="Buscar Cliente" ></button>
-                                </td>
-                            </tr>
-                        </table>
-                        <br />
-                        <div class="barraTitulo">
-                            <h2>Clientes</h2>
-                        </div>
-                        <div id="gridClientes" style="overflow: auto; height: 300px;">
-                            <p:dataTable var="cliente" value="#{animaisController.listaClientes}" style="float : left;" scrollable="true" scrollHeight="200">  
-                                <p:column headerText="ID" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">  
-                                    <h:outputText value="#{cliente.idCliente}"/>  
-                                </p:column>  
-                                <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 300px;">  
-                                    <h:outputText value="#{cliente.nomeCliente}" />  
-                                </p:column> 
-                                <p:column headerText="CPF" style="height: 10px; font-size: 10px; text-align: center;">  
-                                    <h:outputText value="#{cliente.cpf}" />  
-                                </p:column>           
-                                <p:column headerText="Tel. Residencial" style="height: 10px; font-size: 10px; text-align: center;">  
-                                    <h:outputText value="#{cliente.telefoneResidencial}" />  
-                                </p:column>                               
-                                <p:column headerText="Tel. Celular" style="height: 10px; font-size: 10px; text-align: center;">  
-                                    <h:outputText value="#{cliente.telefoneCelular}" />  
-                                </p:column>                   
-                                <p:column headerText="Editar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
-                                    <h:commandLink action="#{animaisController.selecionarCliente(cliente)}">
-                                        <img class="img" src="/SAVA/faces/imagens/selecionar32x32.png" border="1"/>                           
-                                    </h:commandLink>
-                                </p:column>           
-                            </p:dataTable> 
-                        </div>
-                    </div>
-                </div>
-            </div>-->
+            <!--            <div id="dialog-buscar-cliente" title="Localizar Cliente" style="display: none;">
+                            <div class="application box">
+                                <div class="barraTitulo">
+                                    <h2>Buscar Cliente</h2>
+                                </div>
+                                <div id="erroModalCliente"></div>
+                                <div>
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td style="text-align: left;">
+                                                <label>CPF</label>
+                                            </td>
+                                            <td style="text-align: left;">
+                                                <label>Nome</label>
+                                            </td>
+                                            <td style="text-align: left;">
+                                                <label>Telefone</label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 9%;">
+                                                <h:inputText size="14" value="#{animaisController.cpf}"/>
+                                            </td>
+                                            <td style="width: 51%;">
+                                                <h:inputText size="100" value="#{animaisController.nomeCliente}"/>
+                                            </td>                                
+                                            <td style="width: 12%;">
+                                                <h:inputText size="20" value="#{animaisController.telefoneBusca}"/>
+                                            </td>
+                                            <td style="text-align: left;">
+                                                <button type="button" class="buscar16x16" title="Buscar Cliente" ></button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <br />
+                                    <div class="barraTitulo">
+                                        <h2>Clientes</h2>
+                                    </div>
+                                    <div id="gridClientes" style="overflow: auto; height: 300px;">
+                                        <p:dataTable var="cliente" value="#{animaisController.listaClientes}" style="float : left;" scrollable="true" scrollHeight="200">  
+                                            <p:column headerText="ID" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">  
+                                                <h:outputText value="#{cliente.idCliente}"/>  
+                                            </p:column>  
+                                            <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 300px;">  
+                                                <h:outputText value="#{cliente.nomeCliente}" />  
+                                            </p:column> 
+                                            <p:column headerText="CPF" style="height: 10px; font-size: 10px; text-align: center;">  
+                                                <h:outputText value="#{cliente.cpf}" />  
+                                            </p:column>           
+                                            <p:column headerText="Tel. Residencial" style="height: 10px; font-size: 10px; text-align: center;">  
+                                                <h:outputText value="#{cliente.telefoneResidencial}" />  
+                                            </p:column>                               
+                                            <p:column headerText="Tel. Celular" style="height: 10px; font-size: 10px; text-align: center;">  
+                                                <h:outputText value="#{cliente.telefoneCelular}" />  
+                                            </p:column>                   
+                                            <p:column headerText="Editar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                                                <h:commandLink action="#{animaisController.selecionarCliente(cliente)}">
+                                                    <img class="img" src="/SAVA/faces/imagens/selecionar32x32.png" border="1"/>                           
+                                                </h:commandLink>
+                                            </p:column>           
+                                        </p:dataTable> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
 
             <p:panel id="panelAnimais" style="height: 550px;" header="Cadastro de Animais" toggleable="false" closable="false" 
                      toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastroAnimal"> 
@@ -125,7 +125,7 @@
                     <p:separator />
                 </p:outputPanel>
 
-                <p:outputPanel rendered="#{animaisController.mostrarLista}" >  
+                <p:outputPanel rendered="#{animaisController.mostrarLista}" style="overflow: auto; height: 300px;">  
                     <div class="divBorda">
                         <div class="barraTitulo">
                             <h1 class="titulo">Cliente</h1>
@@ -140,22 +140,50 @@
                             </tr>
                             <tr>
                                 <td style="width: 5%;">
-                                    <h:inputText id="idCliente" size="5" value="#{animaisController.idCliente}" disabled="true"/>
+                                    <p:inputText id="idCliente" size="5" value="#{animaisController.idCliente}" disabled="true"/>
                                 </td>
                                 <td style="width: 51%;">
-                                    <h:inputText id="nomeCliente" size="100" value="#{animaisController.nomeCliente}" disabled="true"/>
+                                    <p:inputText id="nomeCliente" size="100" value="#{animaisController.nomeCliente}" disabled="true"/>
                                 </td>
                                 <td style="width: 9%;">
-                                    <h:inputText id="cpf" size="14" value="#{animaisController.cpf}" disabled="true"/>
+                                    <p:inputText id="cpf" size="14" value="#{animaisController.cpf}" disabled="true"/>
                                 </td>
                                 <td style="width: 12%;">
-                                    <h:inputText id="telefoneResidencial" size="20" value="#{animaisController.telefoneResidencial}" disabled="true"/>
+                                    <p:inputText id="telefoneResidencial" size="20" value="#{animaisController.telefoneResidencial}" disabled="true"/>
                                 </td>
                                 <td style="width: 23%;">
-                                    <h:inputText id="telefoneCelular" size="20" value="#{animaisController.telefoneCelular}" disabled="true"/>
+                                    <p:inputText id="telefoneCelular" size="20" value="#{animaisController.telefoneCelular}" disabled="true"/>
                                 </td>
                             </tr>
                         </table>
+
+                        <p:separator/>
+
+                        <div class="barraTitulo">
+                            <h1 class="titulo">Lista de animais</h1>
+                        </div>
+                        <p:dataTable id="dataAnimaisLista" var="animalLista" value="#{animaisController.listaAnimaisPorCliente}" style="float : left;" emptyMessage="Nenhum animal cadastrado">  
+                            <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 300px;">  
+                                <h:outputText value="#{animalLista.nomeAnimal}" />  
+                            </p:column> 
+                            <p:column headerText="Espécie" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{animalLista.descricaoEspecie}" />  
+                            </p:column>           
+                            <p:column headerText="Raça" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{animalLista.descricaoRaca}" />  
+                            </p:column>     
+                            <p:column headerText="Editar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                                <h:commandLink action="#{clientesController.selecionarCliente(animalLista)}">
+                                    <img class="img" src="/SAVA/faces/imagens/editar.png" border="1"/>                           
+                                </h:commandLink>
+                            </p:column>      
+                            <p:column headerText="Excluir" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                                <h:commandLink action="#{clientesController.selecionarClienteExclusao(cliente)}" onclick="PF('confirmDialogExclusaoCliente').show();
+                                    return false;" type="button">
+                                    <img class="img" src="/SAVA/faces/imagens/excluir.png" border="1"/>   
+                                </h:commandLink>
+                            </p:column> 
+                        </p:dataTable>   
                     </div>
                 </p:outputPanel>
 
@@ -168,15 +196,15 @@
                         </tr>
                         <tr>
                             <td style="width: 11%;">
-                                <p:selectOneMenu id="comboBoxEspecie" value="#{animaisController.especie}">
-                                    <f:selectItem itemLabel="Selecione..." itemValue="-1" />
+                                <p:selectOneMenu id="comboBoxEspecie" value="#{animaisController.especie}" required="true">
+                                    <f:selectItem itemLabel="Selecione..." itemValue="-1" noSelectionOption="true"/>
                                     <f:selectItems value="#{animaisController.listaEspecies}" var="especie" itemValue="#{especie}" itemLabel="#{especie.descricaoEspecie}"/>
                                     <p:ajax update="comboBoxRaca" listener="#{animaisController.buscarRacaPorIdEspecie()}" />
                                 </p:selectOneMenu>
                             </td>
                             <td style="width: 89%;">
-                                <p:selectOneMenu id="comboBoxRaca" value="#{animaisController.raca}" >
-                                    <f:selectItem itemLabel="Selecione..." itemValue="-1" />
+                                <p:selectOneMenu id="comboBoxRaca" value="#{animaisController.raca}" required="true">
+                                    <f:selectItem itemLabel="Selecione..." itemValue="-1" noSelectionOption="true"/>
                                     <f:selectItems value="#{animaisController.listaRacas}" var="raca" itemValue="#{raca}" itemLabel="#{raca.descricaoRaca}"/>
                                 </p:selectOneMenu>
                             </td>
@@ -190,7 +218,7 @@
                         </tr>
                         <tr>
                             <td style="width: 28%;">
-                                <h:inputText id="nomeAnimal" size="50" value="#{animaisController.nomeAnimal}" />
+                                <p:inputText id="nomeAnimal" size="50" value="#{animaisController.nomeAnimal}" />
                             </td>
                             <td style="width: 14%;">
                                 <p:selectOneMenu id="sexoAnimal" value="#{animaisController.sexoAnimal}" style="width:125px" >
@@ -200,7 +228,7 @@
                                 </p:selectOneMenu>
                             </td>
                             <td style="width: 58%;">
-                                <h:inputText id="corPelagem" size="50" value="#{animaisController.corPelagem}" />
+                                <p:inputText id="corPelagem" size="50" value="#{animaisController.corPelagem}" />
                             </td>
                         </tr>
                     </table>
