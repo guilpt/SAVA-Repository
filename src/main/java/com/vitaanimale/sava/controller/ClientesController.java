@@ -242,7 +242,7 @@ public class ClientesController extends SAVAAbstractController implements Serial
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Cliente excluído com sucesso!"));
                 }
             } catch (SavaBusinessException e) {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível excluir o cliente!"));
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", e.getMessage()));
             } finally {
                 this.idCliente = null;
                 this.nomeCliente = "";

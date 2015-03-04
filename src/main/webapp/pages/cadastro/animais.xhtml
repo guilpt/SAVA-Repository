@@ -9,90 +9,79 @@
     <ui:composition template="/pages/template.xhtml">
         <ui:define name="content">
 
-            <!--            <div id="dialog-buscar-cliente" title="Localizar Cliente" style="display: none;">
-                            <div class="application box">
-                                <div class="barraTitulo">
-                                    <h2>Buscar Cliente</h2>
-                                </div>
-                                <div id="erroModalCliente"></div>
-                                <div>
-                                    <table style="width: 100%">
-                                        <tr>
-                                            <td style="text-align: left;">
-                                                <label>CPF</label>
-                                            </td>
-                                            <td style="text-align: left;">
-                                                <label>Nome</label>
-                                            </td>
-                                            <td style="text-align: left;">
-                                                <label>Telefone</label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width: 9%;">
-                                                <h:inputText size="14" value="#{animaisController.cpf}"/>
-                                            </td>
-                                            <td style="width: 51%;">
-                                                <h:inputText size="100" value="#{animaisController.nomeCliente}"/>
-                                            </td>                                
-                                            <td style="width: 12%;">
-                                                <h:inputText size="20" value="#{animaisController.telefoneBusca}"/>
-                                            </td>
-                                            <td style="text-align: left;">
-                                                <button type="button" class="buscar16x16" title="Buscar Cliente" ></button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <br />
-                                    <div class="barraTitulo">
-                                        <h2>Clientes</h2>
-                                    </div>
-                                    <div id="gridClientes" style="overflow: auto; height: 300px;">
-                                        <p:dataTable var="cliente" value="#{animaisController.listaClientes}" style="float : left;" scrollable="true" scrollHeight="200">  
-                                            <p:column headerText="ID" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">  
-                                                <h:outputText value="#{cliente.idCliente}"/>  
-                                            </p:column>  
-                                            <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 300px;">  
-                                                <h:outputText value="#{cliente.nomeCliente}" />  
-                                            </p:column> 
-                                            <p:column headerText="CPF" style="height: 10px; font-size: 10px; text-align: center;">  
-                                                <h:outputText value="#{cliente.cpf}" />  
-                                            </p:column>           
-                                            <p:column headerText="Tel. Residencial" style="height: 10px; font-size: 10px; text-align: center;">  
-                                                <h:outputText value="#{cliente.telefoneResidencial}" />  
-                                            </p:column>                               
-                                            <p:column headerText="Tel. Celular" style="height: 10px; font-size: 10px; text-align: center;">  
-                                                <h:outputText value="#{cliente.telefoneCelular}" />  
-                                            </p:column>                   
-                                            <p:column headerText="Editar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
-                                                <h:commandLink action="#{animaisController.selecionarCliente(cliente)}">
-                                                    <img class="img" src="/SAVA/faces/imagens/selecionar32x32.png" border="1"/>                           
-                                                </h:commandLink>
-                                            </p:column>           
-                                        </p:dataTable> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
-
-            <p:panel id="panelAnimais" style="height: 550px;" header="Cadastro de Animais" toggleable="false" closable="false" 
+            <p:panel id="panelAnimais" style="height: 730px;" header="Cadastro de Animais" toggleable="false" closable="false" 
                      toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastroAnimal"> 
 
                 <div id="divMessagesAnimal" >
                     <p:growl id="mensagensAnimais" showDetail="true" />
                 </div>
 
-<!--                <div id="modalBuscarCliente" rendered="#{animaisController.modalBuscarCliente}" class="application box">
-                    <div class="title">
-                        <h2>Buscar Cliente</h2>
+                <p:dialog header="Localizar Cliente" widgetVar="mdlAnimaisLocalizarCliente" modal="true" width="1000px" height="500px">
+                    <div class="barraTitulo">
+                        <h1 class="titulo">Parâmetros</h1>
                     </div>
-                </div>-->
+                    <div class="divBorda">
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="text-align: left;">
+                                    <label>CPF</label>
+                                </td>
+                                <td style="text-align: left;">
+                                    <label>Nome</label>
+                                </td>
+                                <td style="text-align: left;">
+                                    <label>Telefone</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 9%;">
+                                    <p:inputMask size="14" value="#{animaisController.cpfBusca}" mask="999.999.999-99"/>
+                                </td>
+                                <td style="width: 51%;">
+                                    <p:inputText size="100" value="#{animaisController.nomeClienteBusca}"/>
+                                </td>                                
+                                <td style="width: 12%;">
+                                    <p:inputMask size="20" value="#{animaisController.telefoneBusca}" mask="(99) 9999-9999"/>
+                                </td>
+                                <td>
+                                    <p:commandLink action="#{animaisController.buscarClientesComParametro()}" update="formularioPadrao:resultadoBuscarCliente">
+                                        <img class="img" src="/SAVA/faces/imagens/buscar16x16.png" border="1"/>
+                                    </p:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="barraTitulo">
+                        <h1 class="titulo">Resultado</h1>
+                    </div>
+                    <p:dataTable id="resultadoBuscarCliente" var="cliente" value="#{animaisController.listaClientes}" scrollable="true" scrollHeight="350" style="width: 948px;" emptyMessage="Nenhum registro encontrado!">  
+                        <p:column headerText="ID" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">  
+                            <h:outputText value="#{cliente.idCliente}"/>  
+                        </p:column>  
+                        <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 200px;">  
+                            <h:outputText value="#{cliente.nomeCliente}" />  
+                        </p:column> 
+                        <p:column headerText="CPF" style="height: 10px; font-size: 10px; text-align: center; width: 100px;">  
+                            <h:outputText value="#{cliente.cpf}" />  
+                        </p:column>           
+                        <p:column headerText="Tel. Residencial" style="height: 10px; font-size: 10px; text-align: center; width: 75px;">  
+                            <h:outputText value="#{cliente.telefoneResidencial}" />  
+                        </p:column>                               
+                        <p:column headerText="Tel. Celular" style="height: 10px; font-size: 10px; text-align: center; width: 75px;">  
+                            <h:outputText value="#{cliente.telefoneCelular}" />  
+                        </p:column> 
+                        <p:column headerText="Selecionar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                            <p:commandLink action="#{animaisController.selecionarCliente(cliente)}" oncomplete="PF('mdlAnimaisLocalizarCliente').hide()">
+                                <img class="img" src="/SAVA/faces/imagens/selecionar32x32.png" border="1"/>                           
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable> 
+                </p:dialog>
 
                 <p:outputPanel rendered="#{animaisController.mostrarLista}">
                     <div class="botoes" style="display: block;">
                         <div class="divBtn">
-                            <!--<h:commandLink action="#{animaisController.abrirModalBuscarCliente()}">-->
-                            <h:commandLink onclick="$('#dialog-buscar-cliente').dialog();">
+                            <h:commandLink onclick="PF('mdlAnimaisLocalizarCliente').show(); return false;">
                                 <img class="img" src="/SAVA/faces/imagens/buscar.png" border="1"/>
                             </h:commandLink>
                             <span class="txtBtn">Buscar Cliente</span>
@@ -116,7 +105,7 @@
                             <span class="txtBtn">Salvar</span>
                         </div> 
                         <div class="divBtn">
-                            <h:commandLink action="#{animaisController.cancelar()}" >
+                            <h:commandLink action="#{animaisController.cancelar()}" immediate="true">
                                 <img class="img" src="/SAVA/faces/imagens/cancelar.png" border="1"/>
                             </h:commandLink>
                             <span class="txtBtn">Cancelar</span>
@@ -125,7 +114,7 @@
                     <p:separator />
                 </p:outputPanel>
 
-                <p:outputPanel rendered="#{animaisController.mostrarLista}" style="overflow: auto; height: 300px;">  
+                <p:outputPanel rendered="#{animaisController.mostrarLista}" >  
                     <div class="divBorda">
                         <div class="barraTitulo">
                             <h1 class="titulo">Cliente</h1>
@@ -162,7 +151,7 @@
                         <div class="barraTitulo">
                             <h1 class="titulo">Lista de animais</h1>
                         </div>
-                        <p:dataTable id="dataAnimaisLista" var="animalLista" value="#{animaisController.listaAnimaisPorCliente}" style="float : left;" emptyMessage="Nenhum animal cadastrado">  
+                        <p:dataTable id="dataAnimaisLista" var="animalLista" value="#{animaisController.listaAnimaisPorCliente}"  emptyMessage="Nenhum animal cadastrado">  
                             <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 300px;">  
                                 <h:outputText value="#{animalLista.nomeAnimal}" />  
                             </p:column> 
@@ -173,17 +162,21 @@
                                 <h:outputText value="#{animalLista.descricaoRaca}" />  
                             </p:column>     
                             <p:column headerText="Editar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
-                                <h:commandLink action="#{clientesController.selecionarCliente(animalLista)}">
+                                <h:commandLink action="#{animaisController.selecionarAnimal(animalLista)}">
                                     <img class="img" src="/SAVA/faces/imagens/editar.png" border="1"/>                           
                                 </h:commandLink>
                             </p:column>      
                             <p:column headerText="Excluir" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
-                                <h:commandLink action="#{clientesController.selecionarClienteExclusao(cliente)}" onclick="PF('confirmDialogExclusaoCliente').show();
-                                    return false;" type="button">
+                                <p:commandLink action="#{animaisController.selecionarAnimalExclusao(animalLista)}" update=":formularioPadrao:confirmDialogExclusaoAnimal" oncomplete="PF('confirmDialogExclusaoAnimal').show()">
                                     <img class="img" src="/SAVA/faces/imagens/excluir.png" border="1"/>   
-                                </h:commandLink>
+                                </p:commandLink>
                             </p:column> 
-                        </p:dataTable>   
+                        </p:dataTable>  
+
+                        <p:confirmDialog id="confirmDialogExclusaoAnimal" message="Deseja realmente excluir o animal #{animaisController.nomeAnimal}?"  header="Atenção" severity="alert" widgetVar="confirmDialogExclusaoAnimal" >  
+                            <p:commandButton value="Sim" action="#{animaisController.excluirAnimal()}" onclick="PF('confirmDialogExclusaoAnimal').hide()" update=":formularioPadrao:panelAnimais"/>
+                            <p:commandButton value="Não" onclick="PF('confirmDialogExclusaoAnimal').hide(); return false;" />   
+                        </p:confirmDialog>
                     </div>
                 </p:outputPanel>
 
@@ -196,16 +189,14 @@
                         </tr>
                         <tr>
                             <td style="width: 11%;">
-                                <p:selectOneMenu id="comboBoxEspecie" value="#{animaisController.especie}" required="true">
-                                    <f:selectItem itemLabel="Selecione..." itemValue="-1" noSelectionOption="true"/>
-                                    <f:selectItems value="#{animaisController.listaEspecies}" var="especie" itemValue="#{especie}" itemLabel="#{especie.descricaoEspecie}"/>
+                                <p:selectOneMenu id="comboBoxEspecie" value="#{animaisController.idEspecie}">
+                                    <f:selectItems value="#{animaisController.collectionEspecies}" />
                                     <p:ajax update="comboBoxRaca" listener="#{animaisController.buscarRacaPorIdEspecie()}" />
                                 </p:selectOneMenu>
                             </td>
                             <td style="width: 89%;">
-                                <p:selectOneMenu id="comboBoxRaca" value="#{animaisController.raca}" required="true">
-                                    <f:selectItem itemLabel="Selecione..." itemValue="-1" noSelectionOption="true"/>
-                                    <f:selectItems value="#{animaisController.listaRacas}" var="raca" itemValue="#{raca}" itemLabel="#{raca.descricaoRaca}"/>
+                                <p:selectOneMenu id="comboBoxRaca" value="#{animaisController.idRaca}">
+                                    <f:selectItems value="#{animaisController.collectionRacas}" />
                                 </p:selectOneMenu>
                             </td>
                         </tr>
@@ -239,15 +230,15 @@
                         </tr>
                         <tr>
                             <td style="width: 5%;">
-                                <p:inputMask id="idadeAno" value="#{animaisController.idadeAno}" size="2" mask="99"/>
+                                <p:inputText id="idadeAno" value="#{animaisController.idadeAno}" size="2"/>
                             </td>
                             <td style="width: 5%;">ano(s)</td>
                             <td style="width: 5%;">
-                                <p:inputMask id="idadeMes" value="#{animaisController.idadeMes}" size="2" mask="99"/>
+                                <p:inputText id="idadeMes" value="#{animaisController.idadeMes}" size="2"/>
                             </td>
                             <td style="width: 6%;">mês(es)</td>
                             <td style="width: 6%;">
-                                <p:inputMask id="peso" value="#{animaisController.peso}" size="5" mask="99.99"/>
+                                <p:inputText id="peso" value="#{animaisController.peso}" size="5"/>
                             </td>
                             <td style="width: 69%;">Kg(s)</td>
                         </tr>

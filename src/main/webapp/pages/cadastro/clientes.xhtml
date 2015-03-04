@@ -9,7 +9,7 @@
     <ui:composition template="/pages/template.xhtml">
         <ui:define name="content">
 
-            <p:panel id="panelCliente" style="height: 550px;" header="Cadastro de Clientes" toggleable="false" closable="false" 
+            <p:panel id="panelCliente" style="height: 730px;" header="Cadastro de Clientes" toggleable="false" closable="false" 
                      toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastro"> 
                 
                 <div id="divMessagesCliente" >
@@ -47,39 +47,45 @@
                     <p:separator />
                 </p:outputPanel>
 
-                <p:outputPanel rendered="#{clientesController.mostrarLista}" >    
-                    <p:dataTable id="dataClientesLista" var="cliente" value="#{clientesController.listaClientes}" style="float : left;" paginator="true" rows="10" paginatorPosition="bottom">  
-                        <p:column headerText="ID" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">  
-                            <h:outputText value="#{cliente.idCliente}"/>  
-                        </p:column>  
-                        <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 300px;">  
-                            <h:outputText value="#{cliente.nomeCliente}" />  
-                        </p:column> 
-                        <p:column headerText="CPF" style="height: 10px; font-size: 10px; text-align: center;">  
-                            <h:outputText value="#{cliente.cpf}" />  
-                        </p:column>           
-                        <p:column headerText="Tel. Residencial" style="height: 10px; font-size: 10px; text-align: center;">  
-                            <h:outputText value="#{cliente.telefoneResidencial}" />  
-                        </p:column>                               
-                        <p:column headerText="Tel. Celular" style="height: 10px; font-size: 10px; text-align: center;">  
-                            <h:outputText value="#{cliente.telefoneCelular}" />  
-                        </p:column>                   
-                        <p:column headerText="Editar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
-                            <h:commandLink action="#{clientesController.selecionarCliente(cliente)}">
-                                <img class="img" src="/SAVA/faces/imagens/editar.png" border="1"/>                           
-                            </h:commandLink>
-                        </p:column>      
-                        <p:column headerText="Excluir" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
-                            <h:commandLink action="#{clientesController.selecionarClienteExclusao(cliente)}" onclick="PF('confirmDialogExclusaoCliente').show(); return false;" type="button">
-                                <img class="img" src="/SAVA/faces/imagens/excluir.png" border="1"/>   
-                            </h:commandLink>
-                        </p:column>        
-                    </p:dataTable>   
+                <p:outputPanel rendered="#{clientesController.mostrarLista}" > 
+                    <div class="divBorda">
+                        <div class="barraTitulo">
+                            <h1 class="titulo">Lista de clientes</h1>
+                        </div>
+                        
+                        <p:dataTable id="dataClientesLista" var="cliente" value="#{clientesController.listaClientes}" paginator="true" rows="10" paginatorPosition="bottom">  
+                            <p:column headerText="ID" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">  
+                                <h:outputText value="#{cliente.idCliente}"/>  
+                            </p:column>  
+                            <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 300px;">  
+                                <h:outputText value="#{cliente.nomeCliente}" />  
+                            </p:column> 
+                            <p:column headerText="CPF" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{cliente.cpf}" />  
+                            </p:column>           
+                            <p:column headerText="Tel. Residencial" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{cliente.telefoneResidencial}" />  
+                            </p:column>                               
+                            <p:column headerText="Tel. Celular" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{cliente.telefoneCelular}" />  
+                            </p:column>                   
+                            <p:column headerText="Editar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                                <h:commandLink action="#{clientesController.selecionarCliente(cliente)}">
+                                    <img class="img" src="/SAVA/faces/imagens/editar.png" border="1"/>                           
+                                </h:commandLink>
+                            </p:column>      
+                            <p:column headerText="Excluir" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                                <p:commandLink action="#{clientesController.selecionarClienteExclusao(cliente)}" update=":formularioPadrao:confirmDialogExclusaoCliente" oncomplete="PF('confirmDialogExclusaoCliente').show()">
+                                    <img class="img" src="/SAVA/faces/imagens/excluir.png" border="1"/>   
+                                </p:commandLink>
+                            </p:column>        
+                        </p:dataTable>   
 
-                    <p:confirmDialog id="confirmDialogExclusaoCliente" message="Deseja realmente excluir o(a) cliente #{clientesController.nomeCliente}?"  header="Atenção" severity="alert" widgetVar="confirmDialogExclusaoCliente" >  
-                        <p:commandButton value="Sim" action="#{clientesController.excluirCliente()}" onclick="PF('confirmDialogExclusaoCliente').hide()" update=":formularioPadrao:panelCliente"/>
-                        <p:commandButton value="Não" onclick="PF('confirmDialogExclusaoCliente').hide(); return false;" />   
-                    </p:confirmDialog>
+                        <p:confirmDialog id="confirmDialogExclusaoCliente" message="Deseja realmente excluir o(a) cliente #{clientesController.nomeCliente}?"  header="Atenção" severity="alert" widgetVar="confirmDialogExclusaoCliente" >  
+                            <p:commandButton value="Sim" action="#{clientesController.excluirCliente()}" onclick="PF('confirmDialogExclusaoCliente').hide()" update=":formularioPadrao:panelCliente"/>
+                            <p:commandButton value="Não" onclick="PF('confirmDialogExclusaoCliente').hide(); return false;" />   
+                        </p:confirmDialog>
+                    </div>
                 </p:outputPanel>   
 
                 <p:outputPanel id="formCliente" rendered="#{clientesController.mostrarFormulario}" style="float:left; width:70%; height: 300px;"> 
