@@ -9,13 +9,42 @@
     <ui:composition template="/pages/template.xhtml">
         <ui:define name="content">
 
+            <script>
+                $(document).ready(function () {
+                    $('#idCliente').fadeTo('fast', 0.5);
+                    $('#idCliente').attr('disabled', 'disabled');
+                    $('#nomeCliente').fadeTo('fast', 0.5);
+                    $('#nomeCliente').attr('disabled', 'disabled');
+                    $('#cpf').fadeTo('fast', 0.5);
+                    $('#cpf').attr('disabled', 'disabled');
+                    $('#telefoneResidencial').fadeTo('fast', 0.5);
+                    $('#telefoneResidencial').attr('disabled', 'disabled');
+                    $('#telefoneCelular').fadeTo('fast', 0.5);
+                    $('#telefoneCelular').attr('disabled', 'disabled');
+                });
+                
+                function desabilitaCampos(){
+                    $('#idCliente').fadeTo('fast', 0.5);
+                    $('#idCliente').attr('disabled', 'disabled');
+                    $('#nomeCliente').fadeTo('fast', 0.5);
+                    $('#nomeCliente').attr('disabled', 'disabled');
+                    $('#cpf').fadeTo('fast', 0.5);
+                    $('#cpf').attr('disabled', 'disabled');
+                    $('#telefoneResidencial').fadeTo('fast', 0.5);
+                    $('#telefoneResidencial').attr('disabled', 'disabled');
+                    $('#telefoneCelular').fadeTo('fast', 0.5);
+                    $('#telefoneCelular').attr('disabled', 'disabled');
+                }
+            </script>
+
             <p:panel id="panelAnimais" style="height: 730px;" header="Cadastro de Animais" toggleable="false" closable="false" 
-                     toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastroAnimal"> 
+                     toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastroAnimal" > 
 
                 <div id="divMessagesAnimal" >
                     <p:growl id="mensagensAnimais" showDetail="true" />
                 </div>
 
+                <!--Modal Buscar Cliente-->
                 <p:dialog header="Localizar Cliente" widgetVar="mdlAnimaisLocalizarCliente" modal="true" width="1000px" height="500px">
                     <div class="barraTitulo">
                         <h1 class="titulo">Parâmetros</h1>
@@ -35,7 +64,7 @@
                             </tr>
                             <tr>
                                 <td style="width: 9%;">
-                                    <p:inputMask size="14" value="#{animaisController.cpfBusca}" mask="999.999.999-99"/>
+                                    <p:inputMask id="cpfMaskTeste" size="14" value="#{animaisController.cpfBusca}" mask="999.999.999-99"/>
                                 </td>
                                 <td style="width: 51%;">
                                     <p:inputText size="100" value="#{animaisController.nomeClienteBusca}"/>
@@ -44,7 +73,7 @@
                                     <p:inputMask size="20" value="#{animaisController.telefoneBusca}" mask="(99) 9999-9999"/>
                                 </td>
                                 <td>
-                                    <p:commandLink action="#{animaisController.buscarClientesComParametro()}" update="formularioPadrao:resultadoBuscarCliente">
+                                    <p:commandLink action="#{animaisController.buscarClientesComParametro()}" update=":formularioPadrao:resultadoBuscarCliente">
                                         <img class="img" src="/SAVA/faces/imagens/buscar16x16.png" border="1"/>
                                     </p:commandLink>
                                 </td>
@@ -52,56 +81,59 @@
                         </table>
                     </div>
                     <div class="barraTitulo">
-                        <h1 class="titulo">Resultado</h1>
+                        <h1 class="titulo">Resultado Busca</h1>
                     </div>
-                    <p:dataTable id="resultadoBuscarCliente" var="cliente" value="#{animaisController.listaClientes}" scrollable="true" scrollHeight="350" style="width: 948px;" emptyMessage="Nenhum registro encontrado!">  
-                        <p:column headerText="ID" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">  
+                    <p:dataTable id="resultadoBuscarCliente" var="cliente" value="#{animaisController.listaClientes}" scrollHeight="350" style="width: 968px;" emptyMessage="Nenhum registro encontrado!">  
+                        <p:column headerText="ID" style="height: 10px; font-size: 10px; text-align: center; width: 15px;">  
                             <h:outputText value="#{cliente.idCliente}"/>  
                         </p:column>  
-                        <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 200px;">  
+                        <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 150px;">  
                             <h:outputText value="#{cliente.nomeCliente}" />  
                         </p:column> 
-                        <p:column headerText="CPF" style="height: 10px; font-size: 10px; text-align: center; width: 100px;">  
+                        <p:column headerText="CPF" style="height: 10px; font-size: 10px; text-align: center; width: 65px;">  
                             <h:outputText value="#{cliente.cpf}" />  
                         </p:column>           
-                        <p:column headerText="Tel. Residencial" style="height: 10px; font-size: 10px; text-align: center; width: 75px;">  
+                        <p:column headerText="Tel. Residencial" style="height: 10px; font-size: 10px; text-align: center; width: 65px;">  
                             <h:outputText value="#{cliente.telefoneResidencial}" />  
                         </p:column>                               
-                        <p:column headerText="Tel. Celular" style="height: 10px; font-size: 10px; text-align: center; width: 75px;">  
+                        <p:column headerText="Tel. Celular" style="height: 10px; font-size: 10px; text-align: center; width: 65px;">  
                             <h:outputText value="#{cliente.telefoneCelular}" />  
                         </p:column> 
-                        <p:column headerText="Selecionar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
-                            <p:commandLink action="#{animaisController.selecionarCliente(cliente)}" oncomplete="PF('mdlAnimaisLocalizarCliente').hide()">
-                                <img class="img" src="/SAVA/faces/imagens/selecionar32x32.png" border="1"/>                           
+                        <p:column headerText="Selecionar" style="height: 10px; font-size: 10px; text-align: center; width: 60px;">
+                            <p:commandLink action="#{animaisController.selecionarCliente(cliente)}" oncomplete="PF('mdlAnimaisLocalizarCliente').hide(); desabilitaCampos();" update=":formularioPadrao:panelAnimais">
+                                <img class="img" src="/SAVA/faces/imagens/selecionar32x32.png" border="1"/>  
                             </p:commandLink>
                         </p:column>
                     </p:dataTable> 
                 </p:dialog>
 
+                <!--Botões Lista-->
                 <p:outputPanel rendered="#{animaisController.mostrarLista}">
                     <div class="botoes" style="display: block;">
                         <div class="divBtn">
-                            <h:commandLink onclick="PF('mdlAnimaisLocalizarCliente').show(); return false;">
+                            <h:commandLink onclick="PF('mdlAnimaisLocalizarCliente').show();
+                                    return false;">
                                 <img class="img" src="/SAVA/faces/imagens/buscar.png" border="1"/>
                             </h:commandLink>
                             <span class="txtBtn">Buscar Cliente</span>
                         </div>
                         <div class="divBtn">
-                            <h:commandLink action="#{animaisController.novo()}">
-                                <img class="img" src="/SAVA/faces/imagens/novo.png" border="1"/>
+                            <h:commandLink id="btnNovoAnimal" action="#{animaisController.novo()}" >
+                                <img id="imgNovoAnimal" class="img" src="/SAVA/faces/imagens/novo.png" border="1" />
                             </h:commandLink>
-                            <span class="txtBtn">Novo</span>
+                            <span class="txtBtn" id="txtNovoAnimal">Novo</span>
                         </div>
                     </div>
                     <p:separator />
                 </p:outputPanel>
 
+                <!--Botões Formulário-->
                 <p:outputPanel rendered="#{animaisController.mostrarFormulario}">
                     <div class="botoes">
                         <div class="divBtn">
-                            <h:commandLink action="#{animaisController.salvarAnimal()}" styleClass="salvar">
+                            <p:commandLink action="#{animaisController.salvarAnimal()}" styleClass="salvar" update=":formularioPadrao:panelAnimais">
                                 <img class="img" src="/SAVA/faces/imagens/salvar.png" border="1"/>
-                            </h:commandLink>
+                            </p:commandLink>
                             <span class="txtBtn">Salvar</span>
                         </div> 
                         <div class="divBtn">
@@ -114,7 +146,8 @@
                     <p:separator />
                 </p:outputPanel>
 
-                <p:outputPanel rendered="#{animaisController.mostrarLista}" >  
+                <!--Lista de Animais-->
+                <p:outputPanel rendered="#{animaisController.mostrarLista}">  
                     <div class="divBorda">
                         <div class="barraTitulo">
                             <h1 class="titulo">Cliente</h1>
@@ -129,19 +162,19 @@
                             </tr>
                             <tr>
                                 <td style="width: 5%;">
-                                    <p:inputText id="idCliente" size="5" value="#{animaisController.idCliente}" disabled="true"/>
+                                    <p:inputText id="idCliente" size="5" value="#{animaisController.idCliente}" />
                                 </td>
                                 <td style="width: 51%;">
-                                    <p:inputText id="nomeCliente" size="100" value="#{animaisController.nomeCliente}" disabled="true"/>
+                                    <p:inputText id="nomeCliente" size="100" value="#{animaisController.nomeCliente}" />
                                 </td>
                                 <td style="width: 9%;">
-                                    <p:inputText id="cpf" size="14" value="#{animaisController.cpf}" disabled="true"/>
+                                    <p:inputText id="cpf" size="14" value="#{animaisController.cpf}" />
                                 </td>
                                 <td style="width: 12%;">
-                                    <p:inputText id="telefoneResidencial" size="20" value="#{animaisController.telefoneResidencial}" disabled="true"/>
+                                    <p:inputText id="telefoneResidencial" size="20" value="#{animaisController.telefoneResidencial}" />
                                 </td>
                                 <td style="width: 23%;">
-                                    <p:inputText id="telefoneCelular" size="20" value="#{animaisController.telefoneCelular}" disabled="true"/>
+                                    <p:inputText id="telefoneCelular" size="20" value="#{animaisController.telefoneCelular}" />
                                 </td>
                             </tr>
                         </table>
@@ -175,11 +208,13 @@
 
                         <p:confirmDialog id="confirmDialogExclusaoAnimal" message="Deseja realmente excluir o animal #{animaisController.nomeAnimal}?"  header="Atenção" severity="alert" widgetVar="confirmDialogExclusaoAnimal" >  
                             <p:commandButton value="Sim" action="#{animaisController.excluirAnimal()}" onclick="PF('confirmDialogExclusaoAnimal').hide()" update=":formularioPadrao:panelAnimais"/>
-                            <p:commandButton value="Não" onclick="PF('confirmDialogExclusaoAnimal').hide(); return false;" />   
+                            <p:commandButton value="Não" onclick="PF('confirmDialogExclusaoAnimal').hide();
+                                    return false;" />   
                         </p:confirmDialog>
                     </div>
                 </p:outputPanel>
 
+                <!--Formulário de animais-->
                 <p:outputPanel rendered="#{animaisController.mostrarFormulario}" >  
                     <h:inputHidden value="#{animaisController.idAnimal}"/>
                     <table style="width:100%">

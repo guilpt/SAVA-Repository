@@ -21,7 +21,6 @@ body, td, th {
 }
 
 th {
-
     min-height: 25px;
     padding: 3px;
 }
@@ -103,7 +102,7 @@ img {
 
 .botoes .divBtn {
     width : 70px; 
-    height: 55px ; 
+    height: 55px; 
     float:left;
 }
 

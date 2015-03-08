@@ -324,27 +324,30 @@ public class AnimaisController extends SAVAAbstractController implements Seriali
             } catch (SavaBusinessException e) {
                 selecionarClienteContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível buscar a lista de animais por cliente!"));
             }
-
-            this.controlarExibicao(true, false);
         }
 
         return ACTION_INPUT;
     }
 
     public String novo() {
-        this.idAnimal = null;
-        this.idEspecie = -1;
-        this.idRaca = -1;
-        this.nomeAnimal = "";
-        this.sexoAnimal = "-1";
-        this.corPelagem = "";
-        this.idadeAno = null;
-        this.idadeMes = null;
-        this.peso = null;
-        this.obito = "-1";
-        this.disponibilidadeCruzamento = "-1";
+        FacesContext novoAnimalContext = FacesContext.getCurrentInstance();
+        if(this.idCliente != null){
+            this.idAnimal = null;
+            this.idEspecie = -1;
+            this.idRaca = -1;
+            this.nomeAnimal = "";
+            this.sexoAnimal = "-1";
+            this.corPelagem = "";
+            this.idadeAno = null;
+            this.idadeMes = null;
+            this.peso = null;
+            this.obito = "-1";
+            this.disponibilidadeCruzamento = "-1";
 
-        this.controlarExibicao(true, false);
+            this.controlarExibicao(true, false);
+        } else {
+            novoAnimalContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Primeiro selecione um cliente!"));
+        }
 
         return ACTION_INPUT;
     }
@@ -393,9 +396,6 @@ public class AnimaisController extends SAVAAbstractController implements Seriali
                 }
             } catch (SavaBusinessException e) {
                 excluirAnimalcontext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "Não foi possível excluir o animal!"));
-            } finally {
-                this.idCliente = null;
-                this.nomeCliente = "";
             }
         }
 
@@ -417,9 +417,10 @@ public class AnimaisController extends SAVAAbstractController implements Seriali
                 } else {
                     linhasAfetadas = animaisBO.atualizarAnimal(animalFormulario);
                 }
-
+                
                 if (linhasAfetadas == 1) {
-                    this.init();
+                    listaAnimaisPorCliente = animaisBO.buscarAnimaisPorIdCliente(this.idCliente);
+                    this.controlarExibicao(false, true);
                     salvarAnimalcontext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Animal salvo com sucesso!"));
                 }
             } catch (SavaBusinessException e) {
