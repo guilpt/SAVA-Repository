@@ -149,7 +149,7 @@ public class ClientesDAOImpl extends AbstractSAVADao implements IClientesDAO {
                 cliente.getTelefoneCelular(), cliente.getEmail(), cliente.getIdCliente()});
         } catch(Exception e) {
             e.printStackTrace();
-            throw new SavaDAOException("Erro ao executar o método ClientesDAOImpl.excluirCliente", e);
+            throw new SavaDAOException("Erro ao executar o método ClientesDAOImpl.atualizarCliente", e);
         }
         
         return linhasAfetadas;

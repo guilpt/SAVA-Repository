@@ -1,0 +1,164 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/pages/template.xhtml">
+        <ui:define name="content">
+
+            <p:panel id="panelMedicoVeterinario" style="height: 730px;" header="Cadastro de Médicos Veterinários" toggleable="false" closable="false" 
+                     toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastroMedicoVeterinario"> 
+                
+                <div id="divMessagesMedicoVeterinario" >
+                    <!--<p:messages id="mensagensClientes" showDetail="true" autoUpdate="true" closable="true" />-->
+                    <p:growl id="mensagensMedicosVeterinarios" showDetail="true" />
+                </div>
+
+                <p:outputPanel id="painelBotoesListaMedicosVeterinarios" rendered="#{medicosVeterinariosController.mostrarLista}">
+                    <div class="botoes" style="display: block;">
+                        <div class="divBtn">
+                            <h:commandLink action="#{medicosVeterinariosController.novo()}">
+                                <img class="img" src="/SAVA/faces/imagens/novo.png" border="1"/>
+                            </h:commandLink>
+                            <span class="txtBtn">Novo</span>
+                        </div>
+                    </div>
+                    <p:separator />
+                </p:outputPanel>
+
+                <p:outputPanel id="painelBotoesFormularioMedicosVeterinarios" rendered="#{medicosVeterinariosController.mostrarFormulario}">
+                    <div class="botoes">
+                        <div class="divBtn">
+                            <h:commandLink action="#{medicosVeterinariosController.salvarMedicoVeterinario()}" styleClass="salvar">
+                                <img class="img" src="/SAVA/faces/imagens/salvar.png" border="1"/>
+                            </h:commandLink>
+                            <span class="txtBtn">Salvar</span>
+                        </div> 
+                        <div class="divBtn">
+                            <h:commandLink action="#{medicosVeterinariosController.cancelar()}" >
+                                <img class="img" src="/SAVA/faces/imagens/cancelar.png" border="1"/>
+                            </h:commandLink>
+                            <span class="txtBtn">Cancelar</span>
+                        </div>
+                    </div>  
+                    <p:separator />
+                </p:outputPanel>
+
+                <p:outputPanel rendered="#{medicosVeterinariosController.mostrarLista}" > 
+                    <div class="divBorda">
+                        <div class="barraTitulo">
+                            <h1 class="titulo">Lista de Médicos Veterinários</h1>
+                        </div>
+                        
+                        <p:dataTable id="dataMedicosVeterinariosLista" var="medicoVeterinario" value="#{medicosVeterinariosController.listaMedicosVeterinarios}" paginator="true" rows="10" paginatorPosition="bottom">  
+                            <p:column headerText="ID" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">  
+                                <h:outputText value="#{medicoVeterinario.idMedicoVeterinario}"/>  
+                            </p:column>  
+                            <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 300px;">  
+                                <h:outputText value="#{medicoVeterinario.nomeMedicoVeterinario}" />  
+                            </p:column> 
+                            <p:column headerText="CRMV" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{medicoVeterinario.ufCRMV} - #{medicoVeterinario.nroCRMV}" />  
+                            </p:column>                                     
+                            <p:column headerText="Tel. Celular" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{medicoVeterinario.telefoneCelular}" />  
+                            </p:column>                   
+                            <p:column headerText="Editar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                                <h:commandLink action="#{medicosVeterinariosController.selecionarMedicoVeterinario(medicoVeterinario)}">
+                                    <img class="img" src="/SAVA/faces/imagens/editar.png" border="1"/>                           
+                                </h:commandLink>
+                            </p:column>      
+                            <p:column headerText="Excluir" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                                <p:commandLink action="#{medicosVeterinariosController.selecionarMedicoVeterinarioExclusao(medicoVeterinario)}" update=":formularioPadrao:confirmDialogExclusaoMedicoVeterinario" oncomplete="PF('confirmDialogExclusaoMedicoVeterinario').show()">
+                                    <img class="img" src="/SAVA/faces/imagens/excluir.png" border="1"/>   
+                                </p:commandLink>
+                            </p:column>        
+                        </p:dataTable>   
+
+                        <p:confirmDialog id="confirmDialogExclusaoMedicoVeterinario" message="Deseja realmente excluir o(a) veterinário(a) #{medicosVeterinariosController.nomeMedicoVeterinario}?"  header="Atenção" severity="alert" widgetVar="confirmDialogExclusaoMedicoVeterinario" >  
+                            <p:commandButton value="Sim" action="#{medicosVeterinariosController.excluirMedicoVeterinario()}" onclick="PF('confirmDialogExclusaoMedicoVeterinario').hide()" update=":formularioPadrao:panelMedicoVeterinario"/>
+                            <p:commandButton value="Não" onclick="PF('confirmDialogExclusaoMedicoVeterinario').hide(); return false;" />   
+                        </p:confirmDialog>
+                    </div>
+                </p:outputPanel>   
+
+                <p:outputPanel id="formCliente" rendered="#{medicosVeterinariosController.mostrarFormulario}" style="float:left; width:70%; height: 300px;"> 
+                    <fieldset class="formulario">
+                        <h:inputHidden value="#{medicosVeterinariosController.idMedicoVeterinario}"/>
+                        <ol>
+                            <li>
+                                <label for="nomeMedicoVeterinario" style="width: 13em;">Nome:</label>
+                                <p:inputText id="nomeMedicoVeterinario" style="width: 500px" value="#{medicosVeterinariosController.nomeMedicoVeterinario}" />
+                            </li>
+                            <li>
+                                <label for="ufCRMV" style="width: 13em;">UF CRMV:</label>
+                                <p:selectOneMenu id="ufCRMV" value="#{medicosVeterinariosController.ufCRMV}" style="width:125px" >
+                                    <f:selectItem itemLabel="Selecione..."        itemValue="-1"  />
+                                    <f:selectItem itemLabel="Acre"                itemValue="AC" />
+                                    <f:selectItem itemLabel="Alagoas"             itemValue="AL" />
+                                    <f:selectItem itemLabel="Amapá"               itemValue="AP" />
+                                    <f:selectItem itemLabel="Amazonas"            itemValue="AM" />
+                                    <f:selectItem itemLabel="Bahia"               itemValue="BA" />
+                                    <f:selectItem itemLabel="Ceará"               itemValue="CE" />
+                                    <f:selectItem itemLabel="Distrito Federal"    itemValue="DF" />
+                                    <f:selectItem itemLabel="Espírito Santo"      itemValue="ES" />
+                                    <f:selectItem itemLabel="Goiás"               itemValue="GO" />
+                                    <f:selectItem itemLabel="Maranhão"            itemValue="MA" />
+                                    <f:selectItem itemLabel="Mato Grosso"         itemValue="MT" />
+                                    <f:selectItem itemLabel="Mato Grosso do Sul"  itemValue="MS" />
+                                    <f:selectItem itemLabel="Minas Gerais"        itemValue="MG" />
+                                    <f:selectItem itemLabel="Pará"                itemValue="PA" />
+                                    <f:selectItem itemLabel="Paraíba"             itemValue="PB" />
+                                    <f:selectItem itemLabel="Paraná"              itemValue="PR" />
+                                    <f:selectItem itemLabel="Pernambuco"          itemValue="PE" />
+                                    <f:selectItem itemLabel="Piauí"               itemValue="PI" />
+                                    <f:selectItem itemLabel="Rio de Janeiro"      itemValue="RJ" />
+                                    <f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />
+                                    <f:selectItem itemLabel="Rio Grande do Sul"   itemValue="RS" />
+                                    <f:selectItem itemLabel="Rondônia"            itemValue="RO" />
+                                    <f:selectItem itemLabel="Roraima"             itemValue="RR" />
+                                    <f:selectItem itemLabel="Santa Catarina"      itemValue="SC" />
+                                    <f:selectItem itemLabel="São Paulo"           itemValue="SP" />
+                                    <f:selectItem itemLabel="Tocantins"           itemValue="TO" />
+                                </p:selectOneMenu>
+                            </li>
+                            <li>
+                                <label for="nroCRMV" style="width: 13em;">Número CRMV: </label>
+                                <p:inputText id="nroCRMV" value="#{medicosVeterinariosController.nroCRMV}" size="6"/>
+                            </li>
+                            <li>
+                                <label for="sexoMedicoVeterinario" style="width: 13em;">Sexo:</label>
+                                <p:selectOneMenu id="sexoMedicoVeterinario" value="#{medicosVeterinariosController.sexoMedicoVeterinario}" style="width:125px" >
+                                    <f:selectItem itemLabel="Selecione..." itemValue="-1"  />
+                                    <f:selectItem itemLabel="Feminino"    itemValue="F" />
+                                    <f:selectItem itemLabel="Masculino"   itemValue="M" />
+                                </p:selectOneMenu>
+                            </li>     
+                            <li>
+                                <label for="telefoneCelularMedicoVeterinario" style="width: 13em;">Telefone Celular:</label>
+                                <p:inputMask id ="telefoneCelularMedicoVeterinario" value="#{medicosVeterinariosController.telefoneCelular}" mask="(99) 9999-9999"/>
+                            </li> 
+                            <li>
+                                <label for="indAtivo" style="width: 13em;">Ativo:</label>
+                                <p:selectOneMenu id="indAtivo" value="#{medicosVeterinariosController.indAtivo}" style="width:125px" >
+                                    <f:selectItem itemLabel="Selecione..." itemValue="-1"  />
+                                    <f:selectItem itemLabel="Sim" itemValue="S" />
+                                    <f:selectItem itemLabel="Não" itemValue="N" />
+                                </p:selectOneMenu>
+                            </li>
+                        </ol>
+                    </fieldset> 
+                </p:outputPanel>    
+
+            </p:panel>
+
+        </ui:define>
+    </ui:composition> 
+
+</html>
+
+
+

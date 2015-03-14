@@ -5,7 +5,6 @@ import com.vitaanimale.sava.infra.SavaBusinessException;
 import com.vitaanimale.sava.to.Clientes;
 import java.io.Serializable;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -41,6 +40,14 @@ public class ClientesController extends SAVAAbstractController implements Serial
     private String  telefoneResidencial;
     private String  telefoneCelular;
     private String  email;
+
+    public IClientesBO getClientesBO() {
+        return clientesBO;
+    }
+
+    public void setClientesBO(IClientesBO clientesBO) {
+        this.clientesBO = clientesBO;
+    }
 
     public List<Clientes> getListaClientes() {
         return listaClientes;
@@ -122,14 +129,15 @@ public class ClientesController extends SAVAAbstractController implements Serial
         this.email = email;
     }
 
-    @PostConstruct
-    public void init() {
+    public String init() {
         try {
             this.controlarExibicao(false, true);
             listaClientes = clientesBO.buscarClientes();
         } catch (SavaBusinessException e) {
             e.printStackTrace();
         }
+        
+        return "/pages/cadastro/clientes?faces-redirect=true";
     }
 
     public String novo() {
@@ -153,7 +161,7 @@ public class ClientesController extends SAVAAbstractController implements Serial
         Integer linhasAfetadas = 0;
 
         if (this.validaDados()) {
-            Clientes clienteFormulario = new Clientes(this.idCliente, this.nomeCliente, this.cpf, this.sexoCliente, this.dataNascimento, this.endereco, this.telefoneResidencial, this.telefoneCelular, email);
+            Clientes clienteFormulario = new Clientes(this.idCliente, this.nomeCliente, this.cpf, this.sexoCliente, this.dataNascimento, this.endereco, this.telefoneResidencial, this.telefoneCelular, this.email);
 
             try {
                 if (this.idCliente == null) {

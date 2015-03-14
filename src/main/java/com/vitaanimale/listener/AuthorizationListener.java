@@ -1,5 +1,7 @@
 package com.vitaanimale.listener;
 
+import java.io.IOException;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -11,7 +13,7 @@ import javax.servlet.http.HttpSession;
  * @author Elisa
  */
 public class AuthorizationListener implements PhaseListener {
-
+    
     @Override
     public void afterPhase(PhaseEvent event) {
         //poderia ter sido escrito nesse evento depois da "fase" (lembra do básico do jsf, o ciclo de vida e as fases...
@@ -22,11 +24,11 @@ public class AuthorizationListener implements PhaseListener {
         //adiquirindo o FacesContext.
         FacesContext context = event.getFacesContext();
         
-        
         //adiquirindo a HttpSesson.
         HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
         //adquirindo a sessão (essa mesma onde você deverá guardar seu usuário no nível de sessão com descritor currentUser).
         String currentPage = context.getViewRoot().getViewId();
+        
         //armazenando a página que fez a requisição. (a string da pág. atual ex: "/pag.jsf")
         //Usuarios user = (Usuarios) session.getAttribute("usuario");
         
