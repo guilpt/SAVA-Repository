@@ -112,7 +112,7 @@ public class AnimaisDAOImpl extends AbstractSAVADao implements IAnimaisDAO {
         sb.append(" ?,");
         sb.append(" ?,");
         sb.append(" ?");
-        sb.append(" );");
+        sb.append(" )");
         
         try {
             linhasAfetadas = jdbcTemplate.update(sb.toString(), new Object[] {animal.getIdCliente(), animal.getIdEspecie(),

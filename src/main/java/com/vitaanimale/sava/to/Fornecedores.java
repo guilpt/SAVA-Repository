@@ -51,6 +51,26 @@ public class Fornecedores {
     public void setEmailFornecedor(String emailFornecedor) {
         this.emailFornecedor = emailFornecedor;
     }
+
+    public Fornecedores() {
+        this.idFornecedor = null;
+        this.nomeFornecedor = "";
+        this.cnpj = "";
+        this.telefoneComercial = "";
+        this.emailFornecedor = "";
+    }
     
+    public Fornecedores(Integer idFornecedor, String nomeFornecedor, String cnpj, String telefoneComercial, String emailFornecedor) {
+        this.idFornecedor = idFornecedor;
+        this.nomeFornecedor = nomeFornecedor;
+        this.cnpj = cnpj;
+        this.telefoneComercial = telefoneComercial;
+        this.emailFornecedor = emailFornecedor;
+    }
+
+    @Override
+    public String toString() {
+        return "Fornecedores{" + "idFornecedor=" + idFornecedor + ", nomeFornecedor=" + nomeFornecedor + ", cnpj=" + cnpj + ", telefoneComercial=" + telefoneComercial + ", emailFornecedor=" + emailFornecedor + '}';
+    }
     
 }
