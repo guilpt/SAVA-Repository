@@ -23,6 +23,8 @@ public interface IProdutosDAO {
     
     public List<Produtos> buscarProdutosPorIdTipoProduto(Integer idTipoProduto) throws SavaDAOException;
     
-    public Integer inserirTipoProduto(ItensProdutos itemProduto) throws SavaDAOException;
+    public Produtos buscarInformacaoProduto(Integer idProduto) throws SavaDAOException;
+            
+    public Integer inserirItemProduto(ItensProdutos itemProduto) throws SavaDAOException;
     
 }

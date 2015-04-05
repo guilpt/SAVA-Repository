@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/pages/template.xhtml">
+        <ui:define name="content">         
+            
+            <p:panel id="panelItensProdutos" style="height: 730px;" header="Cadastro de Itens Produtos" toggleable="false" closable="false" 
+                     toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastroItemProduto" > 
+            
+                <div id="divMessagesItemProduto" >
+                    <p:growl id="mensagensItensProdutos" showDetail="true" />
+                </div>
+                
+                <!-- Menu -->
+                <p:outputPanel>
+                    <div class="botoes" style="display: block;">
+                        <div class="divBtn">
+                            <h:commandLink id="btnNovoItemProduto" action="#{itensProdutosController.novo()}" >
+                                <img id="imgNovoItemProduto" class="img" src="/SAVA/faces/imagens/novo.png" border="1" />
+                            </h:commandLink>
+                            <span class="txtBtn" id="txtNovoItemProduto">Novo</span>
+                        </div>
+                    </div>
+                    <p:separator />
+                </p:outputPanel>
+                
+                <!--Formulário de itens Produtos-->
+                <p:outputPanel>  
+                    <!--<h:inputHidden value="#{animaisController.idAnimal}"/>-->
+                    <table style="width:100%">
+                        <tr>
+                            <td><label>Tipo Produto</label></td>
+                            <td><label>Produto</label></td>
+                            <td><label>Valor Compra (R$)</label></td>
+                            <td><label>Valor Venda (R$)</label></td>
+                            <td><label>Data Entrada</label></td>
+                            <td><label>Data Validade</label></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 12%;">
+                                <p:selectOneMenu id="comboBoxTipoProduto" value="#{itensProdutosController.idTipoProduto}">
+                                    <f:selectItems value="#{itensProdutosController.collectionTiposProdutos}" />
+                                    <p:ajax update="comboBoxProduto" listener="#{itensProdutosController.buscarProdutosPorIdTipoProduto()}" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width: 22%;">
+                                <p:selectOneMenu id="comboBoxProduto" value="#{itensProdutosController.idProduto}">
+                                    <f:selectItems value="#{itensProdutosController.collectionProdutos}" />
+                                    <p:ajax update="valorCompraProduto, valorVendaProduto" listener="#{itensProdutosController.buscarInformacaoProduto()}" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width: 14%;">
+                                <p:inputText id="valorCompraProduto" value="#{itensProdutosController.valorCompraProduto}" size="15"/>
+                            </td>
+                            <td style="width: 14%;">
+                                <p:inputText id="valorVendaProduto" value="#{itensProdutosController.valorVendaProduto}" size="15"/>
+                            </td>
+                            <td style="width: 10%;">
+                                <p:inputMask id="dataEntrada" value="#{itensProdutosController.dataEntrada}" mask="99/99/9999" />
+                            </td>
+                            <td style="width: 28%;">
+                                <p:inputMask id="dataValidade" value="#{itensProdutosController.dataValidade}" mask="99/99/9999" />
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td><label style="padding-top: 4px;">Código de Barra</label></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 30%;">
+                                <p:inputText id="codBarra" value="#{itensProdutosController.codBarra}" size="50" />  
+                            </td>
+                            <td>
+                                <p:commandLink action="#{itensProdutosController.inserirItemProduto()}" update="mensagensItensProdutos">
+                                    <img class="img" src="/SAVA/faces/imagens/salvar.png" border="1"/>
+                                </p:commandLink>  
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </p:outputPanel>
+            </p:panel>
+            
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -15,5 +15,7 @@ public interface IProdutosBO {
     
     public List<Produtos> buscarProdutosPorIdTipoProduto(Integer idTipoProduto) throws SavaBusinessException;
     
-    public Integer inserirTipoProduto(ItensProdutos itemProduto) throws SavaBusinessException;
+    public Produtos buscarInformacaoProduto(Integer idProduto) throws SavaBusinessException;
+    
+    public Integer inserirItemProduto(ItensProdutos itemProduto) throws SavaBusinessException;
 }

@@ -2,9 +2,9 @@ package com.vitaanimale.sava.controller.menu;
 
 import com.vitaanimale.sava.controller.AnimaisController;
 import com.vitaanimale.sava.controller.ClientesController;
+import com.vitaanimale.sava.controller.ItensProdutosController;
 import com.vitaanimale.sava.controller.MedicosVeterinariosController;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -12,7 +12,6 @@ import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -31,6 +30,9 @@ public class MenuController implements Serializable {
     
     @ManagedProperty("#{medicosVeterinariosController}")
     private MedicosVeterinariosController medicosVeterinariosController;
+    
+    @ManagedProperty("#{itensProdutosController}")
+    private ItensProdutosController itensProdutosController;
 
     public void setClientesController(ClientesController clientesController) {
         this.clientesController = clientesController;
@@ -43,6 +45,11 @@ public class MenuController implements Serializable {
     public void setMedicosVeterinariosController(MedicosVeterinariosController medicosVeterinariosController) {
         this.medicosVeterinariosController = medicosVeterinariosController;
     }
+
+    public void setItensProdutosController(ItensProdutosController itensProdutosController) {
+        this.itensProdutosController = itensProdutosController;
+    }
+    
     
     private MenuModel model;
 
@@ -55,7 +62,6 @@ public class MenuController implements Serializable {
 
         //First submenu
         DefaultSubMenu firstSubmenu = new DefaultSubMenu("Cadastro");
-        DefaultMenuItem item;
         
         DefaultMenuItem item1 = new DefaultMenuItem("Clientes");
         //item1.setUrl("/faces/pages/cadastro/clientes.xhtml");
@@ -74,8 +80,16 @@ public class MenuController implements Serializable {
         item3.setCommand("#{medicosVeterinariosController.init()}");
         item3.setIcon("ui-icon-disk");
         firstSubmenu.addElement(item3);
+        
+        DefaultMenuItem item4 = new DefaultMenuItem("Itens Produtos");
+        //item1.setUrl("/faces/pages/cadastro/clientes.xhtml");
+        item4.setCommand("#{itensProdutosController.init()}");
+        item4.setIcon("ui-icon-disk");
+        firstSubmenu.addElement(item4);
 
         model.addElement(firstSubmenu);
+        
+        
 
     }  
 

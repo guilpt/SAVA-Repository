@@ -6,8 +6,10 @@ import com.vitaanimale.sava.infra.SavaDAOException;
 import com.vitaanimale.sava.to.ItensProdutos;
 import com.vitaanimale.sava.to.Produtos;
 import com.vitaanimale.sava.to.TiposProdutos;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import org.apache.commons.collections.ListUtils;
 import org.springframework.context.annotation.Scope;
@@ -62,11 +64,7 @@ public class ProdutosDAOImpl extends AbstractSAVADao implements IProdutosDAO{
         List<Produtos> listaProdutos = null;
         
         sb.append(" select va_produtos.id_produto,");
-        sb.append("        va_fornecedores.nome_fornecedor,");
-        sb.append("        va_produtos.marca,");
-        sb.append("        va_produtos.descricao_produto,");
-        sb.append("        va_produtos.valor_compra_produto,");
-        sb.append("        va_produtos.valor_venda_produto");
+        sb.append("        va_produtos.descricao_produto");
         sb.append("   from va_produtos inner join va_fornecedores on (va_produtos.id_fornecedor = va_fornecedores.id_fornecedor )");
         sb.append("  where va_produtos.id_tipo_produto = ?");
         sb.append("  order by va_produtos.descricao_produto");
@@ -79,11 +77,7 @@ public class ProdutosDAOImpl extends AbstractSAVADao implements IProdutosDAO{
                     Produtos produto = new Produtos();
                     
                     produto.setIdProduto(rs.getInt("ID_PRODUTO"));
-                    produto.setNomeFornecedor(rs.getString("NOME_FORNECEDOR"));
-                    produto.setMarca(rs.getString("MARCA"));
                     produto.setDescricaoProduto(rs.getString("DESCRICAO_PRODUTO"));
-                    produto.setValorCompraProduto(rs.getDouble("VALOR_COMPRA_PRODUTO"));
-                    produto.setValorVendaProduto(rs.getDouble("VALOR_VENDA_PRODUTO"));
                     
                     return produto;
                 }
@@ -100,8 +94,43 @@ public class ProdutosDAOImpl extends AbstractSAVADao implements IProdutosDAO{
     }
 
     @Override
-    public Integer inserirTipoProduto(ItensProdutos itemProduto) throws SavaDAOException {
+    public Produtos buscarInformacaoProduto(Integer idProduto) throws SavaDAOException {
+        StringBuilder sb = new StringBuilder();
+        Produtos produto = null;
+        
+        sb.append(" select valor_compra_produto,");
+        sb.append("        valor_venda_produto");
+        sb.append("   from va_produtos");
+        sb.append("  where id_produto = ?");
+        
+        try {
+            produto = (Produtos) this.jdbcTemplate.queryForObject(sb.toString(), new Object[] {idProduto}, new RowMapper() {
+
+                @Override
+                public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    Produtos produto = new Produtos();
+                    
+                    produto.setValorCompraProduto(rs.getDouble("VALOR_COMPRA_PRODUTO"));
+                    produto.setValorVendaProduto(rs.getDouble("VALOR_VENDA_PRODUTO"));
+                    
+                    return produto;
+                }
+            });
+            
+            return produto;
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new SavaDAOException("Erro ao executar o método ProdutosDAOImpl.buscarProdutosPorIdTipoProduto", e);
+        }
+    }
+    
+    @Override
+    public Integer inserirItemProduto(ItensProdutos itemProduto) throws SavaDAOException {
         Integer linhasAfetadas = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date parametroDataEntrada  = null;
+        Date parametroDataValidade = null;
+        
         StringBuilder sb = new StringBuilder();
         
         sb.append(" insert into va_itens_produtos (");
@@ -123,14 +152,23 @@ public class ProdutosDAOImpl extends AbstractSAVADao implements IProdutosDAO{
         sb.append(" )");
         
         try {
+            if (!("".equals(itemProduto.getDataEntrada()))) {
+                parametroDataEntrada = sdf.parse(itemProduto.getDataEntrada());
+            }
+            if (!("".equals(itemProduto.getDataValidade()))) {
+                parametroDataValidade = sdf.parse(itemProduto.getDataValidade());
+            }
+                    
             linhasAfetadas = jdbcTemplate.update(sb.toString(), new Object[] {itemProduto.getIdProduto(), itemProduto.getCodBarra(),
-                itemProduto.getValorCompraProduto(), itemProduto.getValorVendaProduto(), itemProduto.getDataEntrada(), itemProduto.getDataValidade()});
+                itemProduto.getValorCompraProduto(), itemProduto.getValorVendaProduto(), parametroDataEntrada, parametroDataValidade});
         } catch(Exception e) {
             e.printStackTrace();
-            throw new SavaDAOException("Erro ao executar o método ProdutosDAOImpl.inserirTipoProduto", e);
+            throw new SavaDAOException("Erro ao executar o método ProdutosDAOImpl.inserirItemProduto", e);
         }
         
         return linhasAfetadas;
     }
+
+
     
 }

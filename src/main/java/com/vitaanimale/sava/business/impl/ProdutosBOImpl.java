@@ -44,12 +44,21 @@ public class ProdutosBOImpl implements IProdutosBO{
     }
 
     @Override
-    public Integer inserirTipoProduto(ItensProdutos itemProduto) throws SavaBusinessException {
+    public Produtos buscarInformacaoProduto(Integer idProduto) throws SavaBusinessException {
         try {
-            return produtosDAO.inserirTipoProduto(itemProduto);
+            return produtosDAO.buscarInformacaoProduto(idProduto);
         } catch(SavaDAOException e) {
-            throw new SavaBusinessException("Erro ao executar o método ProdutosBOImpl.inserirTipoProduto", e);
+            throw new SavaBusinessException("Erro ao executar o método ProdutosBOImpl.buscarInformacaoProduto", e);
         }
     }
+    @Override
+    public Integer inserirItemProduto(ItensProdutos itemProduto) throws SavaBusinessException {
+        try {
+            return produtosDAO.inserirItemProduto(itemProduto);
+        } catch(SavaDAOException e) {
+            throw new SavaBusinessException("Erro ao executar o método ProdutosBOImpl.inserirItemProduto", e);
+        }
+    }
+
     
 }
