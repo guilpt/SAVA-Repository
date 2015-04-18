@@ -94,7 +94,7 @@ public class ClientesDAOImpl extends AbstractSAVADao implements IClientesDAO {
         sb.append(" ?,");
         sb.append(" ?,");
         sb.append(" ?");
-        sb.append(" );");
+        sb.append(" )");
         
         try{
             linhasAfetadas = jdbcTemplate.update(sb.toString(), new Object[] {cliente.getNomeCliente(), cliente.getCpf(),

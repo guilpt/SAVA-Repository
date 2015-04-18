@@ -6,12 +6,17 @@ package com.vitaanimale.sava.to;
  */
 public class DescricaoFaturamentos {
     private Integer idDescricaoFaturamento;
+    private Integer idFaturamento;
     private Integer idServico;
     private Integer qtdServico;
     private Double  valorVendaServico;
     private Integer idProduto;
     private Integer qtdProduto;
     private Double  valorVendaProduto;
+    private Integer id;
+    private String  descricao;
+    private Integer qtd;
+    private Double  valorVenda;
 
     public Integer getIdDescricaoFaturamento() {
         return idDescricaoFaturamento;
@@ -19,6 +24,14 @@ public class DescricaoFaturamentos {
 
     public void setIdDescricaoFaturamento(Integer idDescricaoFaturamento) {
         this.idDescricaoFaturamento = idDescricaoFaturamento;
+    }
+
+    public Integer getIdFaturamento() {
+        return idFaturamento;
+    }
+
+    public void setIdFaturamento(Integer idFaturamento) {
+        this.idFaturamento = idFaturamento;
     }
 
     public Integer getIdServico() {
@@ -69,18 +82,56 @@ public class DescricaoFaturamentos {
         this.valorVendaProduto = valorVendaProduto;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Integer getQtd() {
+        return qtd;
+    }
+
+    public void setQtd(Integer qtd) {
+        this.qtd = qtd;
+    }
+
+    public Double getValorVenda() {
+        return valorVenda;
+    }
+
+    public void setValorVenda(Double valorVenda) {
+        this.valorVenda = valorVenda;
+    }
+
     public DescricaoFaturamentos() {
         this.idDescricaoFaturamento = null;
+        this.idFaturamento = null;
         this.idServico = null;
         this.qtdServico = null;
         this.valorVendaServico = null;
         this.idProduto = null;
         this.qtdProduto = null;
         this.valorVendaProduto = null;
+        this.id = null;
+        this.descricao = "";
+        this.qtd = null;
+        this.valorVenda = null;
     }
     
-    public DescricaoFaturamentos(Integer idDescricaoFaturamento, Integer idServico, Integer qtdServico, Double valorVendaServico, Integer idProduto, Integer qtdProduto, Double valorVendaProduto) {
+    public DescricaoFaturamentos(Integer idDescricaoFaturamento, Integer idFaturamento, Integer idServico, Integer qtdServico, Double valorVendaServico, Integer idProduto, Integer qtdProduto, Double valorVendaProduto) {
         this.idDescricaoFaturamento = idDescricaoFaturamento;
+        this.idFaturamento = idFaturamento;
         this.idServico = idServico;
         this.qtdServico = qtdServico;
         this.valorVendaServico = valorVendaServico;
@@ -91,7 +142,7 @@ public class DescricaoFaturamentos {
 
     @Override
     public String toString() {
-        return "DescricaoFaturamentos{" + "idDescricaoFaturamento=" + idDescricaoFaturamento + ", idServico=" + idServico + ", qtdServico=" + qtdServico + ", valorVendaServico=" + valorVendaServico + ", idProduto=" + idProduto + ", qtdProduto=" + qtdProduto + ", valorVendaProduto=" + valorVendaProduto + '}';
+        return "DescricaoFaturamentos{" + "idDescricaoFaturamento=" + idDescricaoFaturamento + ", idFaturamento=" + idFaturamento + ", idServico=" + idServico + ", qtdServico=" + qtdServico + ", valorVendaServico=" + valorVendaServico + ", idProduto=" + idProduto + ", qtdProduto=" + qtdProduto + ", valorVendaProduto=" + valorVendaProduto + ", id=" + id + ", descricao=" + descricao + ", qtd=" + qtd + ", valorVenda=" + valorVenda + '}';
     }
-    
+
 }

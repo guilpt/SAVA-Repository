@@ -2,6 +2,7 @@ package com.vitaanimale.sava.controller.menu;
 
 import com.vitaanimale.sava.controller.AnimaisController;
 import com.vitaanimale.sava.controller.ClientesController;
+import com.vitaanimale.sava.controller.FaturamentosController;
 import com.vitaanimale.sava.controller.ItensProdutosController;
 import com.vitaanimale.sava.controller.MedicosVeterinariosController;
 import java.io.Serializable;
@@ -33,6 +34,9 @@ public class MenuController implements Serializable {
     
     @ManagedProperty("#{itensProdutosController}")
     private ItensProdutosController itensProdutosController;
+    
+    @ManagedProperty("#{faturamentosController}")
+    private FaturamentosController faturamentosController;
 
     public void setClientesController(ClientesController clientesController) {
         this.clientesController = clientesController;
@@ -49,7 +53,10 @@ public class MenuController implements Serializable {
     public void setItensProdutosController(ItensProdutosController itensProdutosController) {
         this.itensProdutosController = itensProdutosController;
     }
-    
+
+    public void setFaturamentosController(FaturamentosController faturamentosController) {
+        this.faturamentosController = faturamentosController;
+    }
     
     private MenuModel model;
 
@@ -86,10 +93,14 @@ public class MenuController implements Serializable {
         item4.setCommand("#{itensProdutosController.init()}");
         item4.setIcon("ui-icon-disk");
         firstSubmenu.addElement(item4);
+        
+        DefaultMenuItem item5 = new DefaultMenuItem("Faturamentos");
+        //item1.setUrl("/faces/pages/cadastro/clientes.xhtml");
+        item5.setCommand("#{faturamentosController.init()}");
+        item5.setIcon("ui-icon-disk");
+        firstSubmenu.addElement(item5);
 
-        model.addElement(firstSubmenu);
-        
-        
+        model.addElement(firstSubmenu);        
 
     }  
 

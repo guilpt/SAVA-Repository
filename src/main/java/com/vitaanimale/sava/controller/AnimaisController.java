@@ -291,7 +291,6 @@ public class AnimaisController extends SAVAAbstractController implements Seriali
             this.cpfBusca = "";
             this.nomeClienteBusca = "";
             this.telefoneBusca = "";
-            
             this.listaAnimaisPorCliente = null;
             this.listaClientes = null;
             this.listaEspecies = animaisBO.buscarEspecies();

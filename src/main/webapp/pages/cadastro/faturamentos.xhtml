@@ -1,0 +1,343 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/pages/template.xhtml">
+        <ui:define name="content">
+
+            <script>
+                $(document).ready(function () {
+                    $('#idCliente').fadeTo('fast', 0.5);
+                    $('#idCliente').attr('disabled', 'disabled');
+                    $('#nomeClienteLista').fadeTo('fast', 0.5);
+                    $('#nomeClienteLista').attr('disabled', 'disabled');
+                    $('#cpf').fadeTo('fast', 0.5);
+                    $('#cpf').attr('disabled', 'disabled');
+                    $('#telefoneResidencial').fadeTo('fast', 0.5);
+                    $('#telefoneResidencial').attr('disabled', 'disabled');
+                    $('#telefoneCelular').fadeTo('fast', 0.5);
+                    $('#telefoneCelular').attr('disabled', 'disabled');
+                    $('#nomeClienteCadastro').fadeTo('fast', 0.5);
+                    $('#nomeClienteCadastro').attr('disabled', 'disabled');
+                });
+                
+                function desabilitaCampos(){
+                    $('#idCliente').fadeTo('fast', 0.5);
+                    $('#idCliente').attr('disabled', 'disabled');
+                    $('#nomeClienteLista').fadeTo('fast', 0.5);
+                    $('#nomeClientelista').attr('disabled', 'disabled');
+                    $('#cpf').fadeTo('fast', 0.5);
+                    $('#cpf').attr('disabled', 'disabled');
+                    $('#telefoneResidencial').fadeTo('fast', 0.5);
+                    $('#telefoneResidencial').attr('disabled', 'disabled');
+                    $('#telefoneCelular').fadeTo('fast', 0.5);
+                    $('#telefoneCelular').attr('disabled', 'disabled');
+                    $('#nomeClienteCadastro').fadeTo('fast', 0.5);
+                    $('#nomeClienteCadastro').attr('disabled', 'disabled');
+                }
+                
+                function atualizarValorVendaServico(){
+                    $('#valorVendaServico').val($('#hiddenValorVendaServicoOriginal').val() * $('#qtdServico').val());
+                }
+            </script>
+
+            <p:panel id="panelFaturamentos" style="height: 730px;" header="Cadastro de Faturamentos" toggleable="false" closable="false" 
+                     toggleSpeed="500" closeSpeed="500" widgetVar="panelCadastroFaturamento" > 
+
+                <div id="divMessagesFaturamento" >
+                    <p:growl id="mensagensFaturamentos" showDetail="true" />
+                </div>
+
+                <!--Modal Buscar Cliente-->
+                <p:dialog header="Localizar Cliente" widgetVar="mdlFaturamentosLocalizarCliente" modal="true" width="1000px" height="500px">
+                    <div class="barraTitulo">
+                        <h1 class="titulo">Parâmetros</h1>
+                    </div>
+                    <div class="divBorda">
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="text-align: left;">
+                                    <label>CPF</label>
+                                </td>
+                                <td style="text-align: left;">
+                                    <label>Nome</label>
+                                </td>
+                                <td style="text-align: left;">
+                                    <label>Telefone</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 9%;">
+                                    <p:inputMask size="14" value="#{faturamentosController.cpfBusca}" mask="999.999.999-99"/>
+                                </td>
+                                <td style="width: 51%;">
+                                    <p:inputText size="100" value="#{faturamentosController.nomeClienteBusca}"/>
+                                </td>                                
+                                <td style="width: 12%;">
+                                    <p:inputMask size="20" value="#{faturamentosController.telefoneBusca}" mask="(99) 9999-9999"/>
+                                </td>
+                                <td>
+                                    <p:commandLink action="#{faturamentosController.buscarClientesComParametro()}" update=":formularioPadrao:resultadoBuscarClienteFaturamento">
+                                        <img class="img" src="/SAVA/faces/imagens/buscar16x16.png" border="1"/>
+                                    </p:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="barraTitulo">
+                        <h1 class="titulo">Resultado Busca</h1>
+                    </div>
+                    <p:dataTable id="resultadoBuscarClienteFaturamento" var="cliente" value="#{faturamentosController.listaClientes}" scrollHeight="350" style="width: 968px;" emptyMessage="Nenhum registro encontrado!">  
+                        <p:column headerText="ID" style="height: 10px; font-size: 10px; text-align: center; width: 15px;">  
+                            <h:outputText value="#{cliente.idCliente}"/>  
+                        </p:column>  
+                        <p:column headerText="Nome" style="height: 10px; font-size: 10px; width: 150px;">  
+                            <h:outputText value="#{cliente.nomeCliente}" />  
+                        </p:column> 
+                        <p:column headerText="CPF" style="height: 10px; font-size: 10px; text-align: center; width: 65px;">  
+                            <h:outputText value="#{cliente.cpf}" />  
+                        </p:column>           
+                        <p:column headerText="Tel. Residencial" style="height: 10px; font-size: 10px; text-align: center; width: 65px;">  
+                            <h:outputText value="#{cliente.telefoneResidencial}" />  
+                        </p:column>                               
+                        <p:column headerText="Tel. Celular" style="height: 10px; font-size: 10px; text-align: center; width: 65px;">  
+                            <h:outputText value="#{cliente.telefoneCelular}" />  
+                        </p:column> 
+                        <p:column headerText="Selecionar" style="height: 10px; font-size: 10px; text-align: center; width: 60px;">
+                            <p:commandLink action="#{faturamentosController.selecionarCliente(cliente)}" oncomplete="PF('mdlFaturamentosLocalizarCliente').hide(); desabilitaCampos();" update=":formularioPadrao:panelFaturamentos">
+                                <img class="img" src="/SAVA/faces/imagens/selecionar32x32.png" border="1"/>  
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable> 
+                </p:dialog>
+
+                <!--Botões Lista-->
+                <p:outputPanel rendered="#{faturamentosController.mostrarLista}">
+                    <div class="botoes" style="display: block;">
+                        <div class="divBtn">
+                            <h:commandLink onclick="PF('mdlFaturamentosLocalizarCliente').show();
+                                    return false;">
+                                <img class="img" src="/SAVA/faces/imagens/buscar.png" border="1"/>
+                            </h:commandLink>
+                            <span class="txtBtn">Buscar Cliente</span>
+                        </div>
+                        <div class="divBtn">
+                            <h:commandLink id="btnNovoFaturamento" action="#{faturamentosController.novo()}" >
+                                <img id="imgNovoFaturamento" class="img" src="/SAVA/faces/imagens/novo.png" border="1" />
+                            </h:commandLink>
+                            <span class="txtBtn" id="txtNovoFaturamento">Novo</span>
+                        </div>
+                    </div>
+                    <p:separator />
+                </p:outputPanel>
+
+                <!--Botões Formulário-->
+                <p:outputPanel rendered="#{faturamentosController.mostrarFormulario}">
+                    <div class="botoes">
+                        <div class="divBtn">
+                            <p:commandLink action="#{faturamentosController.salvarFaturamento()}" styleClass="salvar" update=":formularioPadrao:panelFaturamentos">
+                                <img class="img" src="/SAVA/faces/imagens/salvar.png" border="1"/>
+                            </p:commandLink>
+                            <span class="txtBtn">Salvar</span>
+                        </div> 
+                        <div class="divBtn">
+                            <h:commandLink action="#{faturamentosController.cancelar()}" immediate="true">
+                                <img class="img" src="/SAVA/faces/imagens/cancelar.png" border="1"/>
+                            </h:commandLink>
+                            <span class="txtBtn">Cancelar</span>
+                        </div>
+                    </div>   
+                    <p:separator />
+                </p:outputPanel>
+
+                <!--Lista de Faturamentos-->
+                <p:outputPanel rendered="#{faturamentosController.mostrarLista}">  
+                    <div class="divBorda">
+                        <div class="barraTitulo">
+                            <h1 class="titulo">Cliente</h1>
+                        </div>
+                        <table style="width:100%">
+                            <tr>
+                                <td><label>ID</label></td>
+                                <td><label>Nome Cliente</label></td>
+                                <td><label>CPF</label></td>
+                                <td><label>Telefone Residencial</label></td>
+                                <td><label>Telefone Celular</label></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 5%;">
+                                    <p:inputText id="idCliente" size="5" value="#{faturamentosController.idCliente}" />
+                                </td>
+                                <td style="width: 51%;">
+                                    <p:inputText id="nomeClienteLista" size="100" value="#{faturamentosController.nomeClienteLista}" />
+                                </td>
+                                <td style="width: 9%;">
+                                    <p:inputText id="cpf" size="14" value="#{faturamentosController.cpf}" />
+                                </td>
+                                <td style="width: 12%;">
+                                    <p:inputText id="telefoneResidencial" size="20" value="#{faturamentosController.telefoneResidencial}" />
+                                </td>
+                                <td style="width: 23%;">
+                                    <p:inputText id="telefoneCelular" size="20" value="#{faturamentosController.telefoneCelular}" />
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p:separator/>
+
+                        <div class="barraTitulo">
+                            <h1 class="titulo">Lista de Faturamentos</h1>
+                        </div>
+                        <p:dataTable id="dataFaturamentosLista" var="faturamentoLista" value="#{faturamentosController.listaFaturamentosPorCliente}"  emptyMessage="Nenhum faturamento cadastrado">  
+                            <p:column headerText="Data" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{faturamentoLista.dataFaturamento}" />  
+                            </p:column>           
+                            <p:column headerText="Valor Total" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{faturamentoLista.valorTotal}" />  
+                            </p:column>   
+                            <p:column headerText="Tipo Pagamento" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{faturamentoLista.descricaoTipoPagamento}" />  
+                            </p:column> 
+                            <p:column headerText="Recebido" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{faturamentoLista.recebidoExtenso}" />  
+                            </p:column> 
+                            <p:column headerText="Editar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                                <h:commandLink action="#{faturamentosController.selecionarFaturamento(faturamentoLista)}">
+                                    <img class="img" src="/SAVA/faces/imagens/editar.png" border="1"/>                           
+                                </h:commandLink>
+                            </p:column>      
+                        </p:dataTable>  
+                    </div>
+                </p:outputPanel>
+
+                <!--Formulário de Faturamentos-->
+                <p:outputPanel rendered="#{faturamentosController.mostrarFormulario}" >  
+                    <h:inputHidden value="#{faturamentosController.idFaturamento}"/>
+                    <h:inputHidden value="#{faturamentosController.idDescricaoFaturamento}"/>
+                    <h:inputHidden id="hiddenValorVendaServicoOriginal" value="#{faturamentosController.valorVendaServicoOriginal}"/>
+                    
+                    <table style="width:100%">
+                        <tr>
+                            <td><label>Cliente</label></td>
+                            <td><label>Animal</label></td>
+                            <td><label>Data Faturamento</label></td>
+                            <td><label>Tipo Pagamento</label></td>
+                            <td><label>Recebido</label></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 50%;">
+                                <p:inputText id="nomeClienteCadastro" size="100" value="#{faturamentosController.nomeClienteCadastro}" />
+                            </td>
+                            <td style="width: 15%;">
+                                <p:selectOneMenu id="comboBoxAnimal" value="#{faturamentosController.idAnimal}">
+                                    <f:selectItems value="#{faturamentosController.collectionAnimais}" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width: 10%;">
+                                <p:inputMask id="dataFaturamento" value="#{faturamentosController.dataFaturamento}" mask="99/99/9999" />
+                            </td>
+                            <td style="width: 10%;">
+                                <p:selectOneMenu id="comboBoxTipoPagamento" value="#{faturamentosController.idTipoPagamento}">
+                                    <f:selectItems value="#{faturamentosController.collectionTiposPagamentos}" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width: 10%;">
+                                <p:selectOneMenu id="recebido" value="#{faturamentosController.recebido}" >
+                                    <f:selectItem itemLabel="Não" itemValue="N" />
+                                    <f:selectItem itemLabel="Sim" itemValue="S" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td><label>Observação Pagamento</label></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:inputTextarea id="obsPagamento" rows="3" cols="100" value="#{faturamentosController.obsPagamento}"></p:inputTextarea>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="acrescentarServico">
+                        <div class="barraTitulo">
+                            <h1 class="titulo">Acrescentar Serviço</h1>
+                        </div>
+                        <table style="width:100%">
+                            <tr>
+                                <td><label>Serviço</label></td>
+                                <td><label>Quantidade</label></td>
+                                <td><label>Valor</label></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%;">
+                                    <p:selectOneMenu id="comboBoxServico" value="#{faturamentosController.idServico}">
+                                        <f:selectItems value="#{faturamentosController.collectionServicos}" />
+                                        <p:ajax update="qtdServico,valorVendaServico" listener="#{faturamentosController.buscarValorVendaServico}" />
+                                    </p:selectOneMenu>
+                                </td>
+                                <td style="width: 10%;">
+                                    <p:inputText id="qtdServico" size="10" value="#{faturamentosController.qtdServico}" onchange="atualizarValorVendaServico();"/>
+                                </td>
+                                <td style="width: 15%;">
+                                    <p:inputText id="valorVendaServico" size="10" value="#{faturamentosController.valorVendaServico}"/>
+                                </td>
+                                <td>
+                                    <p:commandLink action="#{faturamentosController.adicionarServicoDescricaoFaturamento()}" update=":formularioPadrao:dataDescricaoFaturamentosLista">
+                                        <img class="img" src="/SAVA/faces/imagens/adicionar16x16.png" border="1"/>
+                                    </p:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br></br>
+                    <div class="barraTitulo">
+                        <h1 class="titulo">Itens Faturamento</h1>
+                    </div>
+                    <p:dataTable id="dataDescricaoFaturamentosLista" var="descricaoFaturamentoLista" value="#{faturamentosController.listaDescricaoFaturamentoPorFaturamento}"  emptyMessage="Nenhum item neste faturamento">  
+                            <p:column headerText="Descrição" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{descricaoFaturamentoLista.descricao}" />  
+                            </p:column>           
+                            <p:column headerText="Quantidade" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{descricaoFaturamentoLista.qtd}" />  
+                            </p:column>   
+                            <p:column headerText="Valor (R$)" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{descricaoFaturamentoLista.valorVenda}" />  
+                            </p:column>   
+                            <p:column headerText="Excluir" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                                <p:commandLink action="#{faturamentosController.selecionarDescricaoFaturamentoExclusao(descricaoFaturamentoLista)}" update=":formularioPadrao:confirmDialogExclusaoDescricaoFaturamento" oncomplete="PF('confirmDialogExclusaoDescricaoFaturamento').show()">
+                                    <img class="img" src="/SAVA/faces/imagens/excluir.png" border="1"/>                           
+                                </p:commandLink>
+                            </p:column> 
+                            <p:summaryRow>
+                                <p:column colspan="2" style="text-align:right">
+                                    <h:outputText value="Total:" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{faturamentosController.valorTotal}" />
+                                </p:column>
+                                <p:column></p:column>
+                            </p:summaryRow>
+                    </p:dataTable> 
+                    
+                    <p:confirmDialog id="confirmDialogExclusaoDescricaoFaturamento" message="Deseja realmente excluir o item #{faturamentosController.descricao}?"  header="Atenção" severity="alert" widgetVar="confirmDialogExclusaoDescricaoFaturamento" >  
+                        <p:commandButton value="Sim" action="#{faturamentosController.excluirDescricaoFaturamento()}" onclick="PF('confirmDialogExclusaoDescricaoFaturamento').hide()" update=":formularioPadrao:panelFaturamentos"/>
+                        <p:commandButton value="Não" onclick="PF('confirmDialogExclusaoDescricaoFaturamento').hide();
+                            return false;" />   
+                    </p:confirmDialog>
+                    
+                </p:outputPanel>
+
+            </p:panel>
+
+        </ui:define>
+    </ui:composition>
+</html>
+
+
+
