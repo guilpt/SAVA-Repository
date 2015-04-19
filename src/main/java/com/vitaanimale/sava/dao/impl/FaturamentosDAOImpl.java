@@ -236,6 +236,9 @@ public class FaturamentosDAOImpl extends AbstractSAVADao implements IFaturamento
         
         sb.append(" select va_descricao_faturamentos.id_descricao_faturamento,");
         sb.append("        va_descricao_faturamentos.id_faturamento,");
+        sb.append("        case when va_descricao_faturamentos.id_servico is not null then 'Serviço'");
+        sb.append("             when va_descricao_faturamentos.id_produto is not null then 'Produto'");
+        sb.append("         end                                                                                                  as tipo_descricao_faturamento,");
         sb.append("        va_descricao_faturamentos.id_servico,");
         sb.append("        va_descricao_faturamentos.qtd_servico,");
         sb.append("        va_descricao_faturamentos.valor_venda_servico,");
@@ -259,6 +262,7 @@ public class FaturamentosDAOImpl extends AbstractSAVADao implements IFaturamento
                     
                     descricaoFaturamento.setIdDescricaoFaturamento(rs.getInt("ID_DESCRICAO_FATURAMENTO"));
                     descricaoFaturamento.setIdFaturamento(rs.getInt("ID_FATURAMENTO"));
+                    descricaoFaturamento.setTipoDescricaoFaturamento(rs.getString("TIPO_DESCRICAO_FATURAMENTO"));
                     descricaoFaturamento.setIdServico(rs.getInt("ID_SERVICO"));
                     descricaoFaturamento.setQtdServico(rs.getInt("QTD_SERVICO"));
                     descricaoFaturamento.setValorVendaServico(rs.getDouble("VALOR_VENDA_SERVICO"));

@@ -7,6 +7,7 @@ package com.vitaanimale.sava.to;
 public class DescricaoFaturamentos {
     private Integer idDescricaoFaturamento;
     private Integer idFaturamento;
+    private String  tipoDescricaoFaturamento;
     private Integer idServico;
     private Integer qtdServico;
     private Double  valorVendaServico;
@@ -32,6 +33,14 @@ public class DescricaoFaturamentos {
 
     public void setIdFaturamento(Integer idFaturamento) {
         this.idFaturamento = idFaturamento;
+    }
+
+    public String getTipoDescricaoFaturamento() {
+        return tipoDescricaoFaturamento;
+    }
+
+    public void setTipoDescricaoFaturamento(String tipoDescricaoFaturamento) {
+        this.tipoDescricaoFaturamento = tipoDescricaoFaturamento;
     }
 
     public Integer getIdServico() {
@@ -117,6 +126,7 @@ public class DescricaoFaturamentos {
     public DescricaoFaturamentos() {
         this.idDescricaoFaturamento = null;
         this.idFaturamento = null;
+        this.tipoDescricaoFaturamento = null;
         this.idServico = null;
         this.qtdServico = null;
         this.valorVendaServico = null;
@@ -142,7 +152,7 @@ public class DescricaoFaturamentos {
 
     @Override
     public String toString() {
-        return "DescricaoFaturamentos{" + "idDescricaoFaturamento=" + idDescricaoFaturamento + ", idFaturamento=" + idFaturamento + ", idServico=" + idServico + ", qtdServico=" + qtdServico + ", valorVendaServico=" + valorVendaServico + ", idProduto=" + idProduto + ", qtdProduto=" + qtdProduto + ", valorVendaProduto=" + valorVendaProduto + ", id=" + id + ", descricao=" + descricao + ", qtd=" + qtd + ", valorVenda=" + valorVenda + '}';
+        return "DescricaoFaturamentos{" + "idDescricaoFaturamento=" + idDescricaoFaturamento + ", idFaturamento=" + idFaturamento + ", tipoDescricaoFaturamento=" + tipoDescricaoFaturamento + ", idServico=" + idServico + ", qtdServico=" + qtdServico + ", valorVendaServico=" + valorVendaServico + ", idProduto=" + idProduto + ", qtdProduto=" + qtdProduto + ", valorVendaProduto=" + valorVendaProduto + ", id=" + id + ", descricao=" + descricao + ", qtd=" + qtd + ", valorVenda=" + valorVenda + '}';
     }
 
 }

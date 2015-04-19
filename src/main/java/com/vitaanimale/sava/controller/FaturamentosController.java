@@ -79,6 +79,7 @@ public class FaturamentosController extends SAVAAbstractController implements Se
     private Integer qtdServico;
     private Double  valorVendaServico;
     private Double  valorVendaServicoOriginal;
+    private Double  valorVendaServicoAnterior;
     private Double  valorVenda;
     
     //Modal Buscar Produto
@@ -303,6 +304,14 @@ public class FaturamentosController extends SAVAAbstractController implements Se
         this.valorVendaServicoOriginal = valorVendaServicoOriginal;
     }
 
+    public Double getValorVendaServicoAnterior() {
+        return valorVendaServicoAnterior;
+    }
+
+    public void setValorVendaServicoAnterior(Double valorVendaServicoAnterior) {
+        this.valorVendaServicoAnterior = valorVendaServicoAnterior;
+    }
+
     public Double getValorVenda() {
         return valorVenda;
     }
@@ -467,6 +476,7 @@ public class FaturamentosController extends SAVAAbstractController implements Se
             this.qtdServico = null;
             this.valorVendaServico = null;
             this.valorVendaServicoOriginal = null;
+            this.valorVendaServicoAnterior = null;
             this.valorVenda = null;
             
             this.idTipoProduto = null;
@@ -541,6 +551,7 @@ public class FaturamentosController extends SAVAAbstractController implements Se
             this.qtdServico = null;
             this.valorVendaServico = null;
             this.valorVendaServicoOriginal = null;
+            this.valorVendaServicoAnterior = 0.0;
             this.valorVenda = null;
             this.listaDescricaoFaturamento = null;
             
@@ -564,6 +575,12 @@ public class FaturamentosController extends SAVAAbstractController implements Se
             this.recebido = faturamento.getRecebido();
             this.obsPagamento = faturamento.getObsPagamento();
             
+            this.idServico = -1;
+            this.qtdServico = null;
+            this.valorVendaServico = null;
+            this.valorVendaServicoOriginal = null;
+            this.valorVendaServicoAnterior = 0.0;
+            
             try {
                 this.listaDescricaoFaturamentoPorFaturamento = faturamentosBO.buscarDescricaoFaturamentosPorFaturamento(this.idFaturamento);
             } catch(SavaBusinessException e) {
@@ -586,13 +603,13 @@ public class FaturamentosController extends SAVAAbstractController implements Se
             try {
                 if (this.idFaturamento == null) {
                     linhasAfetadas = faturamentosBO.inserirFaturamento(faturamentoFormulario);
+                    
                 } else {
                     linhasAfetadas = faturamentosBO.atualizarFaturamento(faturamentoFormulario);
                 }
                 
                 if (linhasAfetadas == 1) {
                     listaFaturamentosPorCliente = faturamentosBO.buscarFaturamentosPorCliente(this.idCliente);
-                    this.controlarExibicao(false, true);
                     salvarFaturamentoContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Faturamento salvo com sucesso!"));
                 }
             } catch (SavaBusinessException e) {
@@ -620,6 +637,7 @@ public class FaturamentosController extends SAVAAbstractController implements Se
         this.qtdServico = 0;
         this.valorVendaServico = 0.0;
         this.valorVendaServicoOriginal = 0.0;
+        this.valorVendaServicoAnterior = 0.0;
         
         Iterator<Servicos> iteServicos = listaServicos.iterator();
         Servicos servico;
@@ -635,7 +653,7 @@ public class FaturamentosController extends SAVAAbstractController implements Se
         return ACTION_INPUT;
     }
     
-    public String adicionarServicoDescricaoFaturamento() {
+    public String salvarServicoDescricaoFaturamento() {
         FacesContext adicionarServicoDescricaoFaturamentoContext = FacesContext.getCurrentInstance();
         Integer linhasAfetadas = 0;
 
@@ -643,15 +661,22 @@ public class FaturamentosController extends SAVAAbstractController implements Se
             DescricaoFaturamentos descricaoFaturamentoFormulario = new DescricaoFaturamentos(this.idDescricaoFaturamento, this.idFaturamento, this.idServico, this.qtdServico, this.valorVendaServico, null, null, null);
 
             try {
+                this.valorTotal = this.valorTotal - this.valorVendaServicoAnterior + this.valorVendaServico;
+                salvarFaturamento();
                 if (this.idDescricaoFaturamento == null) {
                     linhasAfetadas = faturamentosBO.inserirServicoDescricaoFaturamento(descricaoFaturamentoFormulario);
                 } else {
                     linhasAfetadas = faturamentosBO.atualizarServicoDescricaoFaturamento(descricaoFaturamentoFormulario);
                 }
                 
-                if (linhasAfetadas == 1) {
-                    this.valorTotal = this.valorTotal + this.valorVendaServico;
+                if (linhasAfetadas == 1) {                   
+                    listaFaturamentosPorCliente = faturamentosBO.buscarFaturamentosPorCliente(this.idCliente);
                     listaDescricaoFaturamentoPorFaturamento = faturamentosBO.buscarDescricaoFaturamentosPorFaturamento(this.idFaturamento);
+                    this.idServico = -1;
+                    this.qtdServico = 0;
+                    this.valorVendaServico = 0.0;
+                    this.valorVendaServicoOriginal = 0.0;
+                    this.valorVendaServicoAnterior = 0.0;
                     adicionarServicoDescricaoFaturamentoContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Serviço salvo com sucesso!"));
                 }
             } catch (SavaBusinessException e) {
@@ -664,17 +689,17 @@ public class FaturamentosController extends SAVAAbstractController implements Se
         return ACTION_INPUT;
     }
     
-    public String editarServicoDescricaoFaturamento(DescricaoFaturamentos descricaoFaturamento) {
-//        if (descricaoFaturamento != null) {
-//            
-//            Iterator<DescricaoFaturamentos> iteDescricaoFaturamentos = listaDescricaoFaturamentoPorFaturamento.iterator();
-//            while(iteDescricaoFaturamentos.hasNext()){
-//                servico = iteServicos.next();
-//                if(iteDescricaoFaturamentos.next().get){
-//                   this.valorVendaServico = servico.getValorVendaServico();
-//                }
-//            }  
-//        }
+    public String editarDescricaoFaturamento(DescricaoFaturamentos descricaoFaturamento) {
+        if (descricaoFaturamento != null) {
+            if(descricaoFaturamento.getTipoDescricaoFaturamento().equals("Serviço")) {
+                this.idDescricaoFaturamento = descricaoFaturamento.getIdDescricaoFaturamento();
+                this.idServico = descricaoFaturamento.getIdServico();
+                this.qtdServico = descricaoFaturamento.getQtdServico();
+                this.valorVendaServico = descricaoFaturamento.getValorVendaServico();
+                this.valorVendaServicoOriginal = descricaoFaturamento.getValorVendaServico() / this.qtdServico;
+                this.valorVendaServicoAnterior = descricaoFaturamento.getValorVendaServico();
+            }
+        }
 
         return ACTION_INPUT;
     }
@@ -699,6 +724,9 @@ public class FaturamentosController extends SAVAAbstractController implements Se
 
                 if (linhasAfetadas == 1) {
                     this.valorTotal = this.valorTotal - this.valorVenda;
+                    salvarFaturamento();
+                    listaFaturamentosPorCliente = faturamentosBO.buscarFaturamentosPorCliente(this.idCliente);
+                    listaDescricaoFaturamentoPorFaturamento = faturamentosBO.buscarDescricaoFaturamentosPorFaturamento(this.idFaturamento);
                     excluirDescricaoFaturamentoContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Item excluÃ­do com sucesso!"));
                 }
             } catch (SavaBusinessException e) {
