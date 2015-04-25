@@ -16,4 +16,6 @@ public interface IMedicosVeterinariosDAO {
     public Integer excluirMedicoVeterinario(Integer idMedicoVeterinario) throws SavaDAOException;
     
     public Integer atualizarMedicoVeterinario(MedicosVeterinarios medicoVeterinario) throws SavaDAOException;
+    
+    public List<MedicosVeterinarios> buscarMedicosVeterinariosAtivos() throws SavaDAOException;
 }

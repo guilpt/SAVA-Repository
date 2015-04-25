@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relSAVA_Faturamento" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ID_FATURAMENTO" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\ProjetosNetBeans\\SAVA\\src\\main\\webapp\\jasperreports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select va_clientes.nome_cliente,
+       va_clientes.cpf,
+       va_clientes.telefone_residencial,
+       va_clientes.telefone_celular,
+       va_clientes.endereco,
+       va_especies.descricao_especie,
+       va_racas.descricao_raca,
+       va_animais.nome_animal,
+       coalesce(va_servicos.descricao_servico, va_produtos.descricao_produto) 				      as descricao,
+       coalesce(va_descricao_faturamentos.qtd_servico, va_descricao_faturamentos.qtd_produto) 		      as qtd,
+       coalesce(va_descricao_faturamentos.valor_venda_servico, va_descricao_faturamentos.valor_venda_produto) as valor_venda,
+       va_faturamentos.valor_total,
+       to_char(va_faturamentos.data_faturamento, 'dd/mm/yyyy') as data_faturamento,
+       va_medicos_veterinarios.nome_medico_veterinario,
+       va_medicos_veterinarios.uf_crmv,
+       va_medicos_veterinarios.nro_crmv
+  from va_faturamentos inner join va_clientes		    on ( va_faturamentos.id_cliente            = va_clientes.id_cliente                        )
+		       inner join va_animais	            on ( va_faturamentos.id_animal	       = va_animais.id_animal                          )
+		       inner join va_racas		    on ( va_animais.id_raca                    = va_racas.id_raca			       )
+		       inner join va_especies		    on ( va_racas.id_especie 		       = va_especies.id_especie 		       )
+		       inner join va_medicos_veterinarios   on ( va_faturamentos.id_medico_veterinario = va_medicos_veterinarios.id_medico_veterinario )
+		       inner join va_descricao_faturamentos on ( va_faturamentos.id_faturamento        = va_descricao_faturamentos.id_faturamento      )
+		       left  join va_servicos		    on ( va_descricao_faturamentos.id_servico  = va_servicos.id_servico 		       )
+		       left  join va_produtos		    on ( va_descricao_faturamentos.id_produto  = va_produtos.id_produto 		       )
+where va_faturamentos.id_faturamento = cast($P{ID_FATURAMENTO} as integer)]]>
+	</queryString>
+	<field name="nome_cliente" class="java.lang.String"/>
+	<field name="cpf" class="java.lang.String"/>
+	<field name="telefone_residencial" class="java.lang.String"/>
+	<field name="telefone_celular" class="java.lang.String"/>
+	<field name="endereco" class="java.lang.String"/>
+	<field name="descricao_especie" class="java.lang.String"/>
+	<field name="descricao_raca" class="java.lang.String"/>
+	<field name="nome_animal" class="java.lang.String"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="qtd" class="java.lang.Integer"/>
+	<field name="valor_venda" class="java.math.BigDecimal"/>
+	<field name="valor_total" class="java.math.BigDecimal"/>
+	<field name="data_faturamento" class="java.lang.String"/>
+	<field name="nome_medico_veterinario" class="java.lang.String"/>
+	<field name="uf_crmv" class="java.lang.String"/>
+	<field name="nro_crmv" class="java.lang.Integer"/>
+	<group name="nome_cliente">
+		<groupExpression><![CDATA[$F{nome_cliente}]]></groupExpression>
+		<groupHeader>
+			<band height="120">
+				<staticText>
+					<reportElement x="2" y="2" width="76" height="16"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Proprietário:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="78" y="2" width="477" height="16"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{nome_cliente}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="46" y="106" width="465" height="1"/>
+				</line>
+				<line>
+					<reportElement x="45" y="107" width="1" height="13"/>
+				</line>
+				<staticText>
+					<reportElement x="47" y="107" width="211" height="13"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Serviço / Produto]]></text>
+				</staticText>
+				<line>
+					<reportElement x="258" y="107" width="1" height="13"/>
+				</line>
+				<staticText>
+					<reportElement x="258" y="107" width="81" height="13"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Quantidade]]></text>
+				</staticText>
+				<line>
+					<reportElement x="339" y="107" width="1" height="13"/>
+				</line>
+				<staticText>
+					<reportElement x="339" y="107" width="91" height="13"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Valor Unitário (R$)]]></text>
+				</staticText>
+				<line>
+					<reportElement x="430" y="107" width="1" height="13"/>
+				</line>
+				<staticText>
+					<reportElement x="430" y="107" width="81" height="13"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Valor (R$)]]></text>
+				</staticText>
+				<line>
+					<reportElement x="511" y="107" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement x="46" y="119" width="465" height="1"/>
+				</line>
+				<staticText>
+					<reportElement x="2" y="50" width="45" height="16"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Animal:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="47" y="50" width="212" height="16"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{nome_animal}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="259" y="50" width="51" height="16"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Espécie:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="310" y="50" width="98" height="16"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{descricao_especie}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="408" y="50" width="34" height="16"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Raça:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="442" y="50" width="113" height="16"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{descricao_raca}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="2" y="18" width="29" height="16"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CPF:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="31" y="18" width="110" height="16"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{cpf}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="2" y="34" width="61" height="16"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Endereço:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="63" y="34" width="492" height="16"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{endereco}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="141" y="18" width="56" height="16"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Telefone:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="197" y="18" width="143" height="16"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{telefone_residencial}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="336" y="18" width="48" height="16"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Celular:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="384" y="18" width="152" height="16"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{telefone_celular}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="2" y="77" width="32" height="16"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Data:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="34" y="77" width="225" height="16"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{data_faturamento}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<line>
+					<reportElement x="430" y="0" width="1" height="13"/>
+				</line>
+				<textField>
+					<reportElement x="432" y="0" width="78" height="13"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{valor_total}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="511" y="0" width="1" height="13"/>
+				</line>
+				<line>
+					<reportElement x="430" y="13" width="81" height="1"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band height="802" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="802"/>
+			</rectangle>
+		</band>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="60"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "relSAVA_cabecalho.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="2" width="553" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relação de Serviços e Produtos]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="22" width="555" height="1"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<line>
+				<reportElement x="45" y="0" width="1" height="13"/>
+			</line>
+			<textField>
+				<reportElement x="46" y="0" width="211" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="258" y="0" width="1" height="13"/>
+			</line>
+			<textField>
+				<reportElement x="259" y="0" width="80" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{qtd}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="339" y="0" width="1" height="13"/>
+			</line>
+			<textField>
+				<reportElement x="339" y="0" width="91" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{valor_venda}/$F{qtd}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="430" y="0" width="1" height="13"/>
+			</line>
+			<textField>
+				<reportElement x="431" y="0" width="80" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{valor_venda}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="511" y="0" width="1" height="13"/>
+			</line>
+			<line>
+				<reportElement x="46" y="13" width="465" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="75">
+			<line>
+				<reportElement x="172" y="37" width="250" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="172" y="38" width="250" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nome_medico_veterinario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="172" y="53" width="250" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["CRMV-" + $F{uf_crmv} + " " + $F{nro_crmv}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

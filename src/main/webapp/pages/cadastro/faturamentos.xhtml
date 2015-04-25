@@ -25,6 +25,10 @@
                     $('#nomeClienteCadastro').attr('disabled', 'disabled');
                     $('#valorTotal').fadeTo('fast', 0.5);
                     $('#valorTotal').attr('disabled', 'disabled');
+                    $('#descricaoProduto').fadeTo('fast', 0.5);
+                    $('#descricaoProduto').attr('disabled', 'disabled');
+                    $('#qtdProdutoDisponivel').fadeTo('fast', 0.5);
+                    $('#qtdProdutoDisponivel').attr('disabled', 'disabled');
                 });
                 
                 function desabilitaCampos(){
@@ -42,10 +46,18 @@
                     $('#nomeClienteCadastro').attr('disabled', 'disabled');
                     $('#valorTotal').fadeTo('fast', 0.5);
                     $('#valorTotal').attr('disabled', 'disabled');
+                    $('#descricaoProduto').fadeTo('fast', 0.5);
+                    $('#descricaoProduto').attr('disabled', 'disabled');
+                    $('#qtdProdutoDisponivel').fadeTo('fast', 0.5);
+                    $('#qtdProdutoDisponivel').attr('disabled', 'disabled');
                 }
                 
                 function atualizarValorVendaServico(){
-                    $('#valorVendaServico').val($('#valorVendaServicoOriginal').val() * $('#qtdServico').val());
+                    $('#valorVendaServico').val(($('#valorVendaServicoOriginal').val() * $('#qtdServico').val()).toFixed(2));
+                }
+                
+                function atualizarValorVendaProduto(){
+                    $('#valorVendaProduto').val(($('#valorVendaProdutoOriginal').val() * $('#qtdProduto').val()).toFixed(2));
                 }
             </script>
 
@@ -55,7 +67,14 @@
                 <div id="divMessagesFaturamento" >
                     <p:growl id="mensagensFaturamentos" showDetail="true" />
                 </div>
-
+                
+                <p:dialog header="Relatório" widgetVar="mdlFaturamentosRelatorio" modal="true" width="1000px" height="600px">
+                    <div>
+                        <p:media value="#{faturamentosController.relatorioPDF}" player="pdf" width="100%" height="550px">
+                        </p:media>
+                    </div>
+                </p:dialog>
+                
                 <!--Modal Buscar Cliente-->
                 <p:dialog header="Localizar Cliente" widgetVar="mdlFaturamentosLocalizarCliente" modal="true" width="1000px" height="500px">
                     <div class="barraTitulo">
@@ -149,7 +168,7 @@
                             <span class="txtBtn">Salvar</span>
                         </div> 
                         <div class="divBtn">
-                            <h:commandLink action="#{faturamentosController.cancelar()}" immediate="true">
+                            <h:commandLink action="#{faturamentosController.voltar()}" immediate="true">
                                 <img class="img" src="/SAVA/faces/imagens/voltar32x32.png" border="1"/>
                             </h:commandLink>
                             <span class="txtBtn">Voltar</span>
@@ -213,7 +232,12 @@
                                 <h:commandLink action="#{faturamentosController.selecionarFaturamento(faturamentoLista)}">
                                     <img class="img" src="/SAVA/faces/imagens/editar.png" border="1"/>                           
                                 </h:commandLink>
-                            </p:column>      
+                            </p:column>    
+                            <p:column headerText="Imprimir" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
+                                <p:commandLink action="#{faturamentosController.imprimirFaturamento(faturamentoLista)}" oncomplete="PF('mdlFaturamentosRelatorio').show();">
+                                    <img class="img" src="/SAVA/faces/imagens/pdf32x32.png" border="1"/>  
+                                </p:commandLink>
+                            </p:column>
                         </p:dataTable>  
                     </div>
                 </p:outputPanel>
@@ -224,20 +248,40 @@
                     <h:inputHidden id="idDescricaoFaturamento" value="#{faturamentosController.idDescricaoFaturamento}"/>
                     <h:inputHidden id="valorVendaServicoOriginal" value="#{faturamentosController.valorVendaServicoOriginal}"/>
                     <h:inputHidden id="valorVendaServicoAnterior" value="#{faturamentosController.valorVendaServicoAnterior}"/>
+                    <h:inputHidden id="idProduto" value="#{faturamentosController.idProduto}"/>
+                    <h:inputHidden id="valorVendaProdutoOriginal" value="#{faturamentosController.valorVendaProdutoOriginal}"/>
+                    <h:inputHidden id="valorVendaProdutoAnterior" value="#{faturamentosController.valorVendaProdutoAnterior}"/>
+                    <h:inputHidden id="valorVenda" value="#{faturamentosController.valorVenda}"/>
+                    <h:inputHidden id="qtdProdutoTemp" value="#{faturamentosController.qtdProdutoTemp}"/>
+                    <h:inputHidden id="tipoDescricaoFaturamento" value="#{faturamentosController.tipoDescricaoFaturamento}"/>
+                    <h:inputHidden id="codBarraTemp" value="#{faturamentosController.codBarraTemp}"/>
                     
                     <table style="width:100%">
                         <tr>
                             <td><label>Cliente</label></td>
-                            <td><label>Animal</label></td>
-                            <td><label>Data Faturamento</label></td>
-                            <td><label>Tipo Pagamento</label></td>
-                            <td><label>Recebido</label></td>
+                            <td><label>Médico Veterinário</label></td>
                         </tr>
                         <tr>
                             <td style="width: 50%;">
                                 <p:inputText id="nomeClienteCadastro" size="100" value="#{faturamentosController.nomeClienteCadastro}" />
                             </td>
-                            <td style="width: 15%;">
+                            <td style="width: 50%;">
+                                <p:selectOneMenu id="idMedicoVeterinario" value="#{faturamentosController.idMedicoVeterinario}">
+                                    <f:selectItems value="#{faturamentosController.collectionMedicosVeterinarios}" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="width:100%">
+                        <tr>
+                            <td><label>Animal</label></td>
+                            <td><label>Data Faturamento</label></td>
+                            <td><label>Tipo Pagamento</label></td>
+                            <td><label>Recebido</label></td>
+                            <td><label>Valor Total (R$)</label></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 20%;">
                                 <p:selectOneMenu id="comboBoxAnimal" value="#{faturamentosController.idAnimal}">
                                     <f:selectItems value="#{faturamentosController.collectionAnimais}" />
                                 </p:selectOneMenu>
@@ -256,19 +300,18 @@
                                     <f:selectItem itemLabel="Sim" itemValue="S" />
                                 </p:selectOneMenu>
                             </td>
+                            <td style="width: 10%;">
+                                <p:inputText id="valorTotal" size="10" value="#{faturamentosController.valorTotal}"/>
+                            </td>
                         </tr>
                     </table>
                     <table style="width:100%">
                         <tr>
                             <td><label>Observação Pagamento</label></td>
-                            <td><label>Valor Total (R$)</label></td>
                         </tr>
                         <tr>
                             <td>
                                 <p:inputTextarea id="obsPagamento" rows="3" cols="100" value="#{faturamentosController.obsPagamento}"></p:inputTextarea>
-                            </td>
-                            <td>
-                                <p:inputText id="valorTotal" size="10" value="#{faturamentosController.valorTotal}"/>
                             </td>
                         </tr>
                     </table>
@@ -304,6 +347,45 @@
                             </tr>
                         </table>
                     </div>
+                    <div id="acrescentarProduto">
+                        <div class="barraTitulo">
+                            <h1 class="titulo">Acrescentar Produto</h1>
+                        </div>
+                        <table style="width:100%">
+                            <tr>
+                                <td><label>Código de Barra</label></td>
+                                <td><label>Descrição</label></td>
+                                <td><label>Qtd. Disponível</label></td>
+                                <td><label>Quantidade</label></td>
+                                <td><label>Valor</label></td>
+                                <td></td>
+                            </tr>
+                            <tr> 
+                                <td style="width: 30%;">
+                                    <p:inputText id="codBarra" value="#{faturamentosController.codBarra}" size="50">  
+                                        <p:ajax update="idProduto,descricaoProduto,qtdProdutoDisponivel,qtdProduto,valorVendaProduto,valorVendaProdutoOriginal,valorVendaProdutoAnterior" listener="#{faturamentosController.buscarProdutoPorCodBarra}" oncomplete="desabilitaCampos();"/>
+                                    </p:inputText>
+                                </td>
+                                <td style="width: 30%;">
+                                    <p:inputText id="descricaoProduto" size="50" value="#{faturamentosController.descricaoProduto}"/>
+                                </td>
+                                <td style="width: 10%;">
+                                    <p:inputText id="qtdProdutoDisponivel" size="10" value="#{faturamentosController.qtdProdutoDisponivel}"/>
+                                </td>
+                                <td style="width: 10%;">
+                                    <p:inputText id="qtdProduto" size="10" value="#{faturamentosController.qtdProduto}" onchange="atualizarValorVendaProduto();"/>
+                                </td>
+                                <td style="width: 15%;">
+                                    <p:inputText id="valorVendaProduto" size="10" value="#{faturamentosController.valorVendaProduto}"/>
+                                </td>
+                                <td>
+                                    <p:commandLink action="#{faturamentosController.salvarProdutoDescricaoFaturamento()}" update=":formularioPadrao:dataDescricaoFaturamentosLista,:formularioPadrao:panelFaturamentos" oncomplete="desabilitaCampos();">
+                                        <img class="img" src="/SAVA/faces/imagens/adicionar16x16.png" border="1"/>
+                                    </p:commandLink>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                     <br></br>
                     <div class="barraTitulo">
                         <h1 class="titulo">Itens Faturamento</h1>
@@ -322,12 +404,12 @@
                                 <h:outputText value="#{descricaoFaturamentoLista.valorVenda}" />  
                             </p:column>   
                             <p:column headerText="Editar" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
-                                <p:commandLink action="#{faturamentosController.editarDescricaoFaturamento(descricaoFaturamentoLista)}" update=":formularioPadrao:comboBoxServico,:formularioPadrao:qtdServico,:formularioPadrao:valorVendaServico,:formularioPadrao:valorVendaServicoOriginal,:formularioPadrao:valorVendaServicoAnterior,:formularioPadrao:idDescricaoFaturamento" oncomplete="desabilitaCampos();">
+                                <p:commandLink action="#{faturamentosController.editarDescricaoFaturamento(descricaoFaturamentoLista)}" update=":formularioPadrao:comboBoxServico,:formularioPadrao:qtdServico,:formularioPadrao:valorVendaServico,:formularioPadrao:valorVendaServicoOriginal,:formularioPadrao:valorVendaServicoAnterior,:formularioPadrao:idDescricaoFaturamento,:formularioPadrao:idProduto,:formularioPadrao:qtdProdutoTemp,:formularioPadrao:codBarra,:formularioPadrao:descricaoProduto,:formularioPadrao:qtdProdutoDisponivel,:formularioPadrao:qtdProduto,:formularioPadrao:valorVendaProduto,:formularioPadrao:valorVendaProdutoOriginal,:formularioPadrao:valorVendaProdutoAnterior" oncomplete="desabilitaCampos();">
                                     <img class="img" src="/SAVA/faces/imagens/editar16x16.png" border="1"/>                           
                                 </p:commandLink>
                             </p:column> 
                             <p:column headerText="Excluir" style="height: 10px; font-size: 10px; text-align: center; width: 50px;">
-                                <p:commandLink action="#{faturamentosController.selecionarDescricaoFaturamentoExclusao(descricaoFaturamentoLista)}" update=":formularioPadrao:confirmDialogExclusaoDescricaoFaturamento,:formularioPadrao:idDescricaoFaturamento" oncomplete="PF('confirmDialogExclusaoDescricaoFaturamento').show()">
+                                <p:commandLink action="#{faturamentosController.selecionarDescricaoFaturamentoExclusao(descricaoFaturamentoLista)}" update=":formularioPadrao:confirmDialogExclusaoDescricaoFaturamento,:formularioPadrao:idDescricaoFaturamento,:formularioPadrao:valorVenda,:formularioPadrao:qtdProdutoTemp,:formularioPadrao:tipoDescricaoFaturamento,:formularioPadrao:codBarraTemp" oncomplete="PF('confirmDialogExclusaoDescricaoFaturamento').show()">
                                     <img class="img" src="/SAVA/faces/imagens/excluir16x16.png" border="1"/>                           
                                 </p:commandLink>
                             </p:column> 

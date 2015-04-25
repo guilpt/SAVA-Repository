@@ -6,6 +6,7 @@ import com.vitaanimale.sava.infra.SavaBusinessException;
 import com.vitaanimale.sava.infra.SavaDAOException;
 import com.vitaanimale.sava.to.DescricaoFaturamentos;
 import com.vitaanimale.sava.to.Faturamentos;
+import com.vitaanimale.sava.to.ItensProdutos;
 import com.vitaanimale.sava.to.Servicos;
 import com.vitaanimale.sava.to.TiposPagamentos;
 import java.util.List;
@@ -92,6 +93,20 @@ public class FaturamentosBOImpl implements IFaturamentosBO {
         return listaServicos;
     }
     
+    
+    @Override
+    public ItensProdutos buscarProdutoPorCodBarra(String codBarra) throws SavaBusinessException {
+        ItensProdutos itemProduto = null;
+
+        try {
+            itemProduto = faturamentosDAO.buscarProdutoPorCodBarra(codBarra);
+        } catch (SavaDAOException e) {
+            throw new SavaBusinessException("Erro ao executar o método FaturamentosBOImpl.buscarProdutoPorCodBarra", e);
+        }
+
+        return itemProduto;
+    }
+    
     @Override
     public List<DescricaoFaturamentos> buscarDescricaoFaturamentosPorFaturamento(Integer idFaturamento) throws SavaBusinessException {
         List<DescricaoFaturamentos> listaDescricaoFaturamentos = null;
@@ -147,6 +162,37 @@ public class FaturamentosBOImpl implements IFaturamentosBO {
             return faturamentosDAO.atualizarProdutoDescricaoFaturamento(descricaoFaturamento);
         } catch(SavaDAOException e) {
             throw new SavaBusinessException("Erro ao executar o método buscarFaturamentosPorCliente.atualizarProdutoDescricaoFaturamento", e);
+        }
+    }
+
+    @Override
+    public Integer atualizarSaidaItensProdutos(String codBarra, Double valorVendaProduto, Integer idDescricaoFaturamento, String tipoAtualizacao) throws SavaBusinessException {
+        try {
+            return faturamentosDAO.atualizarSaidaItensProdutos(codBarra, valorVendaProduto, idDescricaoFaturamento, tipoAtualizacao);
+        } catch(SavaDAOException e) {
+            throw new SavaBusinessException("Erro ao executar o método buscarFaturamentosPorCliente.atualizarSaidaItensProdutos", e);
+        }
+    }
+
+    @Override
+    public List<ItensProdutos> buscarListaItensProdutosPorDescricaoFaturamento(Integer idDescricaoFaturamento) throws SavaBusinessException {
+        List<ItensProdutos> listaItensProdutos = null;
+
+        try {
+            listaItensProdutos = faturamentosDAO.buscarListaItensProdutosPorDescricaoFaturamento(idDescricaoFaturamento);
+        } catch (SavaDAOException e) {
+            throw new SavaBusinessException("Erro ao executar o método FaturamentosBOImpl.buscarListaItensProdutosPorDescricaoFaturamento", e);
+        }
+
+        return listaItensProdutos;
+    }
+
+    @Override
+    public Integer atualizarValorVendaProdutoItensProdutos(Double valorVendaProduto, Integer idItemProduto) throws SavaBusinessException {
+        try {
+            return faturamentosDAO.atualizarValorVendaProdutoItensProdutos(valorVendaProduto, idItemProduto);
+        } catch(SavaDAOException e) {
+            throw new SavaBusinessException("Erro ao executar o método buscarFaturamentosPorCliente.atualizarValorVendaProdutoItensProdutos", e);
         }
     }
     

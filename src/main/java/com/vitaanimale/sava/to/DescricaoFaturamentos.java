@@ -14,6 +14,7 @@ public class DescricaoFaturamentos {
     private Integer idProduto;
     private Integer qtdProduto;
     private Double  valorVendaProduto;
+    private String  codBarra;
     private Integer id;
     private String  descricao;
     private Integer qtd;
@@ -91,6 +92,14 @@ public class DescricaoFaturamentos {
         this.valorVendaProduto = valorVendaProduto;
     }
 
+    public String getCodBarra() {
+        return codBarra;
+    }
+
+    public void setCodBarra(String codBarra) {
+        this.codBarra = codBarra;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -133,6 +142,7 @@ public class DescricaoFaturamentos {
         this.idProduto = null;
         this.qtdProduto = null;
         this.valorVendaProduto = null;
+        this.codBarra = "";
         this.id = null;
         this.descricao = "";
         this.qtd = null;
@@ -152,7 +162,6 @@ public class DescricaoFaturamentos {
 
     @Override
     public String toString() {
-        return "DescricaoFaturamentos{" + "idDescricaoFaturamento=" + idDescricaoFaturamento + ", idFaturamento=" + idFaturamento + ", tipoDescricaoFaturamento=" + tipoDescricaoFaturamento + ", idServico=" + idServico + ", qtdServico=" + qtdServico + ", valorVendaServico=" + valorVendaServico + ", idProduto=" + idProduto + ", qtdProduto=" + qtdProduto + ", valorVendaProduto=" + valorVendaProduto + ", id=" + id + ", descricao=" + descricao + ", qtd=" + qtd + ", valorVenda=" + valorVenda + '}';
+        return "DescricaoFaturamentos{" + "idDescricaoFaturamento=" + idDescricaoFaturamento + ", idFaturamento=" + idFaturamento + ", tipoDescricaoFaturamento=" + tipoDescricaoFaturamento + ", idServico=" + idServico + ", qtdServico=" + qtdServico + ", valorVendaServico=" + valorVendaServico + ", idProduto=" + idProduto + ", qtdProduto=" + qtdProduto + ", valorVendaProduto=" + valorVendaProduto + ", codBarra=" + codBarra + ", id=" + id + ", descricao=" + descricao + ", qtd=" + qtd + ", valorVenda=" + valorVenda + '}';
     }
-
 }

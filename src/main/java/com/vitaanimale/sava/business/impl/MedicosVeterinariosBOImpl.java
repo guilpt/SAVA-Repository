@@ -62,5 +62,18 @@ public class MedicosVeterinariosBOImpl implements IMedicosVeterinariosBO {
             throw new SavaBusinessException("Erro ao executar o método MedicosVeterinariosBOImpl.atualizarMedicoVeterinario", e);
         }
     }
+
+    @Override
+    public List<MedicosVeterinarios> buscarMedicosVeterinariosAtivos() throws SavaBusinessException {
+        List<MedicosVeterinarios> listaMedicosVeterinarios = null;
+
+        try {
+            listaMedicosVeterinarios = medicosVeterinariosDAO.buscarMedicosVeterinarios();
+        } catch (SavaDAOException e) {
+            throw new SavaBusinessException("Erro ao executar o método MedicosVeterinariosBOImpl.buscarMedicosVeterinariosAtivos", e);
+        }
+
+        return listaMedicosVeterinarios;
+    }
     
 }

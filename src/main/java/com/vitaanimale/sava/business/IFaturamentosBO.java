@@ -3,6 +3,7 @@ package com.vitaanimale.sava.business;
 import com.vitaanimale.sava.infra.SavaBusinessException;
 import com.vitaanimale.sava.to.DescricaoFaturamentos;
 import com.vitaanimale.sava.to.Faturamentos;
+import com.vitaanimale.sava.to.ItensProdutos;
 import com.vitaanimale.sava.to.Servicos;
 import com.vitaanimale.sava.to.TiposPagamentos;
 import java.util.List;
@@ -23,6 +24,8 @@ public interface IFaturamentosBO {
     public List<TiposPagamentos> buscarTiposPagamentos() throws SavaBusinessException;
     
     public List<Servicos> buscarListaServicos() throws SavaBusinessException;
+    
+    public ItensProdutos buscarProdutoPorCodBarra(String codBarra) throws SavaBusinessException;
             
     public List<DescricaoFaturamentos> buscarDescricaoFaturamentosPorFaturamento(Integer idFaturamento) throws SavaBusinessException;
     
@@ -35,4 +38,10 @@ public interface IFaturamentosBO {
     public Integer atualizarServicoDescricaoFaturamento(DescricaoFaturamentos descricaoFaturamento) throws SavaBusinessException;
     
     public Integer atualizarProdutoDescricaoFaturamento(DescricaoFaturamentos descricaoFaturamento) throws SavaBusinessException;
+    
+    public Integer atualizarSaidaItensProdutos(String codBarra, Double valorVendaProduto, Integer idDescricaoFaturamento, String tipoAtualizacao) throws SavaBusinessException;
+    
+    public List<ItensProdutos> buscarListaItensProdutosPorDescricaoFaturamento(Integer idDescricaoFaturamento) throws SavaBusinessException;
+    
+    public Integer atualizarValorVendaProdutoItensProdutos(Double valorVendaProduto, Integer idItemProduto) throws SavaBusinessException;
 }

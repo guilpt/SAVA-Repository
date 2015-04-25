@@ -14,6 +14,9 @@ public class ItensProdutos {
     private String  dataSaida;
     private String  dataValidade;
     private Integer idDescricaoFaturamento;
+    private Integer qtdProdutoDisponivel;
+    private String  descricaoProduto;
+    private String  descricaoTipoProduto;
 
     public Integer getIdItemProduto() {
         return idItemProduto;
@@ -87,6 +90,30 @@ public class ItensProdutos {
         this.idDescricaoFaturamento = idDescricaoFaturamento;
     }
 
+    public Integer getQtdProdutoDisponivel() {
+        return qtdProdutoDisponivel;
+    }
+
+    public void setQtdProdutoDisponivel(Integer qtdProdutoDisponivel) {
+        this.qtdProdutoDisponivel = qtdProdutoDisponivel;
+    }
+
+    public String getDescricaoProduto() {
+        return descricaoProduto;
+    }
+
+    public void setDescricaoProduto(String descricaoProduto) {
+        this.descricaoProduto = descricaoProduto;
+    }
+
+    public String getDescricaoTipoProduto() {
+        return descricaoTipoProduto;
+    }
+
+    public void setDescricaoTipoProduto(String descricaoTipoProduto) {
+        this.descricaoTipoProduto = descricaoTipoProduto;
+    }
+
     public ItensProdutos() {
         this.idItemProduto = null;
         this.idProduto = null;
@@ -97,6 +124,9 @@ public class ItensProdutos {
         this.dataSaida = "";
         this.dataValidade = "";
         this.idDescricaoFaturamento = null;
+        this.qtdProdutoDisponivel = null;
+        this.descricaoProduto = "";
+        this.descricaoTipoProduto = "";
     }
     
     public ItensProdutos(Integer idItemProduto, Integer idProduto, String codBarra, Double valorCompraProduto, Double valorVendaProduto, String dataEntrada, String dataSaida, String dataValidade, Integer idDescricaoFaturamento) {
@@ -113,7 +143,6 @@ public class ItensProdutos {
 
     @Override
     public String toString() {
-        return "ItensProdutos{" + "idItemProduto=" + idItemProduto + ", idProduto=" + idProduto + ", codBarra=" + codBarra + ", valorCompraProduto=" + valorCompraProduto + ", valorVendaProduto=" + valorVendaProduto + ", dataEntrada=" + dataEntrada + ", dataSaida=" + dataSaida + ", dataValidade=" + dataValidade + ", idDescricaoFaturamento=" + idDescricaoFaturamento + '}';
+        return "ItensProdutos{" + "idItemProduto=" + idItemProduto + ", idProduto=" + idProduto + ", codBarra=" + codBarra + ", valorCompraProduto=" + valorCompraProduto + ", valorVendaProduto=" + valorVendaProduto + ", dataEntrada=" + dataEntrada + ", dataSaida=" + dataSaida + ", dataValidade=" + dataValidade + ", idDescricaoFaturamento=" + idDescricaoFaturamento + ", qtdProdutoDisponivel=" + qtdProdutoDisponivel + ", descricaoProduto=" + descricaoProduto + ", descricaoTipoProduto=" + descricaoTipoProduto + '}';
     }
-    
 }

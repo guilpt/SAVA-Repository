@@ -18,4 +18,6 @@ public interface IProdutosBO {
     public Produtos buscarInformacaoProduto(Integer idProduto) throws SavaBusinessException;
     
     public Integer inserirItemProduto(ItensProdutos itemProduto) throws SavaBusinessException;
+    
+    public List<ItensProdutos> buscarUltimosItensProdutosAdicionados() throws SavaBusinessException;
 }

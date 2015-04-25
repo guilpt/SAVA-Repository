@@ -48,6 +48,7 @@ public class ItensProdutosController extends SAVAAbstractController implements S
     private List<TiposProdutos> listaTiposProdutos;
     private List<Produtos> listaProdutos;
     private Produtos produto;
+    private List<ItensProdutos> listaUltimosItensProdutosAdicionados;
 
     public IProdutosBO getProdutosBO() {
         return produtosBO;
@@ -144,6 +145,14 @@ public class ItensProdutosController extends SAVAAbstractController implements S
     public void setProduto(Produtos produto) {
         this.produto = produto;
     }
+
+    public List<ItensProdutos> getListaUltimosItensProdutosAdicionados() {
+        return listaUltimosItensProdutosAdicionados;
+    }
+
+    public void setListaUltimosItensProdutosAdicionados(List<ItensProdutos> listaUltimosItensProdutosAdicionados) {
+        this.listaUltimosItensProdutosAdicionados = listaUltimosItensProdutosAdicionados;
+    }
     
     public Collection<SelectItem> getCollectionTiposProdutos() {
         Collection<SelectItem> collectionTiposProdutos = new ArrayList<>();
@@ -177,15 +186,16 @@ public class ItensProdutosController extends SAVAAbstractController implements S
             this.idTipoProduto = null;
             this.idProduto = null;
             this.codBarra = "";
-            this.valorCompraProduto = null;
-            this.valorVendaProduto = null;
+            this.valorCompraProduto = 0.0;
+            this.valorVendaProduto = 0.0;
             this.dataEntrada = sdf.format(dataAtual);
             this.dataValidade = "";
             
             this.listaTiposProdutos = produtosBO.buscarTiposProdutos();
             this.listaProdutos = new ArrayList<>();
+            this.listaUltimosItensProdutosAdicionados = produtosBO.buscarUltimosItensProdutosAdicionados();
         } catch (SavaBusinessException e) {
-            initItensProdutoscontext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "NÃ£o foi possÃ­vel buscar a lista de tipos de produtos!"));
+            initItensProdutoscontext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "NÃƒÂ£o foi possÃƒÂ­vel buscar a lista de tipos de produtos!"));
         }
 
         this.controlarExibicao(false, true);
@@ -201,8 +211,8 @@ public class ItensProdutosController extends SAVAAbstractController implements S
         
         this.idTipoProduto = -1;
         this.idProduto = -1;
-        this.valorCompraProduto = null;
-        this.valorVendaProduto = null;
+        this.valorCompraProduto = 0.0;
+        this.valorVendaProduto = 0.0;
         this.dataEntrada = sdf.format(dataAtual);
         this.dataValidade = "";
         this.codBarra = "";
@@ -216,7 +226,7 @@ public class ItensProdutosController extends SAVAAbstractController implements S
         try {
             this.listaProdutos = produtosBO.buscarProdutosPorIdTipoProduto(this.idTipoProduto);
         } catch (SavaBusinessException e) {
-            buscarProdutosPorIdTipoProdutoContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "NÃ£o foi possÃ­vel buscar os produtos!"));
+            buscarProdutosPorIdTipoProdutoContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "NÃƒÂ£o foi possÃƒÂ­vel buscar os produtos!"));
         }
 
         return ACTION_INPUT;
@@ -230,7 +240,9 @@ public class ItensProdutosController extends SAVAAbstractController implements S
             this.valorCompraProduto = this.produto.getValorCompraProduto();
             this.valorVendaProduto = this.produto.getValorVendaProduto();
         } catch (SavaBusinessException e) {
-            buscarInformacaoProdutoContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "NÃ£o foi possÃ­vel buscar a informação do produto!"));
+            this.valorCompraProduto = 0.0;
+            this.valorVendaProduto = 0.0;
+            buscarInformacaoProdutoContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "NÃƒÂ£o foi possÃƒÂ­vel buscar a informaÃ§Ã£o do produto!"));
         }
 
         return ACTION_INPUT;
@@ -247,10 +259,12 @@ public class ItensProdutosController extends SAVAAbstractController implements S
                 linhasAfetadas = produtosBO.inserirItemProduto(itemProduto);
                 
                 if (linhasAfetadas == 1) {
+                    this.listaUltimosItensProdutosAdicionados = produtosBO.buscarUltimosItensProdutosAdicionados();
+                    this.codBarra = "";
                     inserirItemProdutoContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Item inserido com sucesso!"));
                 }
             } catch (SavaBusinessException e) {
-                inserirItemProdutoContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "NÃ£o foi possÃ­vel inserir o item!"));
+                inserirItemProdutoContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", "NÃƒÂ£o foi possÃƒÂ­vel inserir o item!"));
             }
         } else {
             inserirItemProdutoContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro:", this.getMensagemValidacao()));
@@ -266,13 +280,13 @@ public class ItensProdutosController extends SAVAAbstractController implements S
             this.setMensagemValidacao("Selecione um produto!");
             resultado = false;
         } else if ("".equals(this.codBarra)) {
-            this.setMensagemValidacao("Informe o código de barras!");
+            this.setMensagemValidacao("Informe o cÃ³digo de barras!");
             resultado = false;
-        } else if (this.valorCompraProduto == null) {
-            this.setMensagemValidacao("Informe uma nome vÃ¡lido!");
+        } else if (this.valorCompraProduto == 0.0) {
+            this.setMensagemValidacao("Informe um valor de compra vÃƒÂ¡lido!");
             resultado = false;
-        } else if (valorVendaProduto == null) {
-            this.setMensagemValidacao("Informe uma sexo vÃ¡lido!");
+        } else if (this.valorVendaProduto == 0.0) {
+            this.setMensagemValidacao("Informe um valor de venda vÃƒÂ¡lido!");
             resultado = false;
         } else if ("".equals(this.dataEntrada)) {
             this.setMensagemValidacao("Informe uma data de Entrada!");

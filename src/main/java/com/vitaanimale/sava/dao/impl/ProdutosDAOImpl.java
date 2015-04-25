@@ -65,7 +65,7 @@ public class ProdutosDAOImpl extends AbstractSAVADao implements IProdutosDAO{
         
         sb.append(" select va_produtos.id_produto,");
         sb.append("        va_produtos.descricao_produto");
-        sb.append("   from va_produtos inner join va_fornecedores on (va_produtos.id_fornecedor = va_fornecedores.id_fornecedor )");
+        sb.append("   from va_produtos inner join va_fornecedores on ( va_produtos.id_fornecedor = va_fornecedores.id_fornecedor )");
         sb.append("  where va_produtos.id_tipo_produto = ?");
         sb.append("  order by va_produtos.descricao_produto");
         
@@ -167,6 +167,48 @@ public class ProdutosDAOImpl extends AbstractSAVADao implements IProdutosDAO{
         }
         
         return linhasAfetadas;
+    }
+
+    @Override
+    public List<ItensProdutos> buscarUltimosItensProdutosAdicionados() throws SavaDAOException {
+        StringBuilder sb = new StringBuilder();
+        List<ItensProdutos> listaItensProdutos = null;
+        
+        sb.append(" select va_tipos_produtos.descricao_tipo_produto,");
+        sb.append("        va_produtos.descricao_produto,");
+        sb.append("        va_itens_produtos.cod_barra,");
+        sb.append("        va_itens_produtos.valor_compra_produto,");
+        sb.append("        va_itens_produtos.valor_venda_produto");
+        sb.append("   from va_itens_produtos inner join va_produtos       on ( va_itens_produtos.id_produto = va_produtos.id_produto 	    )");
+        sb.append("                          inner join va_tipos_produtos on ( va_produtos.id_tipo_produto  = va_tipos_produtos.id_tipo_produto )");
+        sb.append("  where va_itens_produtos.data_entrada = current_date");
+        sb.append("  fetch first 5 rows only");
+
+        try {
+            listaItensProdutos = (List<ItensProdutos>) this.jdbcTemplate.query(sb.toString(), new Object[] {}, new RowMapper() {
+
+                @Override
+                public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    ItensProdutos itemProduto = new ItensProdutos();
+                    
+                    itemProduto.setDescricaoTipoProduto(rs.getString("DESCRICAO_TIPO_PRODUTO"));
+                    itemProduto.setDescricaoProduto(rs.getString("DESCRICAO_PRODUTO"));
+                    itemProduto.setCodBarra(rs.getString("COD_BARRA"));
+                    itemProduto.setValorCompraProduto(rs.getDouble("VALOR_COMPRA_PRODUTO"));
+                    itemProduto.setValorVendaProduto(rs.getDouble("VALOR_VENDA_PRODUTO"));
+                    
+                    return itemProduto;
+                }
+            });
+            
+            if(listaItensProdutos.iterator().hasNext()){
+                return listaItensProdutos;
+            }
+            return ListUtils.EMPTY_LIST;
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new SavaDAOException("Erro ao executar o método ProdutosDAOImpl.buscarUltimosItensProdutosAdicionados", e);
+        }
     }
 
 

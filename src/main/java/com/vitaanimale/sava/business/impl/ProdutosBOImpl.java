@@ -60,5 +60,14 @@ public class ProdutosBOImpl implements IProdutosBO{
         }
     }
 
+    @Override
+    public List<ItensProdutos> buscarUltimosItensProdutosAdicionados() throws SavaBusinessException {
+        try {
+            return produtosDAO.buscarUltimosItensProdutosAdicionados();
+        } catch(SavaDAOException e) {
+            throw new SavaBusinessException("Erro ao executar o método ProdutosBOImpl.buscarUltimosItensProdutosAdicionados", e);
+        }
+    }
+
     
 }

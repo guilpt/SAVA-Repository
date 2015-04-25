@@ -16,4 +16,6 @@ public interface IMedicosVeterinariosBO {
     public Integer excluirMedicoVeterinario(Integer idMedicoVeterinario) throws SavaBusinessException;
     
     public Integer atualizarMedicoVeterinario(MedicosVeterinarios medicoVeterinario) throws SavaBusinessException;
+    
+    public List<MedicosVeterinarios> buscarMedicosVeterinariosAtivos() throws SavaBusinessException;
 }

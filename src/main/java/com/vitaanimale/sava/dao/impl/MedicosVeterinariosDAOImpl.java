@@ -140,5 +140,39 @@ public class MedicosVeterinariosDAOImpl extends AbstractSAVADao implements IMedi
         
         return linhasAfetadas;
     }
+
+    @Override
+    public List<MedicosVeterinarios> buscarMedicosVeterinariosAtivos() throws SavaDAOException {
+        StringBuilder sb = new StringBuilder();
+        List<MedicosVeterinarios> listaMedicosVeterinarios = null;
+        
+        sb.append(" select id_medico_veterinario,");
+        sb.append("        nome_medico_veterinario");
+        sb.append("   from va_medicos_veterinarios");
+        sb.append("  where ind_ativo = 'S'");
+        
+        try{
+            listaMedicosVeterinarios = (List<MedicosVeterinarios>) this.jdbcTemplate.query(sb.toString(), new Object[] {}, new RowMapper() {
+
+                @Override
+                public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                    MedicosVeterinarios medicoVeterinario = new MedicosVeterinarios();
+                    
+                    medicoVeterinario.setIdMedicoVeterinario(rs.getInt("ID_MEDICO_VETERINARIO"));
+                    medicoVeterinario.setNomeMedicoVeterinario(rs.getString("NOME_MEDICO_VETERINARIO"));
+                             
+                    return medicoVeterinario;
+                }
+            });
+            
+            if(listaMedicosVeterinarios.iterator().hasNext()){
+                return listaMedicosVeterinarios;
+            }
+            return ListUtils.EMPTY_LIST;
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new SavaDAOException("Erro ao executar o método MedicosVeterinariosDAOImpl.buscarMedicosVeterinariosAtivos", e);
+        }
+    }
     
 }

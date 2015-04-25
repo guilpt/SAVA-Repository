@@ -19,4 +19,5 @@ public interface IProdutosDAO {
             
     public Integer inserirItemProduto(ItensProdutos itemProduto) throws SavaDAOException;
     
+    public List<ItensProdutos> buscarUltimosItensProdutosAdicionados() throws SavaDAOException;
 }

@@ -6,6 +6,7 @@ package com.vitaanimale.sava.to;
  */
 public class Faturamentos {
     private Integer idFaturamento;
+    private Integer idMedicoVeterinario;
     private Integer idCliente;
     private Integer idAnimal;
     private String  dataFaturamento;
@@ -22,6 +23,14 @@ public class Faturamentos {
 
     public void setIdFaturamento(Integer idFaturamento) {
         this.idFaturamento = idFaturamento;
+    }
+
+    public Integer getIdMedicoVeterinario() {
+        return idMedicoVeterinario;
+    }
+
+    public void setIdMedicoVeterinario(Integer idMedicoVeterinario) {
+        this.idMedicoVeterinario = idMedicoVeterinario;
     }
 
     public Integer getIdCliente() {
@@ -98,6 +107,7 @@ public class Faturamentos {
 
     public Faturamentos() {
         this.idFaturamento = null;
+        this.idMedicoVeterinario = null;
         this.idCliente = null;
         this.idAnimal = null;
         this.dataFaturamento = "";
@@ -107,8 +117,9 @@ public class Faturamentos {
         this.obsPagamento = "";
     }
     
-    public Faturamentos(Integer idFaturamento, Integer idCliente, Integer idAnimal, String dataFaturamento, Double valorTotal, Integer idTipoPagemento, String recebido, String obsPagamento) {
+    public Faturamentos(Integer idFaturamento, Integer idMedicoVeterinario, Integer idCliente, Integer idAnimal, String dataFaturamento, Double valorTotal, Integer idTipoPagemento, String recebido, String obsPagamento) {
         this.idFaturamento = idFaturamento;
+        this.idMedicoVeterinario = idMedicoVeterinario;
         this.idCliente = idCliente;
         this.idAnimal = idAnimal;
         this.dataFaturamento = dataFaturamento;
@@ -120,6 +131,6 @@ public class Faturamentos {
 
     @Override
     public String toString() {
-        return "Faturamentos{" + "idFaturamento=" + idFaturamento + ", idCliente=" + idCliente + ", idAnimal=" + idAnimal + ", dataFaturamento=" + dataFaturamento + ", valorTotal=" + valorTotal + ", idTipoPagamento=" + idTipoPagamento + ", descricaoTipoPagamento=" + descricaoTipoPagamento + ", recebido=" + recebido + ", recebidoExtenso=" + recebidoExtenso + ", obsPagamento=" + obsPagamento + '}';
+        return "Faturamentos{" + "idFaturamento=" + idFaturamento + ", idMedicoVeterinario=" + idMedicoVeterinario + ", idCliente=" + idCliente + ", idAnimal=" + idAnimal + ", dataFaturamento=" + dataFaturamento + ", valorTotal=" + valorTotal + ", idTipoPagamento=" + idTipoPagamento + ", descricaoTipoPagamento=" + descricaoTipoPagamento + ", recebido=" + recebido + ", recebidoExtenso=" + recebidoExtenso + ", obsPagamento=" + obsPagamento + '}';
     }
 }

@@ -31,7 +31,6 @@
                 
                 <!--Formulário de itens Produtos-->
                 <p:outputPanel>  
-                    <!--<h:inputHidden value="#{animaisController.idAnimal}"/>-->
                     <table style="width:100%">
                         <tr>
                             <td><label>Tipo Produto</label></td>
@@ -74,15 +73,33 @@
                         </tr>
                         <tr>
                             <td style="width: 30%;">
-                                <p:inputText id="codBarra" value="#{itensProdutosController.codBarra}" size="50" />  
+                                <p:inputText id="codBarra" value="#{itensProdutosController.codBarra}" size="50" >  
+                                    <p:ajax update="codBarra,dataUltimosItensProdutosAdicionados,mensagensItensProdutos" listener="#{itensProdutosController.inserirItemProduto()}" />
+                                </p:inputText>
                             </td>
-                            <td>
-                                <p:commandLink action="#{itensProdutosController.inserirItemProduto()}" update="mensagensItensProdutos">
-                                    <img class="img" src="/SAVA/faces/imagens/salvar.png" border="1"/>
-                                </p:commandLink>  
-                            </td>
+
                         </tr>
                     </table>
+                    <div class="barraTitulo">
+                        <h1 class="titulo">Últimos Itens Adicionados</h1>
+                    </div>
+                    <p:dataTable id="dataUltimosItensProdutosAdicionados" var="ultimosItensProdutosAdicionados" value="#{itensProdutosController.listaUltimosItensProdutosAdicionados}"  emptyMessage="Nenhum item adicionado hoje" scrollable="true" scrollHeight="180">  
+                            <p:column headerText="Tipo Produto" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{ultimosItensProdutosAdicionados.descricaoTipoProduto}" />  
+                            </p:column>  
+                            <p:column headerText="Descrição" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{ultimosItensProdutosAdicionados.descricaoProduto}" />  
+                            </p:column>           
+                            <p:column headerText="Código Barra" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{ultimosItensProdutosAdicionados.codBarra}" />  
+                            </p:column>   
+                            <p:column headerText="Valor Compra" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{ultimosItensProdutosAdicionados.valorCompraProduto}" />  
+                            </p:column>   
+                            <p:column headerText="Valor Venda" style="height: 10px; font-size: 10px; text-align: center;">  
+                                <h:outputText value="#{ultimosItensProdutosAdicionados.valorVendaProduto}" />  
+                            </p:column>   
+                    </p:dataTable> 
                     
                 </p:outputPanel>
             </p:panel>
